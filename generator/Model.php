@@ -1,18 +1,14 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
-class entityNames extends MY_Model {
+class {{modelName}} extends MY_Model {
 
   function __construct () {
     parent::__construct();
-    $this->table = 'tableName';
+    $this->table = '{{tableName}}';
     $this->thead = array(
       (object) array('mData' => 'orders', 'sTitle' => 'No', 'visible' => false),
     );
-    $this->form  = array ();
-
-    $this->form[]= array(
-    	'name' => 'dummyName',
-    	'label'=> 'dummyLabel'
+    $this->form = array ({{fields}}
     );
   }
 

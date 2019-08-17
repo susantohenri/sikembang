@@ -1,0 +1,41 @@
+[
+
+	{
+		"controller": "User",
+		"model": "Users",
+		"table": "user",
+		"fields": [
+			{
+				"name": "username",
+				"type": "string",
+				"label": "Username"
+			},
+			{
+				"name": "password",
+				"type": "string",
+				"label": "Password"
+			},
+			{
+				"name": "role",
+				"type": "relation",
+				"model": "Roles",
+				"field": "name",
+				"label": "Role"
+			}
+		]
+	}
+
+	,{
+		"controller": "Role",
+		"model": "Roles",
+		"table": "role",
+		"fields": [
+			{
+				"name": "name",
+				"type": "string",
+				"label": "Role Name"
+			}
+		]
+	}
+
+]
