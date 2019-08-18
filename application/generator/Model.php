@@ -7,6 +7,7 @@ class {{modelName}} extends MY_Model {
     $this->table = '{{tableName}}';
     $this->thead = array(
       (object) array('mData' => 'orders', 'sTitle' => 'No', 'visible' => false),
+      {{theads}}
     );
     $this->form = array ({{fields}}
     );
@@ -15,7 +16,8 @@ class {{modelName}} extends MY_Model {
   function dt () {
     $this->datatables
       ->select("{$this->table}.uuid")
-      ->select("{$this->table}.orders");
+      ->select("{$this->table}.orders")
+      {{dtField}};
     return parent::dt();
   }
 

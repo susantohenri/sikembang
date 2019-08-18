@@ -66,6 +66,7 @@
     </div>
   </div>
 
+  <?php if (count($subform) > 0): ?>
   <div class="card card-primary card-outline">
     <div class="card-body">
       <?php foreach ($subform as $subfield) : ?>
@@ -88,5 +89,6 @@
       <?= !empty($subform) ? '<hr>':'' ?>
     </div>
   </div>
+  <?php endif ?>
 
 </form>

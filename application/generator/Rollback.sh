@@ -1,0 +1,1 @@
+rm ../controllers/*.php && git checkout ../controllers/ && rm ../models/*.php && git checkout ../models/ && rm ../migrations/*.php && git checkout ../migrations/ && git checkout ../views/

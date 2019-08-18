@@ -17,10 +17,45 @@ if (in_array($toGenerate, array('all', 'migration')))
 	$oldSeeds = "../migrations/{$seeds}";
 	$newSeeds = "../migrations/{$newSeedsNumber}_seeds.php";
 	rename($oldSeeds, $newSeeds);
+
+	// GIVE PERMISSION FOR ALL ENTITIES TO ADMIN
+	$seedsTmp = $newSeeds;
+	$seedsContent = file_get_contents($seedsTmp);
+	foreach (array_map(create_function('$entity', 'return $entity->controller;'), $structure) as $entityName)
+	{
+		$seedsContent = str_replace('/*additionalEntity*/', ", '{$entityName}'/*additionalEntity*/", $seedsContent);
+	}
+	file_put_contents($newSeeds, $seedsContent);
+}
+
+/*
+	BUILD MENU
+*/
+if (in_array($toGenerate, array('all', 'controller')))
+{
+	$dashboardTmp = '../views/dashboard.php';
+	$dashboardContent = file_get_contents($dashboardTmp);
+	foreach (array_map(create_function('$entity', 'return $entity->controller;'), $structure) as $entityName)
+	{
+		$dashboardContent = str_replace('/*additionalEntity*/', ", '{$entityName}'/*additionalEntity*/", $dashboardContent);
+	}
+	file_put_contents($dashboardTmp, $dashboardContent);
 }
 
 foreach ($structure as $entity)
 {
+
+	/*
+		SET DEFAULT VALUES TO SIMPLIFY JSON
+	*/
+	$entity->model = $entity->model ?: "{$entity->controller}s";
+	$entity->table = $entity->table ?: strtolower($entity->controller);
+	foreach ($entity->fields as $index => $field)
+	{
+		$entity->fields[$index]->type = $field->type ?: 'string';
+		$entity->fields[$index]->label = $field->label ?: ucfirst($field->name);
+		$entity->fields[$index]->index= 'relation' === $field->type;
+	}
 
 	/*
 		GENERATING CONTROLLER
@@ -31,7 +66,7 @@ foreach ($structure as $entity)
 		$controllerContent = file_get_contents($controllerTmp);
 		$controllerContent = str_replace('{{controllerName}}', $entity->controller, $controllerContent);
 		$controllerContent = str_replace('{{modelName}}', $entity->model, $controllerContent);
-		file_put_contents("../controllers/{$entity->controller}.php", $controllerContent);		
+		file_put_contents("../controllers/{$entity->controller}.php", $controllerContent);
 	}
 
 	/*
@@ -45,6 +80,8 @@ foreach ($structure as $entity)
 		$modelContent = str_replace('{{tableName}}', $entity->table, $modelContent);
 
 		$fields = '';
+		$theads = "(object) array('mData' => '{$entity->fields[0]->name}', 'sTitle' => '{$entity->fields[0]->label}'),\n";
+		$dtField= "->select('{$entity->table}.{$entity->fields[0]->name}')";
 		foreach ($entity->fields as $field) {
 			switch ($field->type) {
 				case 'relation':
@@ -56,7 +93,7 @@ foreach ($structure as $entity)
 		        array('data-autocomplete' => 'true'),
 		        array('data-model' => '{$field->model}'),
 		        array('data-field' => '{$field->field}')
-			    ),";
+			    )),";
 					break;
 				case 'int': 
 			    $fields .= "\n        array (
@@ -68,14 +105,32 @@ foreach ($structure as $entity)
 					break;
 				case 'string': 
 				default:
-			    $fields .= "\n        array (
-		      'name' => '{$field->name}',
-		      'label'=> '{$field->label}',
-			  ),";
+					if (isset($field->options))
+					{
+						$options = '';
+						foreach ($field->options as $option) {
+							$options .= "\n                array('text' => '{$option}', 'value' => '{$option}'),";
+						}
+					  $fields .= "\n        array (
+				      'name' => '{$field->name}',
+				      'label'=> '{$field->label}',
+				      'options' => array({$options}
+				      )
+					  ),";
+					}
+					else
+					{
+					  $fields .= "\n        array (
+				      'name' => '{$field->name}',
+				      'label'=> '{$field->label}',
+					  ),";
+					}
 					break;
 			}
 		}
 		$modelContent = str_replace('{{fields}}', $fields, $modelContent);
+		$modelContent = str_replace('{{theads}}', $theads, $modelContent);
+		$modelContent = str_replace('{{dtField}}', $dtField, $modelContent);
 		file_put_contents("../models/{$entity->model}.php", $modelContent);
 	}
 
