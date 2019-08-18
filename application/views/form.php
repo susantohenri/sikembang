@@ -66,11 +66,9 @@
     </div>
   </div>
 
-  <?php if (count($subform) > 0): ?>
+  <?php if (count($subform) > 0): foreach ($subform as $subfield) : ?>
   <div class="card card-primary card-outline">
     <div class="card-body">
-      <?php foreach ($subform as $subfield) : ?>
-        <hr>
         <fieldset class="form-child" data-controller="<?= $subfield['controller'] ?>" data-uuids="<?= str_replace('"', "'", json_encode($subfield['uuids'])) ?>">
           <legend><?= $subfield['label'] ?></legend>
           <div class="form-group">
@@ -85,10 +83,8 @@
             </div>
           </div>
         </fieldset>
-      <?php endforeach ?>
-      <?= !empty($subform) ? '<hr>':'' ?>
+      </div>
     </div>
-  </div>
-  <?php endif ?>
+  <?php endforeach; endif; ?>
 
 </form>
