@@ -19,6 +19,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
   <style type="text/css">
     a.btn:not([href]):not([tabindex]){color: white}
+    .form-child .form-group.row > div {margin: 5px 0}
   </style>
 </head>
 <body class="hold-transition layout-top-nav">
