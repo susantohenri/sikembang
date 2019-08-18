@@ -25,7 +25,7 @@ class MY_Controller extends CI_Controller {
 
     $page_title = preg_split('#([A-Z][^A-Z]*)#', $this->controller, null, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
     $page_title = implode(' ', $page_title);
-    $vars['page_title']   = strlen($this->page_title) > 0 ? get_phrase($this->page_title): $page_title;
+    $vars['page_title']   = isset($this->page_title) ? $this->page_title: $page_title;
 
     if (!isset ($vars['form_action'])) $vars['form_action'] = site_url($this->controller);
     $vars['current'] = array (
@@ -34,7 +34,6 @@ class MY_Controller extends CI_Controller {
     );
 
     $this->load->model('Permissions');
-    $vars['permitted_menus']  = $this->Permissions->getPermittedMenus();
     if (!isset ($vars['permission'])) $vars['permission'] = $this->Permissions->getPermissions();
     $this->load->view($view, $vars);
   }
@@ -61,6 +60,11 @@ class MY_Controller extends CI_Controller {
     $vars = array();
     $vars['page_name'] = 'table';
     // $vars['records'] = $this->$model->find();
+    $vars['js'] = array(
+      'jquery.dataTables.min.js',
+      'dataTables.bootstrap4.js',
+      'table.js'
+    );
     $vars['thead'] = $this->$model->thead;
     $this->loadview('index', $vars);
   }
@@ -72,6 +76,13 @@ class MY_Controller extends CI_Controller {
     $vars['form']     = $this->$model->getForm();
     $vars['subform'] = $this->$model->getFormChild();
     $vars['uuid'] = '';
+    $vars['js'] = array(
+      'moment.min.js',
+      'bootstrap-datepicker.js',
+      'daterangepicker.min.js',
+      'select2.full.min.js',
+      'form.js'
+    );
     $this->loadview('index', $vars);
   }
 
@@ -86,13 +97,20 @@ class MY_Controller extends CI_Controller {
   }
 
   function read ($id) {
-    $data = array();
-    $data['page_name'] = 'form';
+    $vars = array();
+    $vars['page_name'] = 'form';
     $model = $this->model;
-    $data['form'] = $this->$model->getForm($id);
-    $data['subform'] = $this->$model->getFormChild($id);
-    $data['uuid'] = $id;
-    $this->loadview('index', $data);
+    $vars['form'] = $this->$model->getForm($id);
+    $vars['subform'] = $this->$model->getFormChild($id);
+    $vars['uuid'] = $id;
+    $vars['js'] = array(
+      'moment.min.js',
+      'bootstrap-datepicker.js',
+      'daterangepicker.min.js',
+      'select2.full.min.js',
+      'form.js'
+    );
+    $this->loadview('index', $vars);
   }
 
   function subformread ($uuid) {
