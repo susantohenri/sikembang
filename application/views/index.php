@@ -102,7 +102,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <!-- <script src="../../dist/js/adminlte.min.js"></script> -->
 <script type="text/javascript">
   var site_url = '<?= site_url('/') ?>'
-  var current_controller = '<?= site_url ($current['controller']) ?>'
+  var current_controller = '<?= $current['controller'] ?>'
+  var current_controller_url = '<?= site_url ($current['controller']) ?>'
 </script>
 <?php if (isset ($js)): foreach ($js as $script): ?>
   <script type="text/javascript" src="<?= base_url("assets/js/{$script}") ?>"></script>

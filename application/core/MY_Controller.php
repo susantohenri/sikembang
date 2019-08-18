@@ -59,7 +59,6 @@ class MY_Controller extends CI_Controller {
     }
     $vars = array();
     $vars['page_name'] = 'table';
-    // $vars['records'] = $this->$model->find();
     $vars['js'] = array(
       'jquery.dataTables.min.js',
       'dataTables.bootstrap4.js',
@@ -124,24 +123,6 @@ class MY_Controller extends CI_Controller {
     $this->loadview('subform', $data);
   }
 
-  function readlist ($id) {
-    $data = array();
-    $data['page_name'] = 'list';
-    $model = $this->model;
-    $data['item'] = $this->$model->getListItem($id);
-    $this->load->model('Permissions');
-    $this->loadview('index', $data);
-  }
-
-  function subformlist ($uuid, $jabatan_group = null) {
-    $this->load->model('Permissions');
-    if (!in_array("read_{$this->controller}", $this->Permissions->getPermissions())) return false;
-    $data = array();
-    $model = $this->model;
-    $data['item'] = $this->$model->getListItem($uuid, $jabatan_group);
-    $this->loadview('subformlist', $data);
-  }
-
   function delete ($uuid) {
     $vars = array();
     $vars['page_name'] = 'confirm';
@@ -157,11 +138,5 @@ class MY_Controller extends CI_Controller {
   function dt () {
     echo $this->{$this->model}->dt();
   }
-
-  function select2region ($previousmodel, $model, $data, $field) {
-    $this->load->model($model);
-    echo '{"results":'. json_encode($this->$model->select2region($previousmodel, $field, $this->input->post('term'), $data)) . '}';
-  }
-  
 
 }

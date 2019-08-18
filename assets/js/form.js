@@ -1,6 +1,6 @@
 window.onload = function () {
 
-  formInit()
+  formInit($(`[data-controller="${current_controller}"]`))
   $('.main-form').submit(function () {
     $('[data-number]').each (function () {
       $(this).val(getNumber($(this)))
@@ -10,9 +10,10 @@ window.onload = function () {
 
   $('.form-child').each (function () {
     var fchild = $(this)
-    var controller = site_url + fchild.attr('data-controller')
+    var child_controller = fchild.attr('data-controller')
+    var child_controller_url = site_url + child_controller
     var uuids = JSON.parse(fchild.attr('data-uuids').split("'").join('"'))
-    for (var u in uuids) $.ajax({url: controller + '/subformread/' + uuids[u], success: function (form) {
+    for (var u in uuids) $.ajax({url: child_controller_url + '/subformread/' + uuids[u], success: function (form) {
       fchild.prepend(form)
       if (uuids.length === fchild.find('[data-orders]').length) {
         var elements = fchild.find('[data-orders]')
@@ -29,15 +30,15 @@ window.onload = function () {
         var html = ''
         elements.remove()
         for( var i = 0; i < sorted.length; ++i ) html += sorted[i].outerHTML
-        fchild.prepend(html)
-        formInit()
+        var fetched = fchild.prepend(html)
+        formInit(fetched)
       }
     }})
     fchild.find('.btn-add').click(function () {
       var beforeButton = $(this).parents('.form-group');
-      $.get(controller + '/subformcreate/', function (form) {
-        $(form).insertBefore(beforeButton)
-        formInit()
+      $.get(child_controller_url + '/subformcreate/', function (form) {
+        var created = $(form).insertBefore(beforeButton)
+        formInit(created)
       })
     })
   })
@@ -49,23 +50,19 @@ window.onload = function () {
   });
 
   if (window.location.href.indexOf('ChangePassword') > -1) $('form a[href*="ChangePassword/delete"]').hide()
-  if (window.location.href.indexOf('Spj') > -1) {
-    getSisaPagu()
-    checkUnverifyReason()
-  }
 }
 
-function formInit () {
-  $('.btn-delete[data-uuid]').click(function () {
+function formInit (scope) {
+  scope.find('.btn-delete[data-uuid]').click(function () {
     $(this).parent().parent().remove()
   })
-  $('select').not('.select2-hidden-accessible').each(function () {
+  scope.find('select').not('.select2-hidden-accessible').each(function () {
     if ($(this).is ('[data-autocomplete]')) {
       var model = $(this).attr('data-model')
       var field = $(this).attr('data-field')
       $(this).select2({
         ajax: {
-          url: current_controller + '/select2/' + model + '/' + field,
+          url: current_controller_url + '/select2/' + model + '/' + field,
           type: 'POST', dataType: 'json'
         }
       })
@@ -88,16 +85,16 @@ function formInit () {
       })
     } else $(this).select2()
   })
-  $('[data-date="datepicker"]').datepicker({format: 'yyyy-mm-dd', autoclose: true})
-  // $('[data-date="timepicker"]').timepicker({defaultTime: false, showMeridian: false})
-  $('[data-date="datetimepicker"]').daterangepicker({
+  scope.find('[data-date="datepicker"]').datepicker({format: 'yyyy-mm-dd', autoclose: true})
+  // scope.find('[data-date="timepicker"]').timepicker({defaultTime: false, showMeridian: false})
+  scope.find('[data-date="datetimepicker"]').daterangepicker({
     singleDatePicker: true,
     timePicker: true,
     timePicker24Hour: true,
     locale: {format: 'YYYY-MM-DD HH:mm'},
     // startDate: moment().format('YYYY-MM-DD HH:mm')
   })
-  $('[data-number="true"]').keyup(function () {
+  scope.find('[data-number="true"]').keyup(function () {
     $(this).val(currency(getNumber($(this))))
   })
 }

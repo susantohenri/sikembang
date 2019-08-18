@@ -40,14 +40,6 @@ class MY_Model extends CI_Model {
     return $record['uuid'];
   }
 
-  function createStep ($record) {
-    $generate = $this->db->select('UUID() uuid', false)->get()->row_array();
-    $record['uuid'] = $generate['uuid'];
-    $record = $this->savechild($record);
-    $this->db->insert($this->table, $record);
-    return $record['uuid'];
-  }
-
   function update ($record) {
     $record = $this->savechild($record);
     $this->db->where('uuid', $record['uuid'])->update($this->table, $record);
@@ -57,10 +49,6 @@ class MY_Model extends CI_Model {
   function findOne ($param) {
     if (!is_array($param)) $param = array('uuid' => $param);
     return $this->db->get_where($this->table, $param)->row_array();
-  }
-
-  function getListItem ($uuid, $jabatanGroup = null) {
-    return $this->db->get_where($this->table, array("{$this->table}.uuid" => $uuid))->row_array();
   }
 
   function dt () {
@@ -87,17 +75,6 @@ class MY_Model extends CI_Model {
       ->limit(10)
       ->like($field, $term)->get($this->table)->result();
   }
-
-
-  function select2region ($previousmodel, $field, $term, $uuid) {
-    return $this->db
-      ->select("uuid as id", false)
-      ->select("$field as text", false)
-      ->order_by("$field", 'asc')
-      ->where("$previousmodel",$uuid)
-      ->like("$field",$term)->get($this->table)->result();
-  } 
-
 
   function delete ($uuid) {
     foreach ($this->childs as $child) {
