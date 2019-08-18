@@ -1,40 +1,132 @@
 [
 
 	{
-		"controller": "User",
-		"model": "Users",
-		"table": "user",
+		"controller": "Infaq",
 		"fields": [
 			{
-				"name": "username",
-				"type": "string",
-				"label": "Username"
+				"name": "nama"
 			},
 			{
-				"name": "password",
-				"type": "string",
-				"label": "Password"
-			},
-			{
-				"name": "role",
-				"type": "relation",
-				"model": "Roles",
-				"field": "name",
-				"index": true,
-				"label": "Role"
+				"name": "level",
+				"options": ["Pusat", "Daerah", "Desa", "Kelompok"]
 			}
 		]
 	}
 
 	,{
-		"controller": "Role",
-		"model": "Roles",
-		"table": "role",
+		"controller": "Jamaah",
 		"fields": [
 			{
-				"name": "name",
-				"type": "string",
-				"label": "Role Name"
+				"name": "nama"
+			},
+			{
+				"name": "kemampuan",
+				"type": "relation",
+				"model": "Kemampuans",
+				"field": "nama"
+			},
+			{
+				"name": "posisi",
+				"options": ["Kepala Keluarga", "Anggota Keluarga"]
+			}
+		]
+	}
+
+	,{
+		"controller": "Kemampuan",
+		"fields": [
+			{
+				"name": "nama"
+			}
+		]
+	}
+
+	,{
+		"controller": "JatahDesa",
+		"fields": [
+			{
+				"name": "bulan"
+			},
+			{
+				"name": "tahun"
+			},
+			{
+				"name": "infaq",
+				"type": "relation",
+				"model": "Infaq",
+				"field": "nama"
+			},
+			{
+				"name": "nominal",
+				"type": "int"
+			}
+		]
+	}
+
+	,{
+		"controller": "Struk",
+		"fields": [
+			{
+				"name": "jamaah",
+				"type": "relation",
+				"model": "Jamaahs",
+				"field": "nama"
+			}
+			,{
+				"name": "jatahDesa",
+				"type": "relation",
+				"model": "JatahDesas",
+				"field": "nominal"
+			}
+			,{
+				"name": "dijatah",
+				"type": "int"
+			}
+			,{
+				"name": "dibulatkan",
+				"type": "int"
+			}
+			,{
+				"name": "diterima",
+				"type": "int"
+			}
+		]
+	}
+
+	,{
+		"controller": "Kas",
+		"fields": [
+			{
+				"name": "tanggal",
+				"type": "date"
+			}
+			,{
+				"name": "deskripsi"
+			}
+			,{
+				"name": "debet",
+				"type": "int"
+			}
+			,{
+				"name": "kredit",
+				"type": "int"
+			}
+		]
+	}
+
+	,{
+		"controller": "Rumus",
+		"model": "Rumuses",
+		"fields": [
+			{
+				"name": "kemampuan",
+				"type": "relation",
+				"model": "Kemampuans",
+				"field": "nama"
+			},
+			{
+				"name": "prosentase",
+				"type": "int"
 			}
 		]
 	}
