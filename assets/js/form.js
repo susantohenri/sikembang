@@ -1,7 +1,6 @@
 window.onload = function () {
 
   formInit()
-  if (window.location.href.includes('Breakdown')) $('[name^="jabatan_group"]').siblings().css('width','100%')
   $('.main-form').submit(function () {
     $('[data-number]').each (function () {
       $(this).val(getNumber($(this)))
@@ -15,16 +14,16 @@ window.onload = function () {
     var uuids = JSON.parse(fchild.attr('data-uuids').split("'").join('"'))
     for (var u in uuids) $.ajax({url: controller + '/subformread/' + uuids[u], success: function (form) {
       fchild.prepend(form)
-      if (uuids.length === fchild.find('[data-urutan]').length) {
-        var elements = fchild.find('[data-urutan]')
+      if (uuids.length === fchild.find('[data-orders]').length) {
+        var elements = fchild.find('[data-orders]')
         var elems = []
         for( var i = 0; i < elements.length; ++i ) {
           var el = elements[i]
           elems.push(el)
         }
         var sorted = elems.sort(function (a, b) {
-          var aValue = parseInt(a.getAttribute('data-urutan'), 10)
-          var bValue = parseInt(b.getAttribute('data-urutan'), 10)
+          var aValue = parseInt(a.getAttribute('data-orders'), 10)
+          var bValue = parseInt(b.getAttribute('data-orders'), 10)
           return aValue - bValue
         })
         var html = ''
@@ -101,121 +100,6 @@ function formInit () {
   $('[data-number="true"]').keyup(function () {
     $(this).val(currency(getNumber($(this))))
   })
-  calculateSpj()
-  calculateProgramDetail()
-  calculateAkunProgram()
-}
-
-function calculateAkunProgram () {
-  if (window.location.href.indexOf ('Akun/read') < 0) return true
-  $('[data-number="true"]').keyup(function () {
-    var record = $(this).parent().parent()
-    var vol = getNumber(record.find('[name*="vol"]'))
-    var hargasat = getNumber(record.find('[name*="hargasat"]'))
-    var pagu = vol * hargasat
-    record.find('[name*="pagu"]').val(currency(pagu))
-    calculatePaguTotal()
-  })
-  $('.btn-delete[data-uuid]').click(calculatePaguTotal)
-  function calculatePaguTotal () {
-    var paguTotal = 0
-    $('[name^="Detail_pagu"]').each(function () {
-      paguTotal += getNumber($(this))
-    })
-    $('[name="pagu"]').val(currency(paguTotal))
-  }
-}
-
-function calculateProgramDetail () {
-  if (window.location.href.indexOf ('/Detail/') < 0) return true
-  $('[name="vol"], [name="hargasat"]').keyup(function () {
-    $('[name="pagu"]').val(currency (getNumber ($('[name="vol"]')) * getNumber ($('[name="hargasat"]'))))
-  })
-
-  $('.form-child[data-controller="Spj"] .row').each(function () {
-    var spj = $(this)
-    spj.find('[data-number="true"]').keyup(function () {
-      var total_spj = 0
-      spj.find('[data-number="true"]').not('[name^="Spj_total_spj"]').each(function () {
-        total_spj += getNumber($(this))
-      })
-      spj.find('[name^="Spj_total_spj"]').val(currency(total_spj))
-      calculateAllSpj()
-    })
-    spj.find('.btn-delete').bind('click', calculateAllSpj)
-  })
-
-  function calculateAllSpj () {
-    var total_all_spj = 0
-    $('.form-child[data-controller="Spj"] [data-number="true"]').not('[name^="Spj_total_spj"]').each(function () {
-      total_all_spj += getNumber($(this))
-    })
-    $('[name="total_spj"]').val(currency(total_all_spj))
-  }
-
-  $('.main-form').submit(function () {
-    var total_spj = 0
-    $('.form-child[data-controller="Spj"] [name^="Spj_total_spj"]').each(function () {
-      total_spj += getNumber($(this))
-    })
-    if (total_spj > getNumber($('[name="pagu"]'))) {
-      showError('Formulir gagal dikirim, perhitungan minus')
-      return false
-    } else return true
-  })
-}
-
-function calculateSpj () {
-  if (window.location.href.indexOf ('/Spj/') < 0) return true
-  function calcFormSpj () {
-    var totalLampiran = 0
-    $('[data-controller="Lampiran"] .row').each(function () {
-      let currentTotal = getNumber($(this).find('[name^="Lampiran_vol"]')) * getNumber($(this).find('[name^="Lampiran_hargasat"]'))
-      $(this).find('[name^="Lampiran_total"]').val(currency(currentTotal))
-      totalLampiran += currentTotal
-    })
-    $('[name="total_lampiran"]').val(currency(totalLampiran))
-    $('[name="total_spj"]').val(currency(getNumber($('[name="ppn"]')) + getNumber($('[name="pph"]')) + totalLampiran))
-  }
-
-  $('[name="ppn"]').keyup(calcFormSpj)
-  $('[name="pph"]').keyup(calcFormSpj)
-  $('[name^="Lampiran_vol"]').keyup(calcFormSpj)
-  $('[name^="Lampiran_hargasat"]').keyup(calcFormSpj)
-  $('.btn-delete').click(calcFormSpj)
-  validateSisaPagu()
-
-  function validateSisaPagu () {
-    $('.btn-save').unbind('click').click(function (e) {
-      e.preventDefault()
-      var total_spj = getNumber($('[name="total_spj"]'))
-      let detail = $('[name="detail"]').val()
-      let spj = $('[name="uuid"]').val()
-      spj = spj ? spj : ''
-      $.get(`${site_url}Detail/getSisaPagu/${detail}/${spj}`, function (sisaPagu) {
-        if (sisaPagu < total_spj) {
-          sisaPagu = currency(sisaPagu)
-          showError(`Formulir gagal dikirim, perhitungan minus`)
-          validateSisaPagu()
-        }
-        else $('.main-form').submit()
-      })
-    })
-  }
-}
-
-function getSisaPagu () {
-  let detail = $('[name="detail"]').val()
-  $.get(`${site_url}Detail/getSisaPagu/${detail}`, function (sisaPagu) {
-    $('[name="sisa_pagu"]').val(currency(sisaPagu))
-  })
-}
-
-function checkUnverifyReason () {
-  let spj = $('[name="uuid"]').val()
-  $.get(`${site_url}Spj/getReason/${spj}`, function (reason) {
-    if (reason.length > 0) showError(`Status: Unverified, Alasan: ${reason}`)
-  })
 }
 
 function getNumber (element) {
@@ -228,10 +112,4 @@ function currency (number) {
   var reverse = number.toString().split('').reverse().join(''),
   currency  = reverse.match(/\d{1,3}/g)
   return currency.join(',').split('').reverse().join('')
-}
-
-function markMinus (spj_total) {
-  var inlineStyle = $('[name="total_spj"]').attr('style') || ''
-  if (spj_total > getNumber ($('[name="pagu"]'))) $('[name="total_spj"]').css('background-color', '#ffcccc')
-  else $('[name="total_spj"]').attr('style', inlineStyle.replace('background-color: rgb(255, 204, 204);', ''))
 }

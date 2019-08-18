@@ -1,4 +1,4 @@
-<?php foreach (array('User') as $controller) : ?>
+<?php foreach (array('User', 'Role') as $controller) : ?>
 
 <div class="col-md-2">
   <a href="<?= site_url($controller) ?>">

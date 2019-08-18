@@ -7,19 +7,24 @@ class Roles extends MY_Model {
     $this->table = 'role';
     $this->thead = array(
       (object) array('mData' => 'orders', 'sTitle' => 'No', 'visible' => false),
+      (object) array('mData' => 'name', 'sTitle' => 'Role'),
     );
     $this->form = array (
-        array (
-		      'name' => 'name',
-		      'label'=> 'Role Name',
-			  ),
+      array (
+	      'name' => 'name',
+	      'label'=> 'Role Name',
+		  ),
     );
+
+    $this->childs[] = array('label' => 'Role Permission', 'controller' => 'Permission', 'model' => 'Permissions');
+
   }
 
   function dt () {
     $this->datatables
       ->select("{$this->table}.uuid")
-      ->select("{$this->table}.orders");
+      ->select("{$this->table}.orders")
+      ->select("{$this->table}.name");
     return parent::dt();
   }
 

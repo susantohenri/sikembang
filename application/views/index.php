@@ -9,7 +9,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
 
-  <title>AdminLTE 3 | Top Navigation</title>
+  <title>PrototypeApp</title>
 
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="<?= base_url('assets/css/all.min.css') ?>">
@@ -17,6 +17,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <link rel="stylesheet" href="<?= base_url('assets/css/adminlte.min.css') ?>">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  <style type="text/css">
+    a.btn:not([href]):not([tabindex]){color: white}
+  </style>
 </head>
 <body class="hold-transition layout-top-nav">
 <div class="wrapper">
