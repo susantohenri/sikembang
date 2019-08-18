@@ -101,7 +101,23 @@ foreach ($structure as $entity)
 		      'label'=> '{$field->label}',
 		      'attributes' => array(
 		        array('data-number' => 'true')
-			    ),";
+			    )),";
+					break;
+				case 'date':
+			    $fields .= "\n        array (
+		      'name' => '{$field->name}',
+		      'label'=> '{$field->label}',
+		      'attributes' => array(
+		        array('data-date' => 'datepicker')
+			    )),";
+					break;
+				case 'datetime':
+			    $fields .= "\n        array (
+		      'name' => '{$field->name}',
+		      'label'=> '{$field->label}',
+		      'attributes' => array(
+		        array('data-date' => 'datetimepicker')
+			    )),";
 					break;
 				case 'string': 
 				default:
@@ -153,6 +169,12 @@ foreach ($structure as $entity)
 				$indexes .= ",\n        KEY `{$field->name}` (`{$field->name}`)";
 			}
 			switch ($field->type) {
+				case 'date': 
+					$fields .= "\n        `{$field->name}` DATE NOT NULL,";
+					break;
+				case 'datetime': 
+					$fields .= "\n        `{$field->name}` DATETIME NOT NULL,";
+					break;
 				case 'int': 
 					$fields .= "\n        `{$field->name}` INT(11) NOT NULL,";
 					break;

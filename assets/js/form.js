@@ -85,9 +85,9 @@ function formInit (scope) {
       })
     } else $(this).select2()
   })
-  scope.find('[data-date="datepicker"]').datepicker({format: 'yyyy-mm-dd', autoclose: true})
+  scope.find('[data-date="datepicker"]').attr('autocomplete', 'off').datepicker({format: 'yyyy-mm-dd', autoclose: true})
   // scope.find('[data-date="timepicker"]').timepicker({defaultTime: false, showMeridian: false})
-  scope.find('[data-date="datetimepicker"]').daterangepicker({
+  scope.find('[data-date="datetimepicker"]').attr('autocomplete', 'off').daterangepicker({
     singleDatePicker: true,
     timePicker: true,
     timePicker24Hour: true,
