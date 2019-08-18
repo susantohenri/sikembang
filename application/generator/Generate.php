@@ -146,7 +146,12 @@ foreach ($structure as $entity)
 		$migrationContent = str_replace('{{tableName}}', $entity->table, $migrationContent);
 
 		$fields = '';
+		$indexes = '';
 		foreach ($entity->fields as $field) {
+			if (true === $field->index)
+			{
+				$indexes .= ",\n        KEY `{$field->name}` (`{$field->name}`)";
+			}
 			switch ($field->type) {
 				case 'int': 
 					$fields .= "\n        `{$field->name}` INT(11) NOT NULL,";
@@ -157,6 +162,7 @@ foreach ($structure as $entity)
 			}
 		}
 		$migrationContent = str_replace('{{fields}}', $fields, $migrationContent);
+		$migrationContent = str_replace('{{indexes}}', $indexes, $migrationContent);
 		$filePrefix = sprintf('%03d', $newMigration);
 		file_put_contents("../migrations/{$filePrefix}_{$entity->migration}.php", $migrationContent);
 		$newMigration++;

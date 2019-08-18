@@ -9,7 +9,7 @@ class Migration_{{migrationName}} extends CI_Migration {
       CREATE TABLE `{{tableName}}` (
         `uuid` varchar(255) NOT NULL,
         `orders` INT(11) UNIQUE NOT NULL AUTO_INCREMENT,{{fields}}
-        PRIMARY KEY (`uuid`)
+        PRIMARY KEY (`uuid`){{indexes}}
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8
     ");
 
