@@ -11,6 +11,8 @@ class {{modelName}} extends MY_Model {
     );
     $this->form = array ({{fields}}
     );
+    $this->childs = array ({{childs}}
+    );
   }
 
   function dt () {

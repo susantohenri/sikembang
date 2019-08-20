@@ -1,0 +1,262 @@
+[
+
+	{
+		"controller": "Pasien",
+		"fields": [
+			{
+				"name": "no_rm",
+				"label": "No. RM"
+			}
+			,{
+				"name": "nama",
+				"label": "Nama Pasien"
+			}
+			,{
+				"name": "alamat"
+			}
+			,{
+				"name": "perusahaan"
+			}
+			,{
+				"name": "jenis_kelamin",
+				"label": "Jenis Kelamin"
+			}
+			,{
+				"name": "tanggal_lahir",
+				"label": "Tanggal Lahir"
+			}
+			,{
+				"name": "no_identitas",
+				"label": "No. Identitas"
+			}
+			,{
+				"name": "tlp",
+				"label": "No. Telp"
+			}
+		]
+	}
+
+	,{
+		"controller": "Layanan",
+		"fields": [
+			{
+				"name": "nama"
+			}
+		]
+	}
+
+	,{
+		"controller": "Obat",
+		"fields": [
+			{
+				"name": "nama"
+			}
+		]
+	}
+
+	,{
+		"controller": "Penjualan",
+		"fields": [
+			{
+				"name": "pasien",
+				"type": "relation",
+				"model": "Pasiens",
+				"field": "nama"
+			}
+			,{
+				"name": "asal_pasien",
+				"label": "Asal Pasien",
+				"options": ["Pasien Umum"]
+			}
+			,{
+				"name": "asisten",
+				"type": "relation",
+				"model": "Staffs",
+				"field": "nama"
+			}
+			,{
+				"name": "kasir",
+				"type": "relation",
+				"model": "Staffs",
+				"field": "nama"
+			}
+		]
+		,"childs": [
+			{
+				"label": "Jenis Layanan",
+				"controller": "PenjualanLayanan"
+			}
+			,{
+				"label": "Jasa Dokter",
+				"controller": "PenjualanJasaDokter"
+			}
+			,{
+				"label": "Obat",
+				"controller": "PenjualanObat"
+			}
+			,{
+				"label": "Biaya Lain-Lain",
+				"controller": "PenjualanLainLain"
+			}
+			,{
+				"label": "Pembayaran",
+				"controller": "Pembayaran"
+			}
+		]
+	}
+
+	,{
+		"controller": "PenjualanLayanan",
+		"fields": [
+			{
+				"name": "penjualan",
+				"form": false
+			}
+			,{
+				"name": "layanan",
+				"type": "relation",
+				"model": "Layanans",
+				"field": "nama",
+				"label": "Jenis Layanan",
+				"width": 4
+			}
+			,{
+				"name": "harga",
+				"type": "int"
+			}
+			,{
+				"name": "diskon",
+				"type": "int"
+			}
+		]
+	}
+
+	,{
+		"controller": "PenjualanObat",
+		"fields": [
+			{
+				"name": "penjualan",
+				"form": false
+			}
+			,{
+				"name": "obat",
+				"type": "relation",
+				"model": "Obats",
+				"field": "nama",
+				"label": "Jenis Obat",
+				"width": 4
+			}
+			,{
+				"name": "jumlah",
+				"type": "int"
+			}
+			,{
+				"name": "harga",
+				"type": "int"
+			}
+			,{
+				"name": "aturan"
+			}
+			,{
+				"name": "no_batch",
+				"label": "No. Batch",
+				"width": 3
+			}
+			,{
+				"name": "diskon",
+				"type": "int"
+			}
+		]
+	}
+
+	,{
+		"controller": "Pembayaran",
+		"fields": [
+			{
+				"name": "penjualan",
+				"form": false
+			}
+			,{
+				"name": "jenis_pembayaran",
+				"label": "Jenis Pembayaran",
+				"options": ["Tunai", "Kartu"],
+				"width": 3
+			}
+			,{
+				"name": "jenis_kartu",
+				"label": "Jenis Kartu",
+				"options": [],
+				"width": 3
+			}
+			,{
+				"name": "no_kartu",
+				"label": "No. Kartu",
+				"width": 4
+			}
+		]
+	}
+
+	,{
+		"controller": "Dokter",
+		"fields": [
+			{
+				"name": "nama"
+			}
+		]
+	}
+
+	,{
+		"controller": "PenjualanJasaDokter",
+		"fields": [
+			{
+				"name": "penjualan",
+				"form": false
+			}
+			,{
+				"name": "dokter",
+				"type": "relation",
+				"model": "Dokters",
+				"field": "nama",
+				"width": 4
+			}
+			,{
+				"name": "harga",
+				"label": "Jasa",
+				"type": "int"
+			}
+			,{
+				"name": "diskon",
+				"type": "int"
+			}
+		]
+	}
+
+	,{
+		"controller": "Staff",
+		"fields": [
+			{
+				"name": "nama"
+			}
+		]
+	}
+
+	,{
+		"controller": "PenjualanLainLain",
+		"fields": [
+			{
+				"name": "penjualan",
+				"form": false
+			}
+			,{
+				"name": "item",
+				"options": ["Administrasi & Pendaftaran", "Pembulatan"],
+				"width": 4
+			}
+			,{
+				"name": "harga",
+				"label": "nominal",
+				"type": "int"
+			}
+		]
+	}
+]

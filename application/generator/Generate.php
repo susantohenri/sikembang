@@ -83,12 +83,15 @@ foreach ($structure as $entity)
 		$theads = "(object) array('mData' => '{$entity->fields[0]->name}', 'sTitle' => '{$entity->fields[0]->label}'),\n";
 		$dtField= "->select('{$entity->table}.{$entity->fields[0]->name}')";
 		foreach ($entity->fields as $field) {
+			if (isset ($field->form) && false === $field->form) continue;
+			$field->width = $field->width ? : 2;
 			switch ($field->type) {
 				case 'relation':
 					$fields .= "\n        array (
 		      'name' => '{$field->name}',
 		      'label'=> '{$field->label}',
 		      'options' => array(),
+		      'width' => {$field->width},
 		      'attributes' => array(
 		        array('data-autocomplete' => 'true'),
 		        array('data-model' => '{$field->model}'),
@@ -99,6 +102,7 @@ foreach ($structure as $entity)
 			    $fields .= "\n        array (
 		      'name' => '{$field->name}',
 		      'label'=> '{$field->label}',
+		      'width' => {$field->width},
 		      'attributes' => array(
 		        array('data-number' => 'true')
 			    )),";
@@ -107,6 +111,7 @@ foreach ($structure as $entity)
 			    $fields .= "\n        array (
 		      'name' => '{$field->name}',
 		      'label'=> '{$field->label}',
+		      'width' => {$field->width},
 		      'attributes' => array(
 		        array('data-date' => 'datepicker')
 			    )),";
@@ -115,6 +120,7 @@ foreach ($structure as $entity)
 			    $fields .= "\n        array (
 		      'name' => '{$field->name}',
 		      'label'=> '{$field->label}',
+		      'width' => {$field->width},
 		      'attributes' => array(
 		        array('data-date' => 'datetimepicker')
 			    )),";
@@ -130,7 +136,8 @@ foreach ($structure as $entity)
 					  $fields .= "\n        array (
 				      'name' => '{$field->name}',
 				      'label'=> '{$field->label}',
-				      'options' => array({$options}
+				      'width' => {$field->width},
+		      		'options' => array({$options}
 				      )
 					  ),";
 					}
@@ -138,15 +145,29 @@ foreach ($structure as $entity)
 					{
 					  $fields .= "\n        array (
 				      'name' => '{$field->name}',
-				      'label'=> '{$field->label}',
+				      'width' => {$field->width},
+		      		'label'=> '{$field->label}',
 					  ),";
 					}
 					break;
 			}
 		}
+
+		$childs = '';
+		if ($entity->childs) foreach ($entity->childs as $child)
+		{
+			$child->model = $child->model ?: "{$child->controller}s";
+			$childs .= "\n        array (
+				      'label' => '{$child->label}',
+				      'controller' => '{$child->controller}',
+				      'model' => '{$child->model}'
+					  ),";
+		}
+
 		$modelContent = str_replace('{{fields}}', $fields, $modelContent);
 		$modelContent = str_replace('{{theads}}', $theads, $modelContent);
 		$modelContent = str_replace('{{dtField}}', $dtField, $modelContent);
+		$modelContent = str_replace('{{childs}}', $childs, $modelContent);
 		file_put_contents("../models/{$entity->model}.php", $modelContent);
 	}
 
