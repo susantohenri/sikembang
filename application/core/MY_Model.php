@@ -7,6 +7,7 @@ class MY_Model extends CI_Model {
 
   function __construct () {
     // parent::__construct();
+    date_default_timezone_set('Asia/Jakarta');
     $this->load->database();
     $this->load->library('datatables');
     $this->table = strtolower($this->router->class);
@@ -36,12 +37,15 @@ class MY_Model extends CI_Model {
     $generate = $this->db->select('UUID() uuid', false)->get()->row_array();
     $record['uuid'] = $generate['uuid'];
     $record = $this->savechild($record);
+    $record['createdAt'] = date('Y-m-d H:i:s');
+    $record['updatedAt'] = date('Y-m-d H:i:s');
     $this->db->insert($this->table, $record);
     return $record['uuid'];
   }
 
   function update ($record) {
     $record = $this->savechild($record);
+    $record['updatedAt'] = date('Y-m-d H:i:s');
     $this->db->where('uuid', $record['uuid'])->update($this->table, $record);
     return $record['uuid'];
   }

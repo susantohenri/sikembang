@@ -10,6 +10,8 @@ class Migration_role extends CI_Migration {
         `uuid` varchar(255) NOT NULL,
         `orders` INT(11) UNIQUE NOT NULL AUTO_INCREMENT,
         `name` varchar(255) NOT NULL,
+        `createdAt` datetime DEFAULT NULL,
+        `updatedAt` datetime DEFAULT NULL,
         PRIMARY KEY (`uuid`)
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8
     ");

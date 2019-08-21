@@ -12,6 +12,8 @@ class Migration_permission extends CI_Migration {
         `role` varchar(255) NOT NULL,
         `entity` varchar(255) NOT NULL,
         `action` varchar(255) NOT NULL,
+        `createdAt` datetime DEFAULT NULL,
+        `updatedAt` datetime DEFAULT NULL,
         PRIMARY KEY (`uuid`)
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8
     ");
