@@ -26,6 +26,18 @@ if (in_array($toGenerate, array('all', 'migration')))
 		$seedsContent = str_replace('/*additionalEntity*/', ", '{$entityName}'/*additionalEntity*/", $seedsContent);
 	}
 	file_put_contents($newSeeds, $seedsContent);
+
+	/*
+		BUILD PERMISSION DROPDOWN
+	*/
+	$permissionModel = '../models/Permissions.php';
+	$permissionModelContent = file_get_contents($permissionModel);
+	foreach (array_map(create_function('$entity', 'return $entity->controller;'), $structure) as $entityName)
+	{
+		$permissionModelContent = str_replace('/*additionalEntity*/',
+			"array ('text' => '{$entityName}', 'value' => '{$entityName}'),\n          /*additionalEntity*/", $permissionModelContent);
+	}
+	file_put_contents($permissionModel, $permissionModelContent);
 }
 
 /*

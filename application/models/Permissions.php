@@ -10,17 +10,23 @@ class Permissions extends MY_Model {
       array (
         'name' => 'entity',
         'label'=> 'Entity',
+        'options' => array(
+          array ('text' => 'User', 'value' => 'User'),
+          array ('text' => 'Role', 'value' => 'Role'),
+          array ('text' => 'Permission', 'value' => 'Permission'),
+          /*additionalEntity*/
+        ),
         'width' => 4
       ),
       array (
         'name' => 'action',
         'label'=> 'Action',
         'options' => array(
-          array ('text' => 'index', 'value' => 'index'),
-          array ('text' => 'create', 'value' => 'create'),
-          array ('text' => 'read', 'value' => 'read'),
-          array ('text' => 'update', 'value' => 'update'),
-          array ('text' => 'delete', 'value' => 'delete')
+          array ('text' => 'List', 'value' => 'index'),
+          array ('text' => 'Create', 'value' => 'create'),
+          array ('text' => 'Detail', 'value' => 'read'),
+          array ('text' => 'Update', 'value' => 'update'),
+          array ('text' => 'Delete', 'value' => 'delete')
         ),
         'width' => 4
       ),
