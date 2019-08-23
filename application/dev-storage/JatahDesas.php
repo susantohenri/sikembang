@@ -64,8 +64,10 @@ class JatahDesas extends MY_Model {
     $collectJamaah = $this->db->query("
       SELECT
         jamaah.uuid,
+        jamaah.posisi,
         kemampuan.prosentase,
-        (SELECT COUNT(`uuid`) FROM jamaah WHERE kemampuan = kemampuan.`uuid`) jamaah_sekemampuan
+        (SELECT COUNT(`uuid`) FROM jamaah WHERE kemampuan = kemampuan.`uuid`) jamaah_sekemampuan,
+        (SELECT COUNT(`uuid`) FROM jamaah WHERE posisi = 'Kepala Keluarga') jumlah_kk
       FROM jamaah
       LEFT JOIN kemampuan ON jamaah.kemampuan = kemampuan.uuid
     ")->result();
@@ -75,12 +77,29 @@ class JatahDesas extends MY_Model {
         'jamaah' => $jamaah->uuid,
         'jatahdesa' => $jatahDesaUuid
       ));
-      foreach ($this->JatahDesaDetails->find(array('jatahdesa' => $jatahDesaUuid)) as $detail) {
-       $this->StrukDetails->create(array(
-        'struk' => $strukUuid,
-        'jatahdesadetail' => $detail->uuid,
-        'dijatah' => $jamaah->prosentase / 100 * $detail->nominal / $jamaah->jamaah_sekemampuan
-       ));
+      $jatahdesadetail = $this->db->query("
+        SELECT
+          jatahdesadetail.*
+          , infaq.kk
+        FROM jatahdesadetail
+        LEFT JOIN infaq ON jatahdesadetail.infaq = infaq.`uuid`
+        WHERE jatahdesa = '{$jatahDesaUuid}'
+      ")->result();
+      foreach ($jatahdesadetail as $detail) {
+        if ('Ya' === $detail->kk)
+        {
+          if ('Kepala Keluarga' === $jamaah->posisi) $this->StrukDetails->create(array(
+            'struk' => $strukUuid,
+            'jatahdesadetail' => $detail->uuid,
+            'dijatah' => $detail->nominal / $jamaah->jumlah_kk
+          ));
+          else continue;
+        }
+        else $this->StrukDetails->create(array(
+          'struk' => $strukUuid,
+          'jatahdesadetail' => $detail->uuid,
+          'dijatah' => $jamaah->prosentase / 100 * $detail->nominal / $jamaah->jamaah_sekemampuan
+        ));
       }
     }
   }

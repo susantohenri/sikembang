@@ -9,6 +9,11 @@
 			{
 				"name": "level",
 				"options": ["Pusat", "Daerah", "Desa", "Kelompok"]
+			},
+			{
+				"name": "kk",
+				"label": "Per KK",
+				"options": ["Tidak", "Ya"]
 			}
 		]
 	}
