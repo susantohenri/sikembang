@@ -1,0 +1,234 @@
+[
+
+	{
+		"controller": "Infaq",
+		"fields": [
+			{
+				"name": "nama"
+			},
+			{
+				"name": "level",
+				"options": ["Pusat", "Daerah", "Desa", "Kelompok"]
+			},
+			{
+				"name": "kk",
+				"label": "Per KK",
+				"options": ["Tidak", "Ya"]
+			}
+		]
+	}
+
+	,{
+		"controller": "Jamaah",
+		"fields": [
+			{
+				"name": "nama"
+			},
+			{
+				"name": "kemampuan",
+				"type": "relation",
+				"model": "Kemampuans",
+				"field": "nama"
+			},
+			{
+				"name": "posisi",
+				"options": ["Kepala Keluarga", "Anggota Keluarga"]
+			}
+		]
+	}
+
+	,{
+		"controller": "JatahDesa",
+		"fields": [
+			{
+				"name": "tanggal",
+				"type": "date"
+			}
+		],
+		"childs": [
+			{
+				"controller": "JatahDesaDetail",
+				"label": "Detail"
+			}
+		]
+	}
+
+	,{
+		"controller": "JatahDesaDetail",
+		"fields": [
+			{
+				"name": "jatahDesa",
+				"type": "relation",
+				"model": "JatahDesas",
+				"form": false
+			},
+			{
+				"name": "infaq",
+				"type": "relation",
+				"model": "Infaqs",
+				"field": "nama",
+				"width": 4
+			},
+			{
+				"name": "nominal",
+				"type": "int",
+				"width": 3
+			}
+		]
+	}
+
+	,{
+		"controller": "Kemampuan",
+		"fields": [
+			{
+				"name": "nama"
+			}
+			,{
+				"name": "prosentase",
+				"type": "int"
+			}
+		]
+	}
+
+	,{
+		"controller": "Struk",
+		"fields": [
+			{
+				"name": "jatahDesa",
+				"type": "relation",
+				"model": "JatahDesas",
+				"form": false
+			}
+			,{
+				"name": "jamaah",
+				"type": "relation",
+				"model": "Jamaahs",
+				"field": "nama"
+			}
+		],
+		"childs": [
+			{
+				"controller": "StrukDetail",
+				"label": "Detail"
+			}
+		]
+	}
+
+	,{
+		"controller": "StrukDetail",
+		"fields": [
+			{
+				"name": "struk",
+				"type": "relation",
+				"model": "Struks",
+				"form": false
+			}
+			,{
+				"name": "jatahDesaDetail",
+				"type": "relation",
+				"model": "JatahDesaDetail",
+				"form": false
+			}
+			,{
+				"name": "dijatah",
+				"type": "int",
+				"width": 3
+			}
+			,{
+				"name": "dibulatkan",
+				"type": "int",
+				"width": 3
+			}
+			,{
+				"name": "diterima",
+				"type": "int",
+				"width": 3
+			}
+		]
+	}
+
+	,{
+		"controller": "Kas",
+		"fields": [
+			{
+				"name": "tanggal",
+				"type": "date"
+			}
+			,{
+				"name": "deskripsi"
+			}
+			,{
+				"name": "debet",
+				"type": "int"
+			}
+			,{
+				"name": "kredit",
+				"type": "int"
+			}
+		]
+	}
+
+	,{
+		"controller": "Masjid",
+		"fields": [
+			{
+				"name": "tanggal",
+				"type": "date"
+			}
+			,{
+				"name": "deskripsi"
+			}
+			,{
+				"name": "debet",
+				"type": "int"
+			}
+			,{
+				"name": "kredit",
+				"type": "int"
+			}
+		]
+	}
+
+	,{
+		"controller": "Qurban",
+		"fields": [
+			{
+				"name": "tanggal",
+				"type": "date"
+			}
+			,{
+				"name": "deskripsi"
+			}
+			,{
+				"name": "debet",
+				"type": "int"
+			}
+			,{
+				"name": "kredit",
+				"type": "int"
+			}
+		]
+	}
+
+	,{
+		"controller": "KasRemaja",
+		"fields": [
+			{
+				"name": "tanggal",
+				"type": "date"
+			}
+			,{
+				"name": "deskripsi"
+			}
+			,{
+				"name": "debet",
+				"type": "int"
+			}
+			,{
+				"name": "kredit",
+				"type": "int"
+			}
+		]
+	}
+
+]

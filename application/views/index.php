@@ -9,7 +9,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
 
-  <title>PrototypeApp</title>
+  <title>Kalijaga v2.0</title>
 
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="<?= base_url('assets/css/all.min.css') ?>">
@@ -31,7 +31,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
       <a href="<?= base_url() ?>" class="navbar-brand">
         <!-- <img src="../../dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
              style="opacity: .8"> -->
-        <span class="brand-text font-weight-light"><b>Prototype</b>App</span>
+        <span class="brand-text font-weight-light"><b>Kalijaga</b>v2.0</span>
       </a>
       <a href="<?= site_url('Login/Logout') ?>">Logout</a>
     </div>
