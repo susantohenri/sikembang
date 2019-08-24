@@ -6,7 +6,6 @@ class Dashboards extends MY_Model {
     parent::__construct();
     $this->table = '';
     $this->form = array();
-    $this->load->model('Users');
   }
 
 }

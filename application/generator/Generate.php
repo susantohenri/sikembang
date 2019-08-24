@@ -40,20 +40,6 @@ if (in_array($toGenerate, array('all', 'migration')))
 	file_put_contents($permissionModel, $permissionModelContent);
 }
 
-/*
-	BUILD MENU
-*/
-if (in_array($toGenerate, array('all', 'controller')))
-{
-	$dashboardTmp = '../views/dashboard.php';
-	$dashboardContent = file_get_contents($dashboardTmp);
-	foreach (array_map(create_function('$entity', 'return $entity->controller;'), $structure) as $entityName)
-	{
-		$dashboardContent = str_replace('/*additionalEntity*/', ", '{$entityName}'/*additionalEntity*/", $dashboardContent);
-	}
-	file_put_contents($dashboardTmp, $dashboardContent);
-}
-
 foreach ($structure as $entity)
 {
 
