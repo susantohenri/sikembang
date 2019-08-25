@@ -31,7 +31,9 @@ window.onload = function () {
         elements.remove()
         for( var i = 0; i < sorted.length; ++i ) html += sorted[i].outerHTML
         var fetched = fchild.prepend(html)
-        formInit(fetched)
+        fetched.find('[data-orders]').each(function () {
+          formInit($(this))
+        })
       }
     }})
     fchild.find('.btn-add').click(function () {
