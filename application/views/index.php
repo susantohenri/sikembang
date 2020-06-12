@@ -50,7 +50,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="<?= base_url() ?>">Home</a></li>
-              <li class="breadcrumb-item active"><?= $page_title ?></li>
+              <?php if ('table' === $page_name): ?>
+                <li class="breadcrumb-item active"><?= $page_title ?></li>
+              <?php else: ?>
+                <li class="breadcrumb-item"><a href="<?= site_url ($current['controller']) ?>"><?= $page_title ?></a></li>
+                <li class="breadcrumb-item active"><?= ucfirst ($page_name) ?></li>
+              <?php endif ?>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
