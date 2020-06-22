@@ -6,6 +6,7 @@
   <title>PrototypeApp | Log in</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="<?= base_url('manifest.json') ?>" rel="manifest">
 
   <!-- Font Awesome -->
   <link rel="stylesheet" href="<?= base_url('assets/css/all.min.css') ?>">
@@ -72,6 +73,16 @@
 <!-- <script src="../../plugins/jquery/jquery.min.js"></script> -->
 <!-- Bootstrap 4 -->
 <!-- <script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script> -->
-
+<!-- UNCOMMENT LINES BELOW TO ACTIVATE PWA
+<script type="text/javascript">
+   (function() {
+       if ('serviceWorker' in navigator) {
+          navigator.serviceWorker.register('<?= base_url('service-worker.js') ?>').then(function() {
+             console.log('Service Worker Registered');
+          })
+       }
+    })()
+</script>
+ -->
 </body>
 </html>

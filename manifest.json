@@ -1,0 +1,22 @@
+{
+  "name": "simokerkop",
+  "short_name": "simokerkop",
+  "theme_color": "#17a2b8",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "Scope": "../simokerkop/.",
+  "start_url": "/simokerkop/",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    },
+    {
+      "src": "icon192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ],
+  "splash_pages": null
+}
