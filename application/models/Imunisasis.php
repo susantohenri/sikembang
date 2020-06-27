@@ -9,8 +9,8 @@ class Imunisasis extends MY_Model
     $this->table = 'imunisasi';
     $this->thead = array(
       (object) array('mData' => 'orders', 'sTitle' => 'No', 'visible' => false),
-      (object) array('mData' => 'tanggal', 'sTitle' => 'Tanggal'),
-
+      (object) array('mData' => 'nama', 'sTitle' => 'Imunisasi'),
+      (object) array('mData' => 'tanggal', 'sTitle' => 'Tanggal')
     );
     $this->form = array(
       array(
@@ -35,7 +35,8 @@ class Imunisasis extends MY_Model
     $this->datatables
       ->select("{$this->table}.uuid")
       ->select("{$this->table}.orders")
-      ->select('imunisasi.tanggal');
+      ->select('imunisasi.nama')
+      ->select("DATE_FORMAT(tanggal, '%d/%m/%Y') tanggal", false);
     return parent::dt();
   }
 }

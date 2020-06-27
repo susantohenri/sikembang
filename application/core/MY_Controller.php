@@ -8,7 +8,7 @@ class MY_Controller extends CI_Controller {
     parent::__construct();
     $this->load->helper('url');
     $this->load->library('session');
-    if (empty ($this->session->userdata['uuid'])) redirect (site_url('Login'), 'refresh');
+    if (empty ($this->session->userdata['uuid'])) redirect (site_url('Frontpage'), 'refresh');
     $this->controller = $this->router->class;
 
     $page_title = preg_split('#([A-Z][^A-Z]*)#', $this->controller, null, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);

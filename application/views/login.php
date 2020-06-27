@@ -47,11 +47,10 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-8">
-          </div>
           <!-- /.col -->
-          <div class="col-4">
+          <div class="col-12">
             <button type="submit" style="background-color: #ffab00; color: #fff" class="btn btn-block btn-flat">Masuk</button>
+            <a href="<?= site_url () ?>" class="btn btn-block btn-flat btn-info">Kembali</a>
           </div>
           <!-- /.col -->
         </div>

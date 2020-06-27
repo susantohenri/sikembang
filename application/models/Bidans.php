@@ -10,6 +10,8 @@ class Bidans extends MY_Model
     $this->thead = array(
       (object) array('mData' => 'orders', 'sTitle' => 'No', 'visible' => false),
       (object) array('mData' => 'nama', 'sTitle' => 'Nama'),
+      (object) array('mData' => 'alamat', 'sTitle' => 'Alamat'),
+      (object) array('mData' => 'telepon', 'sTitle' => 'No. Telepon'),
 
     );
     $this->form = array(
@@ -37,7 +39,9 @@ class Bidans extends MY_Model
     $this->datatables
       ->select("{$this->table}.uuid")
       ->select("{$this->table}.orders")
-      ->select('bidan.nama');
+      ->select('bidan.nama')
+      ->select('bidan.alamat')
+      ->select('bidan.telepon');
     return parent::dt();
   }
 }

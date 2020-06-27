@@ -32,8 +32,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!-- <img src="../../dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
              style="opacity: .8"> -->
         <span class="brand-text font-weight-light"><b>Si</b><i style="color: #ffab00">Kembang</i></span>
+        <a href="<?= site_url('Login') ?>" style="color: #ffab00">Pengunjung, <i style="color: #000">masuk</i></a>
       </a>
-      <a href="<?= site_url('Login/Logout') ?>" style="color: #ffab00"><?= ucfirst($this->session->userdata('username')) ?>, <i style="color: #000">keluar</i></a>
     </div>
   </nav>
   <!-- /.navbar -->
@@ -49,13 +49,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="<?= base_url() ?>" style="color: #ffab00">Beranda</a></li>
-              <?php if (in_array ($page_name, array ('table', 'dashboard'))): ?>
-                <li class="breadcrumb-item active"><?= $page_title ?></li>
-              <?php else: ?>
-                <li class="breadcrumb-item"><a href="<?= site_url ($current['controller']) ?>" style="color: #ffab00"><?= $page_title ?></a></li>
-                <li class="breadcrumb-item active"><?= ucfirst ($page_name) ?></li>
-              <?php endif ?>
+              <li class="breadcrumb-item"><a href="<?= base_url () ?>" style="color: #ffab00">Beranda</a></li>
+              <li class="breadcrumb-item active"><?= $page_title ?></li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -109,7 +104,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script type="text/javascript">
   var site_url = '<?= site_url('/') ?>'
   var current_controller = '<?= $current['controller'] ?>'
-  var current_controller_url = '<?= site_url ($current['controller']) ?>'
+  var current_controller_url = '<?= site_url ($current['controller_url']); ?>'
 </script>
 <?php if (isset ($js)): foreach ($js as $script): ?>
   <script type="text/javascript" src="<?= base_url("assets/js/{$script}") ?>"></script>
