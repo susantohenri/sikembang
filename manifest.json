@@ -1,11 +1,11 @@
 {
-  "name": "simokerkop",
-  "short_name": "simokerkop",
-  "theme_color": "#17a2b8",
+  "name": "SiKembang",
+  "short_name": "SiKembang",
+  "theme_color": "#ffab00",
   "background_color": "#ffffff",
   "display": "standalone",
-  "Scope": "../simokerkop/.",
-  "start_url": "/simokerkop/",
+  "Scope": "../sikembang/.",
+  "start_url": "/sikembang/",
   "icons": [
     {
       "src": "icon.png",

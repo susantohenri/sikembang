@@ -1,7 +1,7 @@
 <link rel="stylesheet" type="text/css" href="<?= base_url('assets/css/select2.min.css') ?>">
 <link rel="stylesheet" type="text/css" href="<?= base_url('assets/css/bootstrap-datepicker.css') ?>">
 <form action="<?= site_url($current['controller']) ?>" method="POST" class="main-form col-sm-12">
-  <div class="card card-primary card-outline">
+  <div class="card card-warning card-outline">
     <div class="card-body">
 
         <div class="row">
@@ -68,7 +68,7 @@
   </div>
 
   <?php if (count($subform) > 0): foreach ($subform as $subfield) : ?>
-  <div class="card card-primary card-outline">
+  <div class="card card-warning card-outline">
     <div class="card-body">
         <fieldset class="form-child" data-controller="<?= $subfield['controller'] ?>" data-uuids="<?= str_replace('"', "'", json_encode($subfield['uuids'])) ?>">
           <legend><?= $subfield['label'] ?></legend>

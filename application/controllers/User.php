@@ -4,7 +4,7 @@ class User extends MY_Controller {
 
 	function __construct ()
 	{
-		$this->page_title = 'User Management';
+		$this->page_title = 'User';
 		parent::__construct();
 	}
 

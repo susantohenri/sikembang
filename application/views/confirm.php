@@ -1,5 +1,5 @@
 <div class="col-sm-12">
-    <div class="card card-primary card-outline">
+    <div class="card card-warning card-outline">
       <div class="card-body">
 
         <form action="<?= site_url($current['controller']) ?>" class="form-horizontal form-groups" enctype="multipart/form-data" method="POST">
