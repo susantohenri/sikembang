@@ -17,12 +17,26 @@ class Migration_seeds extends CI_Migration {
           'entity' => $entity
         ));
       }
-      $this->Menus->create(array(
-        'role' => $admin,
-        'name' => $entity,
-        'url' => $entity,
-        'icon' => $fas[rand(0, count($fas) - 1)]
-      ));
+
+      $menu_icon = array (
+        'User' => 'user-circle',
+        'Anak' => 'child',
+        'Pengukuran' => 'balance-scale',
+        'Artikel' => 'copy',
+        'Imunisasi' => 'calendar',
+        'Bidan' => 'user-md',
+        'Faskes' => 'hospital'
+      );
+
+
+      if (in_array ($entity, array_keys ($menu_icon))) {
+        $this->Menus->create(array(
+          'role' => $admin,
+          'name' => $entity,
+          'url' => $entity,
+          'icon' => $menu_icon[$entity]
+        ));
+      }
     }
 
     $this->Users->create(array(
