@@ -73,7 +73,6 @@
 <!-- <script src="../../plugins/jquery/jquery.min.js"></script> -->
 <!-- Bootstrap 4 -->
 <!-- <script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script> -->
-<!-- UNCOMMENT LINES BELOW TO ACTIVATE PWA
 <script type="text/javascript">
    (function() {
        if ('serviceWorker' in navigator) {
@@ -83,6 +82,5 @@
        }
     })()
 </script>
- -->
 </body>
 </html>
