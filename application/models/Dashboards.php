@@ -1,11 +1,12 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') or exit('No direct script access allowed');
 
-class Dashboards extends MY_Model {
+class Dashboards extends MY_Model
+{
 
-  function __construct () {
+  function __construct()
+  {
     parent::__construct();
     $this->table = '';
     $this->form = array();
   }
-
 }

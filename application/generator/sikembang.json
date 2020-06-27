@@ -1,0 +1,180 @@
+[
+	{
+		"controller": "Anak",
+		"fields": [
+			{
+                "name": "nik",
+                "label": "NIK"
+			},
+			{
+                "name": "anak_ke",
+                "label": "Anak Ke"
+			},
+			{
+				"name": "nama"
+			},
+			{
+                "name": "tgl_lahir",
+                "type": "date",
+                "label": "Tanggal Lahir"
+			},
+			{
+                "name": "jenis_kelamin",
+                "label": "Jenis Kelamin",
+                "options": ["Lelaki", "Perempuan"]
+			},
+			{
+                "name": "bb_lahir",
+                "label": "Berat Badan Lahir"
+			},
+			{
+                "name": "nama_ortu",
+                "label": "Nama Orang Tua"
+			},
+			{
+                "name": "tlp_ortu",
+                "label": "Telepon Orang Tua"
+			},
+			{
+                "name": "alamat"
+			},
+			{
+                "name": "rt",
+                "label": "RT"
+			},
+			{
+                "name": "rw",
+                "label": "RW"
+			},
+			{
+                "name": "imd",
+                "label": "Inisiasi Menyusu Dini",
+                "options": ["Ya", "Tidak"]
+			}
+		]
+	}
+	,{
+		"controller": "Pengukuran",
+		"fields": [
+			{
+				"name": "anak",
+				"type": "relation",
+                "model": "Anaks",
+                "field": "nama"
+			},
+			{
+                "name": "bb",
+                "label": "Berat Badan"
+			},
+			{
+                "name": "tb",
+                "label": "Tinggi Badan"
+			},
+			{
+                "name": "asi_eksklusif",
+                "label": "ASI Eksklusif",
+                "options": ["Ya", "Tidak"]
+			},
+			{
+                "name": "garam_yodium",
+                "label": "Garam Yodium",
+                "options": ["Ya", "Tidak"]
+			},
+			{
+                "name": "vit_a_feb",
+                "label": "Vitamin A",
+                "options": ["Ya", "Tidak"]
+			},
+			{
+                "name": "vit_a_aug",
+                "label": "Vitamin A",
+                "options": ["Ya", "Tidak"]
+			}
+		]
+	}
+	,{
+		"controller": "Artikel",
+		"fields": [
+			{
+                "name": "gambar"
+			},
+			{
+                "name": "judul"
+			},
+			{
+                "name": "konten"
+			}
+		]
+	}
+	,{
+		"controller": "Antropometri",
+		"fields": [
+			{
+				"name": "item"
+			},
+			{
+				"name": "usia"
+			},
+			{
+				"name": "minimal"
+			},
+			{
+				"name": "maksimal"
+			},
+			{
+				"name": "hasil"
+			}
+		]
+	}
+	,{
+		"controller": "Imunisasi",
+		"fields": [
+			{
+				"name": "tanggal",
+				"type": "date"
+			},
+			{
+				"name": "nama"
+			}
+		]
+    }
+	,{
+		"controller": "Bidan",
+		"fields": [
+			{
+				"name": "nama"
+			},
+			{
+				"name": "alamat"
+			},
+			{
+				"name": "telepon"
+			}
+		]
+    }
+	,{
+		"controller": "Faskes",
+		"fields": [
+			{
+				"name": "nama"
+			},
+			{
+				"name": "alamat"
+			},
+			{
+				"name": "telepon"
+			}
+		]
+    }
+	,{
+		"controller": "WarningSign",
+		"fields": [
+			{
+				"name": "pengukuran"
+			},
+			{
+				"name": "done"
+			}
+		]
+    }
+]
