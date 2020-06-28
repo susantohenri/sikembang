@@ -13,7 +13,7 @@ class Migration_artikel extends CI_Migration {
         `updatedAt` datetime DEFAULT NULL,
         `gambar` varchar(255) NOT NULL,
         `judul` varchar(255) NOT NULL,
-        `konten` varchar(255) NOT NULL,
+        `konten` text NOT NULL,
         PRIMARY KEY (`uuid`)
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8
     ");

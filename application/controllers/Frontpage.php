@@ -10,12 +10,14 @@ class Frontpage extends CI_Controller
 
     function index()
     {
+        $this->load->model('Artikels');
         $params = array(
             'page_title' => 'Selamat Datang',
             'page_name' => 'frontpage/welcome',
             'current' => array(
                 'controller' => 'Frontpage'
-            )
+            ),
+            'artikels' => $this->Artikels->find()
         );
         $this->load->view('frontpage', $params);
     }
@@ -37,7 +39,7 @@ class Frontpage extends CI_Controller
             ),
             'view_switch' => 'form'
         );
-        if ($this->input->post ()) $params['view_switch'] = 'result';
+        if ($this->input->post()) $params['view_switch'] = 'result';
         $this->load->view('frontpage', $params);
     }
 
@@ -95,14 +97,17 @@ class Frontpage extends CI_Controller
         $this->load->view('frontpage', $params);
     }
 
-    function artikel()
+    function artikel($uuid)
     {
+        $this->load->model('Artikels');
+        $artikel = $this->Artikels->findOne($uuid);
         $params = array(
-            'page_title' => 'Artikel',
+            'page_title' => $artikel['judul'],
             'page_name' => 'frontpage/artikel',
             'current' => array(
                 'controller' => 'Frontpage'
-            )
+            ),
+            'artikel' => $artikel
         );
         $this->load->view('frontpage', $params);
     }

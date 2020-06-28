@@ -1,6 +1,6 @@
 <link rel="stylesheet" type="text/css" href="<?= base_url('assets/css/select2.min.css') ?>">
 <link rel="stylesheet" type="text/css" href="<?= base_url('assets/css/bootstrap-datepicker.css') ?>">
-<form action="<?= site_url($current['controller']) ?>" method="POST" class="main-form col-sm-12">
+<form enctype='multipart/form-data' action="<?= site_url($current['controller']) ?>" method="POST" class="main-form col-sm-12">
   <div class="card card-warning card-outline">
     <div class="card-body">
 
@@ -45,7 +45,7 @@
                   <div class="form-group row">
                     <label class="col-sm-3 control-label"><?= $field['label']  ?></label>
                     <div class="col-sm-9">
-                      <textarea class="form-control" name="<?= $field['name'] ?>" <?= $field['attr'] ?> ></textarea>
+                      <textarea rows="15" class="form-control" name="<?= $field['name'] ?>" <?= $field['attr'] ?> ><?= $field['value'] ?></textarea>
                     </div>
                   </div>
               <?php break; ?>
