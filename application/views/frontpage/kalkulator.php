@@ -25,6 +25,15 @@
                         </div>
 
                         <div class="form-group row">
+                            <label class="col-sm-3 control-label">Jenis Kelamin</label>
+                            <div class="col-sm-9">
+                                <input type="radio" name="jenis_kelamin" checked="checked"> Lelaki
+                                &nbsp;&nbsp;&nbsp;
+                                <input type="radio" name="jenis_kelamin"> Perempuan
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
                             <label class="col-sm-3 control-label">Tanggal Lahir</label>
                             <div class="col-sm-9">
                                 <input class="form-control" type="text" value="" name="tgl_lahir" data-date="datepicker" autocomplete="off">
