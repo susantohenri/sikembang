@@ -133,22 +133,26 @@ class Pengukurans extends MY_Model
 
 	function create($record)
 	{
-		$default = array (
-			'asi_eksklusif'
-			, 'garam_yodium'
-			, 'vit_a_feb'
-			, 'vit_a_aug'
+		$default = array(
+			'asi_eksklusif', 'garam_yodium', 'vit_a_feb', 'vit_a_aug'
 		);
 		foreach ($default as $field) {
-			if (!isset ($record[$field])) $record[$field] = 'Tidak';
+			if (!isset($record[$field])) $record[$field] = 'Tidak';
 		}
-		return parent::create ($record);
+		if (
+			$record['hasil_bb'] !== 'Normal'
+			||
+			$record['hasil_tb'] !== 'Normal'
+			||
+			$record['hasil_gizi'] !== 'Gizi Baik'
+		) $record['warning_sign'] = 1;
+		return parent::create($record);
 	}
 
 	function dt()
 	{
-		if ($term = $this->input->post ('search')) {
-			$this->datatables->like ('anak.nama', $term['value']);
+		if ($term = $this->input->post('search')) {
+			$this->datatables->like('anak.nama', $term['value']);
 		}
 		$this->datatables
 			->select("{$this->table}.uuid")
@@ -157,5 +161,27 @@ class Pengukurans extends MY_Model
 			->select("anak.nama anak", false)
 			->join('anak', 'anak.uuid = pengukuran.anak', 'left');
 		return parent::dt();
+	}
+
+	function getWarningSigns()
+	{
+		return $this->db
+			->select("{$this->table}.uuid")
+			->select('anak.nama')
+			->select("{$this->table}.hasil_bb")
+			->select("{$this->table}.hasil_tb")
+			->select("{$this->table}.hasil_gizi")
+			->join('anak', "anak.uuid = {$this->table}.anak", 'left')
+			->where('warning_sign', 1)
+			->get($this->table)
+			->result();
+	}
+
+	function unsign($uuid)
+	{
+		return $this->db
+			->where('uuid', $uuid)
+			->set('warning_sign', 0)
+			->update($this->table);
 	}
 }

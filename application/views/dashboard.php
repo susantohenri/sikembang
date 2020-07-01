@@ -1,15 +1,26 @@
+<?php if (count($warning_signs) > 0 && in_array('index_WarningSign', $permission)) : ?>
+	<div class="col-sm-12" style="margin-bottom: 10px">
+		<?php foreach ($warning_signs as $sign) : ?>
+			<a class="btn btn-block btn-danger btn-flat" href="<?= site_url ("Pengukuran/read/{$sign->uuid}") ?>">
+				Warning Sign! <b><?= $sign->nama ?></b>.
+				<i>BB: <?= $sign->hasil_bb ?>, TB: <?= $sign->hasil_tb ?>, <?= $sign->hasil_gizi ?></i>
+			</a>
+		<?php endforeach ?>
+	</div>
+<?php endif ?>
+
 <?php foreach ($menu as $m) : ?>
 
-<div class="col-sm-2">
-	<a href="<?= site_url($m->url) ?>">
-	  <div class="info-box">
-	    <span class="info-box-icon bg-warning"><i class="fas fa-<?= $m->icon ?>"></i></span>
-	    <div class="info-box-content">
-	      <span class="info-box-text" style="color: #000"><?= $m->name ?></span>
-	      <span class="info-box-number"></span>
-	    </div>
-	  </div>
-	</a>
-</div>
+	<div class="col-sm-2">
+		<a href="<?= site_url($m->url) ?>">
+			<div class="info-box">
+				<span class="info-box-icon bg-warning"><i class="fas fa-<?= $m->icon ?>"></i></span>
+				<div class="info-box-content">
+					<span class="info-box-text" style="color: #000"><?= $m->name ?></span>
+					<span class="info-box-number"></span>
+				</div>
+			</div>
+		</a>
+	</div>
 
 <?php endforeach; ?>

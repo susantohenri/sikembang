@@ -166,15 +166,4 @@
 			}
 		]
     }
-	,{
-		"controller": "WarningSign",
-		"fields": [
-			{
-				"name": "pengukuran"
-			},
-			{
-				"name": "done"
-			}
-		]
-    }
 ]

@@ -21,6 +21,7 @@ class Migration_pengukuran extends CI_Migration {
         `hasil_bb` varchar(255) NOT NULL,
         `hasil_tb` varchar(255) NOT NULL,
         `hasil_gizi` varchar(255) NOT NULL,
+        `warning_sign` tinyint(1) DEFAULT 0,
         PRIMARY KEY (`uuid`),
         KEY `anak` (`anak`)
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8

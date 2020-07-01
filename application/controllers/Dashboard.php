@@ -14,7 +14,11 @@ class Dashboard extends MY_Controller {
 	    $this->load->model('Menus');
 	    $vars['menu'] = $this->Menus->find(array('role' => $this->session->userdata('role')));
 	    $vars['page_name'] = 'dashboard';
-	    $this->loadview('index', $vars);
+
+		$this->load->model ('Pengukurans');
+		$vars['warning_signs'] = $this->Pengukurans->getWarningSigns ();
+
+		$this->loadview('index', $vars);
 	}
 
 }

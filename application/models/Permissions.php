@@ -23,7 +23,6 @@ class Permissions extends MY_Model
           array('text' => 'Imunisasi', 'value' => 'Imunisasi'),
           array('text' => 'Bidan', 'value' => 'Bidan'),
           array('text' => 'Faskes', 'value' => 'Faskes'),
-          array('text' => 'WarningSign', 'value' => 'WarningSign'),
           /*additionalEntity*/
         ),
         'width' => 4

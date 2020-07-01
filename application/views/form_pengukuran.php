@@ -6,6 +6,9 @@
 
             <div class="row">
                 <div class="col-sm-12 text-right">
+                    <?php if (!empty($uuid) && $warningSignExists && in_array('delete_WarningSign', $permission)) : ?>
+                        <a href="<?= site_url($current['controller'] . "/unsign/$uuid") ?>" class="btn btn-success"><i class="fa fa-check"></i> &nbsp; Solve Warning</a>
+                    <?php endif ?>
                     <?php if ((empty($uuid) && in_array("create_{$current['controller']}", $permission)) || (!empty($uuid) && in_array("update_{$current['controller']}", $permission))) : ?>
                         <button class="btn btn-info btn-save"><i class="fa fa-save"></i> &nbsp; Save</button>
                     <?php endif ?>
@@ -119,7 +122,7 @@
             })
         }
 
-        $('.main-form').submit (function () {
+        $('.main-form').submit(function() {
             $('[disabled="disabled"]').attr('disabled', false)
             return true
         })
