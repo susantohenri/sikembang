@@ -8,9 +8,9 @@ class Pengukurans extends MY_Model
 		parent::__construct();
 		$this->table = 'pengukuran';
 		$this->thead = array(
-			(object) array('mData' => 'orders', 'sTitle' => 'No', 'visible' => false),
-			(object) array('mData' => 'createdAt', 'sTitle' => 'Waktu'),
-			(object) array('mData' => 'anak', 'sTitle' => 'Anak'),
+			(object) array('mData' => 'orders', 'sTitle' => 'No', 'visible' => false, 'searchable' => false),
+			(object) array('mData' => 'createdAt', 'sTitle' => 'Waktu', 'searchable' => false),
+			(object) array('mData' => 'anak', 'sTitle' => 'Anak', 'searchable' => false),
 		);
 
 		$createPengukuran = site_url('Pengukuran/create/');
@@ -147,6 +147,9 @@ class Pengukurans extends MY_Model
 
 	function dt()
 	{
+		if ($term = $this->input->post ('search')) {
+			$this->datatables->like ('anak.nama', $term['value']);
+		}
 		$this->datatables
 			->select("{$this->table}.uuid")
 			->select("{$this->table}.orders")
