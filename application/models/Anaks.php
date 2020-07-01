@@ -9,8 +9,8 @@ class Anaks extends MY_Model
 		$this->table = 'anak';
 		$this->thead = array(
 			(object) array('mData' => 'orders', 'sTitle' => 'No', 'visible' => false),
-			(object) array('mData' => 'nik', 'sTitle' => 'NIK'),
-
+			(object) array('mData' => 'nama', 'sTitle' => 'Nama Anak'),
+			(object) array('mData' => 'nama_ortu', 'sTitle' => 'Orang Tua'),
 		);
 		$this->form = array(
 			array(
@@ -88,12 +88,34 @@ class Anaks extends MY_Model
 		$this->childs = array();
 	}
 
+	function findOne($param)
+	{
+		if (!is_array($param)) $param = array('uuid' => $param);
+		return $this
+			->db
+			->select ('*')
+			->select ("DATEDIFF(CURRENT_DATE, tgl_lahir) / 30 AS usia", false)
+			->where($param)
+			->get ($this->table)
+			->row_array();
+	}
+
+	function select2 ($field, $term) {
+		return $this->db
+		  ->select("uuid as id", false)
+		  ->select("$field as text", false)
+		  ->where ('DATEDIFF(CURRENT_DATE, tgl_lahir) / 30 <= ', 60, false)
+		  ->limit(10)
+		  ->like($field, $term)->get($this->table)->result();
+	  }
+
 	function dt()
 	{
 		$this->datatables
 			->select("{$this->table}.uuid")
 			->select("{$this->table}.orders")
-			->select('anak.nik');
+			->select('anak.nama')
+			->select('anak.nama_ortu');
 		return parent::dt();
 	}
 }

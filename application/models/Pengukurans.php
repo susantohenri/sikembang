@@ -12,6 +12,8 @@ class Pengukurans extends MY_Model
 			(object) array('mData' => 'anak', 'sTitle' => 'Anak'),
 
 		);
+
+		$createPengukuran = site_url('Pengukuran/create/');
 		$this->form = array(
 			array(
 				'name' => 'anak',
@@ -21,7 +23,8 @@ class Pengukurans extends MY_Model
 				'attributes' => array(
 					array('data-autocomplete' => 'true'),
 					array('data-model' => 'Anaks'),
-					array('data-field' => 'nama')
+					array('data-field' => 'nama'),
+					array('onchange' => "window.location = '{$createPengukuran}' + $(this).val() ")
 				)
 			),
 			array(
@@ -54,7 +57,7 @@ class Pengukurans extends MY_Model
 			),
 			array(
 				'name' => 'vit_a_feb',
-				'label' => 'Vitamin A',
+				'label' => 'Vitamin A Februari',
 				'width' => 2,
 				'options' => array(
 					array('text' => 'Ya', 'value' => 'Ya'),
@@ -63,7 +66,7 @@ class Pengukurans extends MY_Model
 			),
 			array(
 				'name' => 'vit_a_aug',
-				'label' => 'Vitamin A',
+				'label' => 'Vitamin A Agustus',
 				'width' => 2,
 				'options' => array(
 					array('text' => 'Ya', 'value' => 'Ya'),
@@ -72,6 +75,37 @@ class Pengukurans extends MY_Model
 			),
 		);
 		$this->childs = array();
+	}
+
+	function getForm($uuid = false, $isSubform = false, $anak = null)
+	{
+		$form = parent::getForm($uuid, $isSubform);
+		if (null !== $anak) {
+			$this->load->model('Anaks');
+			$found = $this->Anaks->findOne ($anak);
+			$form = array_map(function ($field) use ($anak, $found) {
+				if ('anak' === $field['name']) {
+					$field['value'] = $anak;
+					$field['options'][0] = array (
+						'value' => $anak,
+						'text' => $found['nama']
+					);
+				}
+
+				return $field;
+			}, $form);
+
+			$form = array_filter ($form, function ($field) use ($anak, $found) {
+				if (2 !== (int) date ('m') && 'vit_a_feb' === $field['name']) return false;
+				if (8 !== (int) date ('m') && 'vit_a_aug' === $field['name']) return false;
+				if ($found['usia'] > 6  && 'asi_eksklusif' === $field['name']) return false;
+				return true;
+			});
+		}
+		else $form = array_filter ($form, function ($field) {
+			return $field['name'] === 'anak';
+		});
+		return $form;
 	}
 
 	function dt()
