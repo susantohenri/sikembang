@@ -29,14 +29,14 @@ class Frontpage extends CI_Controller
             $this->load->model('Antropometris');
             $jenis_kelamin = $this->input->post('jenis_kelamin');
             $tgl_lahir = $this->input->post('tgl_lahir');
-            $bb = str_replace(',', '.', $this->input->post('bb'));
-            $tb = str_replace(',', '.', $this->input->post('tb'));
+            $bb = $this->input->post('bb');
+            $tb = $this->input->post('tb');
             switch ($this->input->post('jenis_kalkulator')) {
                 case 'bb':
-                    echo $this->Antropometris->bb($jenis_kelamin, $tgl_lahir, $bb, $tb);
+                    echo $this->Antropometris->bb($jenis_kelamin, $tgl_lahir, $bb);
                     break;
                 case 'tb':
-                    echo $this->Antropometris->tb($jenis_kelamin, $tgl_lahir, $bb, $tb);
+                    echo $this->Antropometris->tb($jenis_kelamin, $tgl_lahir, $tb);
                     break;
                 case 'bbtb':
                     echo $this->Antropometris->gizi($jenis_kelamin, $tgl_lahir, $bb, $tb);

@@ -51,8 +51,9 @@ class Antropometris extends MY_Model
     return parent::dt();
   }
 
-  function bb($jenis_kelamin, $tgl_lahir, $bb, $tb)
+  function bb($jenis_kelamin, $tgl_lahir, $bb)
   {
+    $bb = str_replace(',', '.', $bb);
     $found = $this->db->query("
         SELECT hasil
         FROM antropometri
@@ -66,8 +67,9 @@ class Antropometris extends MY_Model
     return $found ? $found['hasil'] : 'Formula tidak ditemukan';
   }
 
-  function tb($jenis_kelamin, $tgl_lahir, $bb, $tb)
+  function tb($jenis_kelamin, $tgl_lahir, $tb)
   {
+    $tb = str_replace(',', '.', $tb);
     $found = $this->db->query("
         SELECT hasil
         FROM antropometri
@@ -83,6 +85,8 @@ class Antropometris extends MY_Model
 
   function gizi($jenis_kelamin, $tgl_lahir, $bb, $tb)
   {
+    $bb = str_replace(',', '.', $bb);
+    $tb = str_replace(',', '.', $tb);
     $found = $this->db->query("
         SELECT hasil
         FROM antropometri

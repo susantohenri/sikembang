@@ -9,8 +9,8 @@ class Pengukurans extends MY_Model
 		$this->table = 'pengukuran';
 		$this->thead = array(
 			(object) array('mData' => 'orders', 'sTitle' => 'No', 'visible' => false),
+			(object) array('mData' => 'createdAt', 'sTitle' => 'Waktu'),
 			(object) array('mData' => 'anak', 'sTitle' => 'Anak'),
-
 		);
 
 		$createPengukuran = site_url('Pengukuran/create/');
@@ -42,8 +42,8 @@ class Pengukurans extends MY_Model
 				'label' => 'ASI Eksklusif',
 				'width' => 2,
 				'options' => array(
-					array('text' => 'Ya', 'value' => 'Ya'),
 					array('text' => 'Tidak', 'value' => 'Tidak'),
+					array('text' => 'Ya', 'value' => 'Ya'),
 				)
 			),
 			array(
@@ -51,8 +51,8 @@ class Pengukurans extends MY_Model
 				'label' => 'Garam Yodium',
 				'width' => 2,
 				'options' => array(
-					array('text' => 'Ya', 'value' => 'Ya'),
 					array('text' => 'Tidak', 'value' => 'Tidak'),
+					array('text' => 'Ya', 'value' => 'Ya'),
 				)
 			),
 			array(
@@ -73,6 +73,30 @@ class Pengukurans extends MY_Model
 					array('text' => 'Tidak', 'value' => 'Tidak'),
 				)
 			),
+			array(
+				'name' => 'hasil_bb',
+				'width' => 2,
+				'label' => 'Hasil Berat Badan',
+				'attributes' => array(
+					array('disabled' => 'disabled')
+				)
+			),
+			array(
+				'name' => 'hasil_tb',
+				'width' => 2,
+				'label' => 'Hasil Tinggi Badan',
+				'attributes' => array(
+					array('disabled' => 'disabled')
+				)
+			),
+			array(
+				'name' => 'hasil_gizi',
+				'width' => 2,
+				'label' => 'Hasil Gizi',
+				'attributes' => array(
+					array('disabled' => 'disabled')
+				)
+			),
 		);
 		$this->childs = array();
 	}
@@ -82,11 +106,11 @@ class Pengukurans extends MY_Model
 		$form = parent::getForm($uuid, $isSubform);
 		if (null !== $anak) {
 			$this->load->model('Anaks');
-			$found = $this->Anaks->findOne ($anak);
+			$found = $this->Anaks->findOne($anak);
 			$form = array_map(function ($field) use ($anak, $found) {
 				if ('anak' === $field['name']) {
 					$field['value'] = $anak;
-					$field['options'][0] = array (
+					$field['options'][0] = array(
 						'value' => $anak,
 						'text' => $found['nama']
 					);
@@ -95,17 +119,30 @@ class Pengukurans extends MY_Model
 				return $field;
 			}, $form);
 
-			$form = array_filter ($form, function ($field) use ($anak, $found) {
-				if (2 !== (int) date ('m') && 'vit_a_feb' === $field['name']) return false;
-				if (8 !== (int) date ('m') && 'vit_a_aug' === $field['name']) return false;
+			$form = array_filter($form, function ($field) use ($anak, $found) {
+				if (2 !== (int) date('m') && 'vit_a_feb' === $field['name']) return false;
+				if (8 !== (int) date('m') && 'vit_a_aug' === $field['name']) return false;
 				if ($found['usia'] > 6  && 'asi_eksklusif' === $field['name']) return false;
 				return true;
 			});
-		}
-		else $form = array_filter ($form, function ($field) {
+		} elseif (false === $uuid)  $form = array_filter($form, function ($field) {
 			return $field['name'] === 'anak';
 		});
 		return $form;
+	}
+
+	function create($record)
+	{
+		$default = array (
+			'asi_eksklusif'
+			, 'garam_yodium'
+			, 'vit_a_feb'
+			, 'vit_a_aug'
+		);
+		foreach ($default as $field) {
+			if (!isset ($record[$field])) $record[$field] = 'Tidak';
+		}
+		return parent::create ($record);
 	}
 
 	function dt()
@@ -113,7 +150,9 @@ class Pengukurans extends MY_Model
 		$this->datatables
 			->select("{$this->table}.uuid")
 			->select("{$this->table}.orders")
-			->select('pengukuran.anak');
+			->select("DATE_FORMAT (pengukuran.createdAt, '%d-%m-%Y %h:%i:%s') createdAt", false)
+			->select("anak.nama anak", false)
+			->join('anak', 'anak.uuid = pengukuran.anak', 'left');
 		return parent::dt();
 	}
 }
