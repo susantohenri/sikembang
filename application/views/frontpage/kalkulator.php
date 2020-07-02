@@ -52,12 +52,9 @@
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="col-sm-12 text-right">
-                        <a id="submit" class="btn btn-info btn-save"><i class="fa fa-calculator"></i> &nbsp; Hitung</a>
-                    </div>
-                </div>
-
+            </div>
+            <div class="card-footer text-right">
+                <a id="submit" class="btn btn-info btn-save"><i class="fa fa-calculator"></i> &nbsp; Hitung</a>
             </div>
         </div>
     </form>
@@ -94,7 +91,7 @@
                         tb.show();
                         break
                 }
-            }).val('bb').trigger ('change')
+            }).val('bb').trigger('change')
 
             $('#submit').click(function() {
                 var data = {}

@@ -103,4 +103,31 @@ class Pengukuran extends MY_Controller
 		$vars['uuid'] = $uuid;
 		$this->loadview('index', $vars);
 	}
+
+	function grafik()
+	{
+		$since = '2020-01-01';
+		$until = '2020-06-30';
+		$vars = array(
+			'js' => array(
+				'moment.min.js',
+				'bootstrap-datepicker.js',
+				'daterangepicker.min.js',
+				'select2.full.min.js',
+				'form.js',
+				'Chart.min.js'
+			),
+			'page_name' => 'grafik',
+			'since' => $since,
+			'until' => $until
+		);
+		$this->loadview('index', $vars);
+	}
+
+	function download()
+	{
+		$vars = array();
+		$vars['page_name'] = 'download';
+		$this->loadview('index', $vars);
+	}
 }

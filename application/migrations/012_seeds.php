@@ -57,6 +57,18 @@ class Migration_seeds extends CI_Migration
       'action' => 'delete',
       'entity' => 'WarningSign'
     ));
+    $this->Menus->create(array(
+      'role' => $admin,
+      'name' => 'Info Grafis',
+      'url' => 'Pengukuran/grafik',
+      'icon' => 'chart-line'
+    ));
+    $this->Menus->create(array(
+      'role' => $admin,
+      'name' => 'Download',
+      'url' => 'Pengukuran/download',
+      'icon' => 'download'
+    ));
     // BIDAN END
 
     // KADER BEGIN

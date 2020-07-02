@@ -54,7 +54,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <li class="breadcrumb-item active"><?= $page_title ?></li>
               <?php else: ?>
                 <li class="breadcrumb-item"><a href="<?= site_url ($current['controller']) ?>" style="color: #ffab00"><?= $page_title ?></a></li>
-                <li class="breadcrumb-item active"><?= ucfirst ($page_name) ?></li>
+                <li class="breadcrumb-item active"><?= ucfirst (str_replace('_', ' ', $page_name)) ?></li>
               <?php endif ?>
             </ol>
           </div><!-- /.col -->
