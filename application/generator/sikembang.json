@@ -127,18 +127,6 @@
 		]
 	}
 	,{
-		"controller": "Imunisasi",
-		"fields": [
-			{
-				"name": "tanggal",
-				"type": "date"
-			},
-			{
-				"name": "nama"
-			}
-		]
-    }
-	,{
 		"controller": "Bidan",
 		"fields": [
 			{

@@ -67,15 +67,6 @@ class Frontpage extends CI_Controller
         $params = array(
             'page_title' => 'Jadwal Imunisasi',
             'page_name' => 'frontpage/imunisasi',
-            'current' => array(
-                'controller' => 'Frontpage',
-                'controller_url' => 'Frontpage/imunisasi_dt'
-            ),
-            'js' => array(
-                'jquery.dataTables.min.js',
-                'dataTables.bootstrap4.js',
-                'table.js'
-            )
         );
         $this->load->view('frontpage', $params);
     }
@@ -141,12 +132,6 @@ class Frontpage extends CI_Controller
     {
         $this->load->model('Faskess');
         echo $this->Faskess->dt();
-    }
-
-    function imunisasi_dt()
-    {
-        $this->load->model('Imunisasis');
-        echo $this->Imunisasis->dt();
     }
     /*
     function parsing_bbtb()
