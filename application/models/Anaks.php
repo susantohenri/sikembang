@@ -105,6 +105,7 @@ class Anaks extends MY_Model
 		  ->select("uuid as id", false)
 		  ->select("$field as text", false)
 		  ->where ('DATEDIFF(CURRENT_DATE, tgl_lahir) / 30 <= ', 60, false)
+		  ->where ("uuid NOT IN (SELECT anak FROM pengukuran WHERE DATE_FORMAT(pengukuran.createdAt, '%m-%Y') = DATE_FORMAT(CURRENT_DATE, '%m-%Y'))")
 		  ->limit(10)
 		  ->like($field, $term)->get($this->table)->result();
 	  }
