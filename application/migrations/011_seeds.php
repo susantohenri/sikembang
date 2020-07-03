@@ -58,6 +58,12 @@ class Migration_seeds extends CI_Migration
     ));
     $this->Menus->create(array(
       'role' => $admin,
+      'name' => 'Imunisasi',
+      'url' => 'Menu/imunisasi',
+      'icon' => 'calendar'
+    ));
+    $this->Menus->create(array(
+      'role' => $admin,
       'name' => 'Info Grafis',
       'url' => 'Pengukuran/grafik',
       'icon' => 'chart-line'

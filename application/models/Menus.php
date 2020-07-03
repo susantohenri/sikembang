@@ -25,4 +25,13 @@ class Menus extends MY_Model
       ),
     );
   }
+
+  function getImunisasi () {
+    $files = scandir ('imunisasi');
+    $images = array_filter ($files, function ($file) {
+      return !in_array ($file, array ('.', '..'));
+    });
+    return $images[0] || '';
+  }
+
 }
