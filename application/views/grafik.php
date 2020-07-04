@@ -2,9 +2,6 @@
 <link rel="stylesheet" type="text/css" href="<?= base_url('assets/css/bootstrap-datepicker.css') ?>">
 <form action="" method="POST" class="main-form col-sm-12" id="form_infografis">
     <div class="card card-warning card-outline">
-        <div class="card-header text-center">
-            <h4>Filter Info Grafis</h4>
-        </div>
         <div class="card-body">
             <div class="" data-controller="<?= $current['controller'] ?>">
                 <div class="form-horizontal form-groups">
@@ -18,6 +15,16 @@
                         <label class="col-sm-3 control-label">Hingga Tanggal</label>
                         <div class="col-sm-9">
                             <input class="form-control" type="text" value="<?= $until ?>" name="until" data-date="datepicker" autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 control-label">Jenis Perhitungan</label>
+                        <div class="col-sm-9">
+                            <select name="jenis_kalkulator" class="form-control">
+                                <option value="bb">Berat Badan / Usia</option>
+                                <option value="tb">Tinggi Badan / Usia</option>
+                                <option value="bbtb">Tinggi Badan / Tinggi Badan</option>
+                            </select>
                         </div>
                     </div>
                 </div>
