@@ -68,6 +68,10 @@ class Frontpage extends CI_Controller
             'page_title' => 'Jadwal Imunisasi',
             'page_name' => 'frontpage/imunisasi',
         );
+        $this->load->model('Menus');
+        if ($img = $this->Menus->getImunisasi()) {
+            $params['src'] = base_url ("imunisasi/{$img}");
+        }
         $this->load->view('frontpage', $params);
     }
 

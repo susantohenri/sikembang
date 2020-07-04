@@ -28,10 +28,11 @@ class Menus extends MY_Model
 
   function getImunisasi () {
     $files = scandir ('imunisasi');
+    $files[] = null;
     $images = array_filter ($files, function ($file) {
-      return !in_array ($file, array ('.', '..'));
+      return !in_array ($file, array ('.', '..', '.gitkeep'));
     });
-    return $images[0] || '';
+    return reset ($images);
   }
 
 }

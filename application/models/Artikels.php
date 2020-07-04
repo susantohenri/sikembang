@@ -51,11 +51,12 @@ class Artikels extends MY_Model
       else if (strpos($value, '[comma-replacement]') > -1) $value = str_replace('[comma-replacement]', ',', $value);
     }
     if (strlen($_FILES['gambar']['name']) > 0) {
+      $oldfile = null;
       if (isset($record['uuid'])) {
         $artikel = self::findOne($record['uuid']);
-        self::deleteFile($artikel['gambar']);
+        $oldfile = $artikel['gambar'];
       }
-      $record['gambar'] = self::saveFile('gambar', time());
+      $record['gambar'] = $this->fileupload ('carousel', $_FILES['gambar'], $oldfile);
     }
     return isset($record['uuid']) ? $this->update($record) : $this->create($record);
   }
@@ -69,28 +70,7 @@ class Artikels extends MY_Model
         $this->$childmodel->delete($childrecord->uuid);
     }
     $artikel = self::findOne($uuid);
-    self::deleteFile($artikel['gambar']);
+    $this->fileupload ('', null, $artikel['gambar']);
     return $this->db->where('uuid', $uuid)->delete($this->table);
-  }
-
-  private function fileIsPhoto($field_name)
-  {
-    if (getimagesize($_FILES[$field_name]['tmp_name'])) return true;
-    else return false;
-  }
-
-  private function saveFile($field_name, $unique)
-  {
-    if (!$this->fileIsPhoto($field_name)) return false;
-    $extension = strtolower(pathinfo($_FILES[$field_name]['name'], PATHINFO_EXTENSION));
-    $new_file_location = "carousel/{$field_name}_{$unique}.{$extension}";
-    self::deleteFile($new_file_location);
-    move_uploaded_file($_FILES[$field_name]['tmp_name'], $new_file_location);
-    return $new_file_location;
-  }
-
-  private function deleteFile($path)
-  {
-    if (file_exists($path)) unlink($path);
   }
 }

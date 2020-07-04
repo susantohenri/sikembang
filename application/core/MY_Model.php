@@ -1,11 +1,13 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class MY_Model extends CI_Model {
+class MY_Model extends CI_Model
+{
 
   var $table, $thead, $childs;
 
-  function __construct () {
+  function __construct()
+  {
     // parent::__construct();
     date_default_timezone_set('Asia/Jakarta');
     $this->load->database();
@@ -17,7 +19,8 @@ class MY_Model extends CI_Model {
     $this->childs = array();
   }
 
-  function lastSubmit ($post) {
+  function lastSubmit($post)
+  {
     if (!$post) return false;
     if ($post['last_submit'] === $this->session->userdata('last_submit')) return false;
     $this->session->set_userdata('last_submit', $post['last_submit']);
@@ -25,15 +28,17 @@ class MY_Model extends CI_Model {
     return $post;
   }
 
-  function save ($record) {
+  function save($record)
+  {
     foreach ($record as $field => &$value) {
       if (is_array($value)) $value = implode(',', $value);
       else if (strpos($value, '[comma-replacement]') > -1) $value = str_replace('[comma-replacement]', ',', $value);
     }
-    return isset ($record['uuid']) ? $this->update($record) : $this->create($record);
+    return isset($record['uuid']) ? $this->update($record) : $this->create($record);
   }
 
-  function create ($record) {
+  function create($record)
+  {
     $generate = $this->db->select('UUID() uuid', false)->get()->row_array();
     $record['uuid'] = $generate['uuid'];
     $record = $this->savechild($record);
@@ -43,36 +48,43 @@ class MY_Model extends CI_Model {
     return $record['uuid'];
   }
 
-  function update ($record) {
+  function update($record)
+  {
     $record = $this->savechild($record);
     $record['updatedAt'] = date('Y-m-d H:i:s');
     $this->db->where('uuid', $record['uuid'])->update($this->table, $record);
     return $record['uuid'];
   }
 
-  function findOne ($param) {
+  function findOne($param)
+  {
     if (!is_array($param)) $param = array('uuid' => $param);
     return $this->db->get_where($this->table, $param)->row_array();
   }
 
-  function dt () {
+  function dt()
+  {
     return $this->datatables->from($this->table)->generate();
   }
 
-  function find ($param = array()) {
+  function find($param = array())
+  {
     return $this->db->get_where($this->table, $param)->result();
   }
 
-  function findOrCreate ($data) {
-    if ($found = $this->findOne (array('kode' => $data['kode'], 'uraian' => $data['uraian']))) return $found['uuid'];
+  function findOrCreate($data)
+  {
+    if ($found = $this->findOne(array('kode' => $data['kode'], 'uraian' => $data['uraian']))) return $found['uuid'];
     else return $this->create($data);
   }
 
-  function findIn ($field, $value) {
+  function findIn($field, $value)
+  {
     return $this->db->where_in($field, $value)->get($this->table)->result();
   }
 
-  function select2 ($field, $term) {
+  function select2($field, $term)
+  {
     return $this->db
       ->select("uuid as id", false)
       ->select("$field as text", false)
@@ -80,7 +92,8 @@ class MY_Model extends CI_Model {
       ->like($field, $term)->get($this->table)->result();
   }
 
-  function delete ($uuid) {
+  function delete($uuid)
+  {
     foreach ($this->childs as $child) {
       $childmodel = $child['model'];
       $this->load->model($childmodel);
@@ -90,39 +103,40 @@ class MY_Model extends CI_Model {
     return $this->db->where('uuid', $uuid)->delete($this->table);
   }
 
-  function getForm ($uuid = false, $isSubform = false) {
+  function getForm($uuid = false, $isSubform = false)
+  {
     $form = $uuid ? $this->prepopulate($uuid) : $this->form;
 
     if ($uuid) $form[] = array(
       'name' => 'uuid',
       'type' => 'hidden',
-      'value'=> $uuid,
-      'label'=> 'UUID'
+      'value' => $uuid,
+      'label' => 'UUID'
     );
 
     foreach ($form as &$f) {
-      if (!isset ($f['attributes'])) $f['attributes']   = array();
-      if (isset ($f['options'])) $f['type'] = 'select';
-      if (isset ($f['multiple'])) {
-        $f['name']= $f['name'] . '[]';
+      if (!isset($f['attributes'])) $f['attributes']   = array();
+      if (isset($f['options'])) $f['type'] = 'select';
+      if (isset($f['multiple'])) {
+        $f['name'] = $f['name'] . '[]';
         $f['attributes'][] = array('multiple' => 'true');
       }
-      if (!isset ($f['type'])) $f['type']   = 'text';
-      if (!isset ($f['width'])) $f['width'] = 2;
-      if (!isset ($f['value'])) $f['value']       = '';
-      if (!isset ($f['required'])) $f['required'] = '';
+      if (!isset($f['type'])) $f['type']   = 'text';
+      if (!isset($f['width'])) $f['width'] = 2;
+      if (!isset($f['value'])) $f['value']       = '';
+      if (!isset($f['required'])) $f['required'] = '';
       else $f['required'] = 'required="required"';
 
       $f['disabled'] = !isset($f['disabled']) ? '' : 'disabled="disabled"';
 
       if (in_array(array('data-suggestion' => true), $f['attributes'])) {
         $fname = str_replace('[]', '', $f['name']);
-        if (isset ($f['multiple'])) {
+        if (isset($f['multiple'])) {
           $alloptions = array();
           $f['options'] = array();
           foreach ($this->db->select($fname)->get($this->table)->result() as $record)
             if (strlen($record->$fname) > 0) foreach (explode(',', $record->$fname) as $option) $alloptions[] = $option;
-          foreach (array_unique ($alloptions) as $distinct) $f['options'][] = array('text' => $distinct, 'value' => $distinct);
+          foreach (array_unique($alloptions) as $distinct) $f['options'][] = array('text' => $distinct, 'value' => $distinct);
         } else {
           $f['options'] = array();
           foreach ($this->db->select($fname)->distinct()->get($this->table)->result() as $record)
@@ -136,28 +150,34 @@ class MY_Model extends CI_Model {
     return $form;
   }
 
-  function prepopulate ($uuid) {
+  function prepopulate($uuid)
+  {
     $record = $this->findOne($uuid);
     foreach ($this->form as &$f) {
-      if (isset ($f['attributes']) && in_array(array('data-autocomplete' => 'true'), $f['attributes'])) {
+      if (isset($f['attributes']) && in_array(array('data-autocomplete' => 'true'), $f['attributes'])) {
         $model = '';
         $field = '';
         foreach ($f['attributes'] as $attr) foreach ($attr as $key => $value) switch ($key) {
-          case 'data-model': $model = $value; break;
-          case 'data-field': $field = $value; break;
+          case 'data-model':
+            $model = $value;
+            break;
+          case 'data-field':
+            $field = $value;
+            break;
         }
         $this->load->model($model);
         foreach ($this->$model->findIn('uuid', explode(',', $record[$f['name']])) as $option)
           $f['options'][] = array('text' => $option->$field, 'value' => $option->uuid);
       }
-      if (isset ($f['multiple'])) $f['value'] = explode(',', $record[$f['name']]);
+      if (isset($f['multiple'])) $f['value'] = explode(',', $record[$f['name']]);
       else if ($f['name'] === 'password') $f['value'] = '';
       else $f['value'] = $record[$f['name']];
     }
     return $this->form;
   }
 
-  function getFormChild ($uuid = null) {
+  function getFormChild($uuid = null)
+  {
     foreach ($this->childs as &$child) {
       $childmodel = $child['model'];
       $this->load->model($childmodel);
@@ -171,30 +191,31 @@ class MY_Model extends CI_Model {
     return $this->childs;
   }
 
-  function savechild ($record) {
+  function savechild($record)
+  {
     $childrecords = array();
     $savedchilds  = array();
 
     foreach ($this->childs as $child) {
       $child_controller = $child['controller'];
       $child_model = $child['model'];
-      $childrecords[$child_model]= array();
+      $childrecords[$child_model] = array();
       $savedchilds[$child_model]  = array('');
       foreach ($record as $key => $value) if (strpos($key, $child_controller) > -1) {
-        unset ($record[$key]);
+        unset($record[$key]);
         $childrecords[$child_model][str_replace("{$child_controller}_", '', $key)] = $value;
       }
     }
 
     foreach ($childrecords as $childmodel => $values) {
-      if (empty ($values)) continue;
+      if (empty($values)) continue;
       $this->load->model($childmodel);
       $fields = array_keys($values);
-      for ($index =0; $index < count(explode(',', $childrecords[$childmodel][$fields[0]])); $index++) {
+      for ($index = 0; $index < count(explode(',', $childrecords[$childmodel][$fields[0]])); $index++) {
         $child_record = array();
         foreach ($fields as $field) {
           $childinput = explode(',', $childrecords[$childmodel][$field]);
-          if (isset ($childinput[$index])) $child_record[$field] = $childinput[$index];
+          if (isset($childinput[$index])) $child_record[$field] = $childinput[$index];
         }
         $child_record[$this->table] = $record['uuid'];
         $savedchilds[$childmodel][] = $this->$childmodel->save($child_record);
@@ -213,4 +234,32 @@ class MY_Model extends CI_Model {
     return $record;
   }
 
+  /*
+    fn fileupload 
+      input:
+        - location: dir
+        - newfile: $_FILES[$field_name]
+        - oldfile: dir/filename.ext
+      process:
+      - delete old file if any
+      - if newfile is null, means only delete old file
+      - give unique name
+      - save
+      output:
+      - return newfile location or empty string
+  */
+  function fileupload($location, $newfile = null, $oldfile = null)
+  {
+    $new_file_location = '';
+    $unique = time();
+    if (!is_null($newfile)) {
+      $extension = pathinfo($newfile['name'], PATHINFO_EXTENSION);
+      $filename_without_ext = str_replace(".{$extension}", '', $newfile['name']);
+      $extension = strtolower($extension);
+      $new_file_location = "{$location}/{$filename_without_ext}_{$unique}.{$extension}";
+      move_uploaded_file($newfile['tmp_name'], $new_file_location);
+    }
+    if (!is_null($oldfile) && file_exists($oldfile)) unlink($oldfile);
+    return $new_file_location;
+  }
 }
