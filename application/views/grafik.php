@@ -37,9 +37,6 @@
 </form>
 <div class="col-sm-12">
     <div class="card card-warning card-outline">
-        <div class="card-header text-center">
-            <h4>Status Gizi BB/U</h4>
-        </div>
         <div class="card-body">
             <div class="row">
                 <div class="col-sm-12">
@@ -51,61 +48,50 @@
 </div>
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", function() {
-        var canvas = document.getElementById('chart')
-        new Chart(canvas, {
-            type: 'line',
+
+        var ctx = document.getElementById('chart').getContext('2d')
+        window.myBar = new Chart(ctx, {
+            type: 'bar',
             data: {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+                labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
                 datasets: [{
-                        label: 'Sangat Kurang',
-                        yAxisID: 'A',
-                        data: [60, 70, 80, 90, 100],
-                        type: 'bar',
-                        backgroundColor: 'lightblue'
-                    },
-                    {
-                        label: 'Kurang',
-                        yAxisID: 'A',
-                        data: [10, 20, 30, 40, 50],
-                        type: 'bar',
-                        backgroundColor: 'orange'
-                    },
-                    {
-                        label: 'Resiko Lebih',
-                        yAxisID: 'A',
-                        data: [10, 20, 30, 40, 50],
-                        type: 'bar',
-                        backgroundColor: 'yellow'
-                    },
-                    {
-                        label: 'Normal',
-                        yAxisID: 'B',
-                        data: [1, 0.4, 0.8, 0.4, 0],
-                        type: 'line',
-                        fill: false,
-                        borderColor: 'green',
-                        lineTension: 0
-                    }
-                ]
+                    label: 'Sangat Kurang',
+                    backgroundColor: 'lightblue',
+                    data: [1, 2, 3, 4, 5, 6, 7]
+                }, {
+                    label: 'Kurang',
+                    backgroundColor: 'orange',
+                    data: [2, 4, 6, 8, 10, 12, 14]
+                }, {
+                    label: 'Resiko Lebih',
+                    backgroundColor: 'yellow',
+                    data: [1, 2, 3, 4, 5, 6, 7]
+                }, {
+                    label: 'Normal',
+                    borderColor: 'green',
+                    data: [600, 100, 200, 500, 300, 700, 400],
+                    yAxisID: 'KANAN',
+                    type: 'line',
+                    fill: false,
+                    lineTension: 0
+                }]
             },
             options: {
+                responsive: true,
                 scales: {
                     yAxes: [{
-                        id: 'A',
+                        id: 'KIRI',
                         type: 'linear',
                         position: 'left',
                     }, {
-                        id: 'B',
+                        id: 'KANAN',
                         type: 'linear',
-                        position: 'right',
-                        ticks: {
-                            max: 1,
-                            min: 0
-                        }
+                        position: 'right'
                     }]
                 }
             }
         })
+
 
     })
 </script>
