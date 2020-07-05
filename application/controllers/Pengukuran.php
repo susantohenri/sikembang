@@ -129,8 +129,41 @@ class Pengukuran extends MY_Controller
 
 	function download()
 	{
-		$vars = array();
-		$vars['page_name'] = 'download';
-		$this->loadview('index', $vars);
+		if ($this->input->post()) {
+			$jenis = $this->input->post('jenis');
+			$since = $this->input->post('since');
+			$until = $this->input->post('until');
+			$rows = $this->Pengukurans->download($jenis, $since, $until);
+			$colnames = array_keys($rows[0]);
+
+			$sum = array();
+			foreach ($colnames as $colname) {
+				$sum[$colname] = array_sum (array_map (function ($row) use ($colname) {
+					return $row[$colname];
+				}, $rows));
+			}
+			$sum['KATEGORI'] = 'TOTAL ANAK';
+
+			header('Content-Type: text/csv; charset=utf-8');
+			header('Content-Disposition: attachment; filename=sikembang.csv');
+
+			$output = fopen('php://output', 'w');
+			fputcsv($output, $colnames);
+			foreach ($rows as $row) fputcsv($output, $row);
+			fputcsv($output, $sum);
+		} else {
+			$vars = array();
+			$vars['page_name'] = 'download';
+			$this->loadview('index', array(
+				'js' => array(
+					'moment.min.js',
+					'bootstrap-datepicker.js',
+					'daterangepicker.min.js',
+					'select2.full.min.js',
+					'form.js',
+				),
+				'page_name' => 'download',
+			));
+		}
 	}
 }

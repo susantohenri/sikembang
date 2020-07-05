@@ -263,4 +263,28 @@ class Pengukurans extends MY_Model
 
 		return json_encode($chart);
 	}
+
+	function download($jenis, $since, $until)
+	{
+		$monthsQ = $this->db
+			->select("DATE_FORMAT(createdAt, '%b %Y') monthYear", false)
+			->group_by("DATE_FORMAT(createdAt, '%b %Y')")
+			->order_by('createdAt');
+
+		if (strlen($since) > 0) $monthsQ->where("createdAt >= '{$since}'");
+		if (strlen($until) > 0) $monthsQ->where("createdAt <= '{$until}'");
+
+		$months = $monthsQ->get($this->table)->result();
+
+		$resultQ = $this->db
+			->select("hasil_{$jenis} KATEGORI", false)
+			->group_by("hasil_{$jenis}");
+
+		foreach ($months as $month) {
+			$resultQ->select("SUM(CASE WHEN DATE_FORMAT(createdAt, '%b %Y') = '{$month->monthYear}' THEN 1 ELSE 0 END) '{$month->monthYear}'", false);
+		}
+
+		$result = $resultQ->get($this->table)->result_array();
+		return $result;
+	}
 }
