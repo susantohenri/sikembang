@@ -184,4 +184,83 @@ class Pengukurans extends MY_Model
 			->set('warning_sign', 0)
 			->update($this->table);
 	}
+
+	function grafik($jenis, $since, $until)
+	{
+		$query = $this->db
+			->select("DATE_FORMAT(createdAt, '%b %Y') label", false)
+			->select("COUNT(uuid) 'data'", false)
+			->select("hasil_{$jenis} legend", false)
+			->group_by("DATE_FORMAT(createdAt, '%b/%Y'), hasil_{$jenis} ")
+			->order_by('createdAt');
+		if (strlen($since) > 0) $query->where("createdAt >= '{$since}'");
+		if (strlen($until) > 0) $query->where("createdAt <= '{$until}'");
+		$result = $query->get($this->table)->result();
+
+		$labels = array_values(array_unique(array_column($result, 'label')));
+		$legends = array_values(array_unique(array_column($result, 'legend')));
+
+		$data = array();
+		foreach ($legends as $legend) {
+			$data[] = array_map(function ($record) {
+				return $record->data;
+			}, array_values(array_filter($result, function ($record) use ($legend) {
+				return $record->legend === $legend;
+			})));
+		}
+
+		$chart = json_decode('{"type":"bar","data":{"labels":[],"datasets":[]},"options":{"responsive":true,"scales":{"yAxes":[{"id":"KIRI","type":"linear","position":"left"},{"id":"KANAN","type":"linear","position":"right"}]}}}');
+		$chart->data->labels = $labels;
+		$datasets = array();
+		foreach ($legends as $index => $legend) {
+			$ds = new stdClass();
+			$ds->label = $legend;
+			$ds->data = $data[$index];
+			$datasets[] = $ds;
+		}
+
+		$chart->data->datasets[] = array_values(array_filter($datasets, function ($ds) {
+			return in_array($ds->label, array('Gizi Baik', 'Normal'));
+		}))[0];
+
+		$chart->data->datasets[] = array_values(array_filter($datasets, function ($ds) {
+			return in_array($ds->label, array('Gizi Buruk', 'Sangat Pendek', 'Sangat Kurang'));
+		}))[0];
+		$chart->data->datasets[] = array_values(array_filter($datasets, function ($ds) {
+			return in_array($ds->label, array('Gizi Kurang', 'Pendek', 'Kurang'));
+		}))[0];
+		$chart->data->datasets[] = array_values(array_filter($datasets, function ($ds) {
+			return in_array($ds->label, array('Gizi Lebih', 'Tinggi', 'Resiko Berlebih'));
+		}))[0];
+		$obesitas = array_values(array_filter($datasets, function ($ds) {
+			return $ds->label === 'Obesitas';
+		}));
+		if (count($obesitas) > 0) $chart->data->datasets[] = $obesitas[0];
+
+		foreach ($chart->data->datasets as $index => &$ds) {
+			switch ($index) {
+				case 0:
+					$ds->borderColor = 'green';
+					$ds->yAxisID = 'KANAN';
+					$ds->type = 'line';
+					$ds->fill = false;
+					$ds->lineTension = 0;
+					break;
+				case 1:
+					$ds->backgroundColor = 'lightblue';
+					break;
+				case 2:
+					$ds->backgroundColor = 'orange';
+					break;
+				case 3:
+					$ds->backgroundColor = 'yellow';
+					break;
+				case 4:
+					$ds->backgroundColor = 'blue';
+					break;
+			}
+		}
+
+		return json_encode($chart);
+	}
 }

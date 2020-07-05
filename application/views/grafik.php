@@ -8,22 +8,22 @@
                     <div class="form-group row">
                         <label class="col-sm-3 control-label">Sejak Tanggal</label>
                         <div class="col-sm-9">
-                            <input class="form-control" type="text" value="<?= $since ?>" name="since" data-date="datepicker" autocomplete="off">
+                            <input class="form-control" type="text" name="since" data-date="datepicker" autocomplete="off">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-sm-3 control-label">Hingga Tanggal</label>
                         <div class="col-sm-9">
-                            <input class="form-control" type="text" value="<?= $until ?>" name="until" data-date="datepicker" autocomplete="off">
+                            <input class="form-control" type="text" name="until" data-date="datepicker" autocomplete="off">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-sm-3 control-label">Jenis Perhitungan</label>
                         <div class="col-sm-9">
-                            <select name="jenis_kalkulator" class="form-control">
+                            <select name="jenis" class="form-control">
                                 <option value="bb">Berat Badan / Usia</option>
                                 <option value="tb">Tinggi Badan / Usia</option>
-                                <option value="bbtb">Tinggi Badan / Tinggi Badan</option>
+                                <option value="gizi">Berat Badan / Tinggi Badan</option>
                             </select>
                         </div>
                     </div>
@@ -31,7 +31,7 @@
             </div>
         </div>
         <div class="card-footer text-right">
-            <button id="submit" class="btn btn-info btn-save"><i class="fa fa-chart-line"></i> &nbsp; Submit</button>
+            <a id="submit" class="btn btn-info btn-submit"><i class="fa fa-chart-line"></i> &nbsp; Filter</a>
         </div>
     </div>
 </form>
@@ -48,50 +48,17 @@
 </div>
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", function() {
-
         var ctx = document.getElementById('chart').getContext('2d')
-        window.myBar = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-                datasets: [{
-                    label: 'Sangat Kurang',
-                    backgroundColor: 'lightblue',
-                    data: [1, 2, 3, 4, 5, 6, 7]
-                }, {
-                    label: 'Kurang',
-                    backgroundColor: 'orange',
-                    data: [2, 4, 6, 8, 10, 12, 14]
-                }, {
-                    label: 'Resiko Lebih',
-                    backgroundColor: 'yellow',
-                    data: [1, 2, 3, 4, 5, 6, 7]
-                }, {
-                    label: 'Normal',
-                    borderColor: 'green',
-                    data: [600, 100, 200, 500, 300, 700, 400],
-                    yAxisID: 'KANAN',
-                    type: 'line',
-                    fill: false,
-                    lineTension: 0
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    yAxes: [{
-                        id: 'KIRI',
-                        type: 'linear',
-                        position: 'left',
-                    }, {
-                        id: 'KANAN',
-                        type: 'linear',
-                        position: 'right'
-                    }]
-                }
-            }
+        $('.btn-submit').click(function() {
+            if (window.myBar) window.myBar.destroy()
+            var params = {}
+            $('#form_infografis').find('input, select').each(function() {
+                params[$(this).attr('name')] = $(this).val()
+            })
+            $.post('', params, function(data) {
+                data = JSON.parse(data)
+                window.myBar = new Chart(ctx, data)
+            })
         })
-
-
     })
 </script>

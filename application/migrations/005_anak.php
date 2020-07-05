@@ -15,7 +15,7 @@ class Migration_anak extends CI_Migration {
         `anak_ke` varchar(255) NOT NULL,
         `nama` varchar(255) NOT NULL,
         `tgl_lahir` DATE NOT NULL,
-        `jenis_kelamin` varchar(255) NOT NULL,
+        `jenis_kelamin` ENUM ('Lelaki', 'Perempuan'),
         `bb_lahir` varchar(255) NOT NULL,
         `nama_ortu` varchar(255) NOT NULL,
         `tlp_ortu` varchar(255) NOT NULL,
