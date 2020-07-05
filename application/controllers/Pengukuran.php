@@ -110,7 +110,12 @@ class Pengukuran extends MY_Controller
 			$jenis = $this->input->post('jenis');
 			$since = $this->input->post('since');
 			$until = $this->input->post('until');
-			echo $this->Pengukurans->grafik($jenis, $since, $until);
+			if ('imd' === $jenis) {
+				$this->load->model('Anaks');
+				echo $this->Anaks->imd();
+			} else if ('asi' === $jenis) {
+				echo $this->Pengukurans->grafik_asi();
+			} else echo $this->Pengukurans->grafik($jenis, $since, $until);
 		} else {
 			$vars = array(
 				'js' => array(
@@ -138,7 +143,7 @@ class Pengukuran extends MY_Controller
 
 			$sum = array();
 			foreach ($colnames as $colname) {
-				$sum[$colname] = array_sum (array_map (function ($row) use ($colname) {
+				$sum[$colname] = array_sum(array_map(function ($row) use ($colname) {
 					return $row[$colname];
 				}, $rows));
 			}

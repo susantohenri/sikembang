@@ -80,8 +80,8 @@ class Anaks extends MY_Model
 				'label' => 'Inisiasi Menyusu Dini',
 				'width' => 2,
 				'options' => array(
-					array('text' => 'Ya', 'value' => 'Ya'),
 					array('text' => 'Tidak', 'value' => 'Tidak'),
+					array('text' => 'Ya', 'value' => 'Ya'),
 				)
 			),
 		);
@@ -93,22 +93,23 @@ class Anaks extends MY_Model
 		if (!is_array($param)) $param = array('uuid' => $param);
 		return $this
 			->db
-			->select ('*')
-			->select ("DATEDIFF(CURRENT_DATE, tgl_lahir) / 30 AS usia", false)
+			->select('*')
+			->select("DATEDIFF(CURRENT_DATE, tgl_lahir) / 30 AS usia", false)
 			->where($param)
-			->get ($this->table)
+			->get($this->table)
 			->row_array();
 	}
 
-	function select2 ($field, $term) {
+	function select2($field, $term)
+	{
 		return $this->db
-		  ->select("uuid as id", false)
-		  ->select("$field as text", false)
-		  ->where ('DATEDIFF(CURRENT_DATE, tgl_lahir) / 30 <= ', 60, false)
-		  ->where ("uuid NOT IN (SELECT anak FROM pengukuran WHERE DATE_FORMAT(pengukuran.createdAt, '%m-%Y') = DATE_FORMAT(CURRENT_DATE, '%m-%Y'))")
-		  ->limit(10)
-		  ->like($field, $term)->get($this->table)->result();
-	  }
+			->select("uuid as id", false)
+			->select("$field as text", false)
+			->where('DATEDIFF(CURRENT_DATE, tgl_lahir) / 30 <= ', 60, false)
+			->where("uuid NOT IN (SELECT anak FROM pengukuran WHERE DATE_FORMAT(pengukuran.createdAt, '%m-%Y') = DATE_FORMAT(CURRENT_DATE, '%m-%Y'))")
+			->limit(10)
+			->like($field, $term)->get($this->table)->result();
+	}
 
 	function dt()
 	{
@@ -118,5 +119,26 @@ class Anaks extends MY_Model
 			->select('anak.nama')
 			->select('anak.nama_ortu');
 		return parent::dt();
+	}
+
+	function imd()
+	{
+		$result = json_decode('{"type":"pie","data":{"datasets":[{"data":[100,2],"backgroundColor":["orange","lightblue"]}],"labels":["Ya","Tidak"]},"options":{"responsive":true}}');
+		$records = $this->db
+			->select('imd label', false)
+			->select('COUNT(uuid) total', false)
+			->group_by('imd')
+			->get($this->table)
+			->result();
+
+		$result->data->datasets[0]->data = array_map(function ($record) {
+			return $record->total;
+		}, $records);
+
+		$result->data->labels = array_map(function ($record) {
+			return $record->label;
+		}, $records);
+
+		return json_encode($result);
 	}
 }

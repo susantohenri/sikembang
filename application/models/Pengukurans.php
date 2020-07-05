@@ -264,6 +264,29 @@ class Pengukurans extends MY_Model
 		return json_encode($chart);
 	}
 
+	function grafik_asi()
+	{
+		$result = json_decode('{"type":"pie","data":{"datasets":[{"data":[100,2],"backgroundColor":["lightblue","orange"]}],"labels":["Ya","Tidak"]},"options":{"responsive":true}}');
+
+		$all = $this->db
+			->distinct('anak')
+			->group_by('anak')
+			->get($this->table)
+			->result();
+		$all = count($all);
+
+		$ekslusif = $this->db
+			->select('anak')
+			->group_by('anak')
+			->having("GROUP_CONCAT(DISTINCT asi_eksklusif) = 'Ya'")
+			->get($this->table)
+			->result();
+		$ekslusif = count($ekslusif);
+
+		$result->data->datasets[0]->data = array($ekslusif, $all - $ekslusif);
+		return json_encode($result);
+	}
+
 	function download($jenis, $since, $until)
 	{
 		$monthsQ = $this->db
