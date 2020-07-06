@@ -37,15 +37,22 @@
 
                         <div class="form-group row">
                             <label class="col-sm-3 control-label">Berat Badan</label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-9 input-group">
                                 <input class="form-control" type="text" value="" name="bb">
+                                <div class="input-group-append">
+                                    <span class="input-group-text">Kg</span>
+                                </div>
+
                             </div>
                         </div>
 
                         <div class="form-group row">
                             <label class="col-sm-3 control-label">Tinggi Badan</label>
-                            <div class="col-sm-9">
+                            <div class="col-sm-9 input-group">
                                 <input class="form-control" type="text" value="" name="tb">
+                                <div class="input-group-append">
+                                    <span class="input-group-text">Cm</span>
+                                </div>
                             </div>
                         </div>
 
@@ -64,7 +71,7 @@
 
                 <div class="row">
                     <div class="col-sm-12 text-center">
-                        <h1><b>Hasil Perhitungan, </b><i style="color: #ffab00" id="result"></i></h1>
+                        <h1 id="result"></h1>
                     </div>
                 </div>
 
@@ -78,7 +85,7 @@
             $('[name="jenis_kalkulator"]').change(function() {
                 bb.hide().find('input').val('')
                 tb.hide().find('input').val('')
-                $('#result').html('belum tersedia')
+                $('#result').html('')
                 switch ($(this).val()) {
                     case 'bb':
                         bb.show();
@@ -101,7 +108,8 @@
                         data[$(this).attr('name')] = $(this).val()
                     })
                 $.post('', data, function(result) {
-                    $('#result').html(result)
+                    result = JSON.parse(result)
+                    $('#result').html(result.hasil).css('color', result.color)
                 })
             })
         });

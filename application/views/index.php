@@ -33,7 +33,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
              style="opacity: .8"> -->
         <span class="brand-text font-weight-light"><b>Si</b><i style="color: #ffab00">Kembang</i></span>
       </a>
-      <a href="<?= site_url('Login/Logout') ?>" style="color: #ffab00"><?= ucfirst($this->session->userdata('username')) ?>, <i style="color: #000">keluar</i></a>
+      <a href="<?= site_url('Login/Logout') ?>" class="btn btn-warning">Logout</a>
     </div>
   </nav>
   <!-- /.navbar -->

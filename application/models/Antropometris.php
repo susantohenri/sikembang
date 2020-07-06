@@ -55,7 +55,13 @@ class Antropometris extends MY_Model
   {
     $bb = str_replace(',', '.', $bb);
     $found = $this->db->query("
-        SELECT hasil
+        SELECT
+          hasil,
+          CASE
+            WHEN hasil = 'Sangat Kurang' THEN 'red'
+            WHEN hasil = 'Kurang' OR hasil = 'Resiko Berlebih' THEN 'orange'
+            ELSE 'green'
+          END color
         FROM antropometri
         WHERE nama = 'Berat Badan {$jenis_kelamin}'
         AND DATEDIFF(CURRENT_DATE, '{$tgl_lahir}') / 30 >= usia_min
@@ -64,14 +70,20 @@ class Antropometris extends MY_Model
         AND {$bb} <= bb_max
       ")
       ->row_array();
-    return $found ? $found['hasil'] : 'Formula tidak ditemukan';
+    return $found ? json_encode($found) : '{"hasil": "Formula tidak ditemukan", "color": "black"}';
   }
 
   function tb($jenis_kelamin, $tgl_lahir, $tb)
   {
     $tb = str_replace(',', '.', $tb);
     $found = $this->db->query("
-        SELECT hasil
+        SELECT 
+          hasil,
+          CASE
+            WHEN hasil = 'Sangat Pendek' THEN 'red'
+            WHEN hasil = 'Pendek' OR hasil = 'Tinggi' THEN 'orange'
+            ELSE 'green'
+          END color
         FROM antropometri
         WHERE nama = 'Tinggi Badan {$jenis_kelamin}'
         AND DATEDIFF(CURRENT_DATE, '{$tgl_lahir}') / 30 >= usia_min
@@ -80,7 +92,7 @@ class Antropometris extends MY_Model
         AND FLOOR(({$tb} / 0.5) * 0.5) <= tb_max
       ")
       ->row_array();
-    return $found ? $found['hasil'] : 'Formula tidak ditemukan';
+    return $found ? json_encode($found) : '{"hasil": "Formula tidak ditemukan", "color": "black"}';
   }
 
   function gizi($jenis_kelamin, $tgl_lahir, $bb, $tb)
@@ -88,7 +100,13 @@ class Antropometris extends MY_Model
     $bb = str_replace(',', '.', $bb);
     $tb = str_replace(',', '.', $tb);
     $found = $this->db->query("
-        SELECT hasil
+        SELECT
+          hasil,
+          CASE
+            WHEN hasil = 'Gizi Buruk' OR hasil = 'Obesitas' THEN 'red'
+            WHEN hasil = 'Gizi Kurang' OR hasil = 'Gizi Lebih' THEN 'orange'
+            ELSE 'green'
+          END color
         FROM antropometri
         WHERE nama = 'Gizi {$jenis_kelamin}'
         AND DATEDIFF(CURRENT_DATE, '{$tgl_lahir}') / 30 >= usia_min
@@ -99,6 +117,6 @@ class Antropometris extends MY_Model
         AND {$bb} <= bb_max
       ")
       ->row_array();
-    return $found ? $found['hasil'] : 'Formula tidak ditemukan';
+    return $found ? json_encode($found) : '{"hasil": "Formula tidak ditemukan", "color": "black"}';
   }
 }

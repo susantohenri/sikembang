@@ -32,7 +32,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!-- <img src="../../dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
              style="opacity: .8"> -->
         <span class="brand-text font-weight-light"><b>Si</b><i style="color: #ffab00">Kembang</i></span>
-        <a href="<?= site_url('Login') ?>" style="color: #ffab00">Pengunjung, <i style="color: #000">masuk</i></a>
+        <a href="<?= site_url('Login') ?>" class="btn btn-warning">Login</a>
       </a>
     </div>
   </nav>

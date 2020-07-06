@@ -55,8 +55,13 @@
                             default: ?>
                                 <div class="form-group row">
                                     <label class="col-sm-3 control-label"><?= $field['label']  ?></label>
-                                    <div class="col-sm-9">
+                                    <div class="col-sm-9 <?= in_array($field['name'], array('bb', 'tb')) ? 'input-group' : '' ?>">
                                         <input class="form-control" type="<?= $field['type'] ?>" value="<?= htmlentities($field['value']) ?>" name="<?= $field['name'] ?>" <?= $field['attr'] ?>>
+                                        <?php if (in_array($field['name'], array('bb', 'tb'))) : ?>
+                                            <div class="input-group-append">
+                                                <span class="input-group-text"><?= 'bb' === $field['name'] ? 'Kg' : 'Cm' ?></span>
+                                            </div>
+                                        <?php endif ?>
                                     </div>
                                 </div>
                                 <?php break; ?>
@@ -113,7 +118,8 @@
             else $.post(site_url + 'Pengukuran/validasi', values, function(result) {
                 result = JSON.parse(result)
                 for (let field of ['hasil_bb', 'hasil_tb', 'hasil_gizi']) {
-                    $(`[name="${field}"]`).val(result[field])
+                    let hasil = JSON.parse(result[field])
+                    $(`[name="${field}"]`).val(hasil.hasil).css ('color', hasil.color)
                 }
             })
         }
