@@ -16,6 +16,15 @@ class Pengukurans extends MY_Model
 		$createPengukuran = site_url('Pengukuran/create/');
 		$this->form = array(
 			array(
+				'name' => 'createdAt',
+				'width' => 2,
+				'label' => 'Tanggal',
+				'value' => date('Y-m-d'),
+				'attributes' => array(
+					array('data-date' => 'datepicker')
+				)
+			),
+			array(
 				'name' => 'anak',
 				'label' => 'Anak',
 				'options' => array(),
@@ -76,7 +85,7 @@ class Pengukurans extends MY_Model
 			array(
 				'name' => 'hasil_bb',
 				'width' => 2,
-				'label' => 'Hasil Berat Badan',
+				'label' => 'Status Gizi BB / U',
 				'attributes' => array(
 					array('disabled' => 'disabled')
 				)
@@ -84,7 +93,7 @@ class Pengukurans extends MY_Model
 			array(
 				'name' => 'hasil_tb',
 				'width' => 2,
-				'label' => 'Hasil Tinggi Badan',
+				'label' => 'Status Gizi TB / U',
 				'attributes' => array(
 					array('disabled' => 'disabled')
 				)
@@ -92,7 +101,7 @@ class Pengukurans extends MY_Model
 			array(
 				'name' => 'hasil_gizi',
 				'width' => 2,
-				'label' => 'Hasil Gizi',
+				'label' => 'Status Gizi BB / TB',
 				'attributes' => array(
 					array('disabled' => 'disabled')
 				)
@@ -128,6 +137,67 @@ class Pengukurans extends MY_Model
 		} elseif (false === $uuid)  $form = array_filter($form, function ($field) {
 			return $field['name'] === 'anak';
 		});
+
+		$form = array_map(function ($field) {
+			if (false === strpos($field['name'], 'hasil_')) return $field;
+			if (!isset($field['value'])) return $field;
+			switch ($field['name']) {
+				case 'hasil_bb':
+					switch ($field['value']) {
+						case 'Sangat Kurang':
+							$field['attributes'][] = array('style' => 'color:red');
+							$field['attr'] .= ' style="color:red"';
+							break;
+						case 'Kurang':
+						case 'Resiko Berlebih':
+							$field['attributes'][] = array('style' => 'color:orange');
+							$field['attr'] .= ' style="color:orange"';
+							break;
+						default:
+							$field['attributes'][] = array('style' => 'color:green');
+							$field['attr'] .= ' style="color:green"';
+							break;
+					}
+					break;
+				case 'hasil_tb':
+					switch ($field['value']) {
+						case 'Sangat Pendek':
+							$field['attributes'][] = array('style' => 'color:red');
+							$field['attr'] .= ' style="color:red"';
+							break;
+						case 'Pendek':
+						case 'Tinggi':
+							$field['attributes'][] = array('style' => 'color:orange');
+							$field['attr'] .= ' style="color:orange"';
+							break;
+						default:
+							$field['attributes'][] = array('style' => 'color:green');
+							$field['attr'] .= ' style="color:green"';
+							break;
+					}
+					break;
+				case 'hasil_gizi':
+					switch ($field['value']) {
+						case 'Gizi Buruk':
+						case 'Obesitas':
+							$field['attributes'][] = array('style' => 'color:red');
+							$field['attr'] .= ' style="color:red"';
+							break;
+						case 'Gizi Kurang':
+						case 'Gizi Lebih':
+							$field['attributes'][] = array('style' => 'color:orange');
+							$field['attr'] .= ' style="color:orange"';
+							break;
+						default:
+							$field['attributes'][] = array('style' => 'color:green');
+							$field['attr'] .= ' style="color:green"';
+							break;
+					}
+					break;
+			}
+			return $field;
+		}, $form);
+
 		return $form;
 	}
 
@@ -309,5 +379,13 @@ class Pengukurans extends MY_Model
 
 		$result = $resultQ->get($this->table)->result_array();
 		return $result;
+	}
+
+	function findOne($param)
+	{
+		$this->db
+			->select('*')
+			->select("DATE_FORMAT(createdAt, '%Y-%m-%d') createdAt", false);
+		return parent::findOne($param);
 	}
 }
