@@ -14,6 +14,17 @@ class Anaks extends MY_Model
 		);
 		$this->form = array(
 			array(
+				'name' => 'posyandu',
+				'label' => 'Posyandu',
+				'width' => 2,
+				'options' => array(),
+				'attributes' => array(
+					array('data-autocomplete' => 'true'),
+					array('data-model' => 'Posyandus'),
+					array('data-field' => 'nama')
+				)
+			),
+			array(
 				'name' => 'nik',
 				'width' => 2,
 				'label' => 'NIK',

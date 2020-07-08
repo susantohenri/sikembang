@@ -23,6 +23,7 @@ class Migration_anak extends CI_Migration {
         `rt` varchar(255) NOT NULL,
         `rw` varchar(255) NOT NULL,
         `imd` varchar(255) NOT NULL,
+        `posyandu` varchar(255) NOT NULL,
         PRIMARY KEY (`uuid`)
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8
     ");
