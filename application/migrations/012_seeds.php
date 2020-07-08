@@ -17,11 +17,12 @@ class Migration_seeds extends CI_Migration
       'Pengukuran' => 'balance-scale',
       'Artikel' => 'copy',
       'Bidan' => 'user-md',
-      'Faskes' => 'hospital'
+      'Faskes' => 'hospital',
+      'Posyandu' => 'map-signs'
     );
 
     // BIDAN BEGIN
-    foreach (array('User', 'Role', 'Permission', 'Menu', 'Anak', 'Pengukuran', 'Artikel', 'Antropometri', 'Bidan', 'Faskes'/*additionalEntity*/) as $entity) {
+    foreach (array('User', 'Role', 'Permission', 'Menu', 'Anak', 'Pengukuran', 'Artikel', 'Antropometri', 'Bidan', 'Faskes', 'Posyandu'/*additionalEntity*/) as $entity) {
       foreach (array('index', 'create', 'read', 'update', 'delete') as $action) {
         $this->Permissions->create(array(
           'role' => $admin,
