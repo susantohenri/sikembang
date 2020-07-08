@@ -31,6 +31,18 @@ class Users extends MY_Model
     );
 
     $this->form[] = array(
+      'name' => 'posyandu',
+      'label' => 'Posyandu',
+      'width' => 2,
+      'options' => array(),
+      'attributes' => array(
+        array('data-autocomplete' => 'true'),
+        array('data-model' => 'Posyandus'),
+        array('data-field' => 'nama')
+      )
+    );
+
+    $this->form[] = array(
       'type' => 'password',
       'name' => 'password',
       'label' => 'Password'

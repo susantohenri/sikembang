@@ -14,6 +14,7 @@ class Migration_user extends CI_Migration {
         `role` varchar(255) NOT NULL,
         `createdAt` datetime DEFAULT NULL,
         `updatedAt` datetime DEFAULT NULL,
+        `posyandu` varchar(255) NOT NULL,
         PRIMARY KEY (`uuid`)
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8
     ");
