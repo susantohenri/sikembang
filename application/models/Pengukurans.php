@@ -106,6 +106,12 @@ class Pengukurans extends MY_Model
 					array('disabled' => 'disabled')
 				)
 			),
+			array(
+				'name' => 'intervensi',
+				'width' => 2,
+				'label' => 'Intervensi',
+				'type' => 'textarea'
+			),
 		);
 		$this->childs = array();
 	}
@@ -197,6 +203,19 @@ class Pengukurans extends MY_Model
 			}
 			return $field;
 		}, $form);
+
+		$hide_intervensi = true;
+		$this->load->model('Permissions');
+		$permissions = $this->Permissions->getPermissions();
+		if (false !== $uuid && in_array('delete_WarningSign', $permissions)) {
+			$found = $this->Pengukurans->findOne($uuid);
+			if ('1' === $found['warning_sign']) {
+				$hide_intervensi = false;
+			}
+		}
+		if ($hide_intervensi) $form = array_filter($form, function ($field) {
+			return $field['name'] !== 'intervensi';
+		});
 
 		return $form;
 	}

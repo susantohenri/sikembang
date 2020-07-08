@@ -22,6 +22,7 @@ class Migration_pengukuran extends CI_Migration {
         `hasil_tb` ENUM('Sangat Pendek', 'Pendek', 'Normal', 'Tinggi'),
         `hasil_gizi` ENUM('Gizi Buruk', 'Gizi Kurang', 'Gizi Lebih', 'Gizi Baik', 'Obesitas'),
         `warning_sign` tinyint(1) DEFAULT 0,
+        `intervensi` varchar(255) NOT NULL,
         PRIMARY KEY (`uuid`),
         KEY `anak` (`anak`)
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8
