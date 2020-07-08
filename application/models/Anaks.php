@@ -9,8 +9,7 @@ class Anaks extends MY_Model
 		$this->table = 'anak';
 		$this->thead = array(
 			(object) array('mData' => 'orders', 'sTitle' => 'No', 'visible' => false),
-			(object) array('mData' => 'nama', 'sTitle' => 'Nama Anak'),
-			(object) array('mData' => 'nama_ortu', 'sTitle' => 'Orang Tua'),
+			(object) array('mData' => 'nama', 'sTitle' => 'Nama'),
 		);
 		$this->form = array(
 			array(
@@ -23,6 +22,11 @@ class Anaks extends MY_Model
 					array('data-model' => 'Posyandus'),
 					array('data-field' => 'nama')
 				)
+			),
+			array(
+				'name' => 'no_kk',
+				'width' => 2,
+				'label' => 'No KK',
 			),
 			array(
 				'name' => 'nik',
@@ -62,9 +66,19 @@ class Anaks extends MY_Model
 				'label' => 'Berat Badan Lahir',
 			),
 			array(
-				'name' => 'nama_ortu',
+				'name' => 'tb_lahir',
 				'width' => 2,
-				'label' => 'Nama Orang Tua',
+				'label' => 'Panjang Badan Lahir',
+			),
+			array(
+				'name' => 'nama_ayah',
+				'width' => 2,
+				'label' => 'Nama Ayah',
+			),
+			array(
+				'name' => 'nama_ibu',
+				'width' => 2,
+				'label' => 'Nama Ibu',
 			),
 			array(
 				'name' => 'tlp_ortu',
@@ -85,6 +99,15 @@ class Anaks extends MY_Model
 				'name' => 'rw',
 				'width' => 2,
 				'label' => 'RW',
+			),
+			array(
+				'name' => 'bpjs',
+				'label' => 'Kepemilikan BPJS',
+				'width' => 2,
+				'options' => array(
+					array('text' => 'Tidak', 'value' => 'Tidak'),
+					array('text' => 'Ya', 'value' => 'Ya'),
+				)
 			),
 			array(
 				'name' => 'imd',
@@ -133,8 +156,7 @@ class Anaks extends MY_Model
 		$this->datatables
 			->select("{$this->table}.uuid")
 			->select("{$this->table}.orders")
-			->select('anak.nama')
-			->select('anak.nama_ortu');
+			->select('anak.nama');
 		return parent::dt();
 	}
 
