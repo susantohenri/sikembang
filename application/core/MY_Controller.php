@@ -35,6 +35,9 @@ class MY_Controller extends CI_Controller {
 
     $this->load->model('Permissions');
     if (!isset ($vars['permission'])) $vars['permission'] = $this->Permissions->getPermissions();
+
+    $this->load->model('Pengukurans');
+    $vars['warning_signs'] = $this->Pengukurans->getWarningSigns ();
     $this->load->view($view, $vars);
   }
 

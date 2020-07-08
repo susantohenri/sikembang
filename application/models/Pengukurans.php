@@ -235,16 +235,12 @@ class Pengukurans extends MY_Model
 
 	function getWarningSigns()
 	{
-		return $this->db
-			->select("{$this->table}.uuid")
-			->select('anak.nama')
-			->select("{$this->table}.hasil_bb")
-			->select("{$this->table}.hasil_tb")
-			->select("{$this->table}.hasil_gizi")
-			->join('anak', "anak.uuid = {$this->table}.anak", 'left')
+		$result = $this->db
+			->select("COUNT(uuid) total")
 			->where('warning_sign', 1)
 			->get($this->table)
-			->result();
+			->row_array();
+		return $result ? $result['total'] : 0;
 	}
 
 	function unsign($uuid)
@@ -387,5 +383,20 @@ class Pengukurans extends MY_Model
 			->select('*')
 			->select("DATE_FORMAT(createdAt, '%Y-%m-%d') createdAt", false);
 		return parent::findOne($param);
+	}
+
+	function warningDt()
+	{
+		if ($term = $this->input->post('search')) {
+			$this->datatables->like('anak.nama', $term['value']);
+		}
+		$this->datatables
+			->select("{$this->table}.uuid")
+			->select("{$this->table}.orders")
+			->select("DATE_FORMAT (pengukuran.createdAt, '%d-%m-%Y %h:%i:%s') createdAt", false)
+			->select("anak.nama anak", false)
+			->join('anak', 'anak.uuid = pengukuran.anak', 'left')
+			->where('warning_sign', 1);
+		return parent::dt();
 	}
 }
