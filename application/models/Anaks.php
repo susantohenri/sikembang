@@ -113,6 +113,12 @@ class Anaks extends MY_Model
 
 	function select2($field, $term)
 	{
+		$this->load->model('Roles');
+		$role = $this->Roles->findOne($this->session->userdata('role'));
+		if ('Kader' === $role['name']) {
+			$this->db->where('posyandu', $this->session->userdata('posyandu'));
+		}
+
 		return $this->db
 			->select("uuid as id", false)
 			->select("$field as text", false)
