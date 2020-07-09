@@ -41,21 +41,34 @@ class Pengukuran extends MY_Controller
 		$this->loadview('index', $vars);
 	}
 
-	function create($anak = null)
+	function create()
 	{
 		$model = $this->model;
-		$vars = array();
-		$vars['page_name'] = 'form_pengukuran';
-		$vars['form']     = $this->$model->getForm(false, false, $anak);
-		$vars['subform'] = $this->$model->getFormChild();
-		$vars['uuid'] = '';
-		$vars['js'] = array(
-			'moment.min.js',
-			'bootstrap-datepicker.js',
-			'daterangepicker.min.js',
-			'select2.full.min.js',
-			'form.js'
+		$vars = array(
+			'page_name' => 'form_pengukuran',
+			'uuid' => '',
+			'submit_url' => '',
+			'js' => array(
+				'moment.min.js',
+				'bootstrap-datepicker.js',
+				'daterangepicker.min.js',
+				'select2.full.min.js',
+				'form_pengukuran.js',
+			)
 		);
+
+		if (!$this->input->post()) {
+			$vars['form'] = $this->$model->getFormFirstStep();
+		} else if (!$this->input->post('anak')) {
+			$createdAt = $this->input->post('createdAt');
+			$vars['form'] = $this->$model->getFormSecondStep($createdAt);
+		} else {
+			$createdAt = $this->input->post('createdAt');
+			$anak = $this->input->post('anak');
+			$vars['form'] = $this->$model->getForm(false, false, $anak, $createdAt);
+			$vars['submit_url'] = site_url('Pengukuran');
+		}
+
 		$this->loadview('index', $vars);
 	}
 
@@ -76,8 +89,9 @@ class Pengukuran extends MY_Controller
 			'bootstrap-datepicker.js',
 			'daterangepicker.min.js',
 			'select2.full.min.js',
-			'form.js'
+			'form_pengukuran.js'
 		);
+		$vars['submit_url'] = site_url('Pengukuran');
 		$this->loadview('index', $vars);
 	}
 
@@ -87,8 +101,9 @@ class Pengukuran extends MY_Controller
 		$anak = $this->input->post('anak');
 		$bb = $this->input->post('bb');
 		$tb = $this->input->post('tb');
+		$retrieveDate = $this->input->post('createdAt');
 
-		$found = $this->Anaks->findOne($anak);
+		$found = $this->Anaks->findOneWithUsia($anak, $retrieveDate);
 		echo json_encode(array(
 			'hasil_bb' => $this->Antropometris->bb($found['jenis_kelamin'], $found['tgl_lahir'], $bb),
 			'hasil_tb' => $this->Antropometris->tb($found['jenis_kelamin'], $found['tgl_lahir'], $tb),

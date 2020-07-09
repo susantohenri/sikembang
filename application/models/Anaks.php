@@ -122,14 +122,13 @@ class Anaks extends MY_Model
 		$this->childs = array();
 	}
 
-	function findOne($param)
+	function findOneWithUsia($uuid, $retrieveDate)
 	{
-		if (!is_array($param)) $param = array('uuid' => $param);
 		return $this
 			->db
 			->select('*')
-			->select("DATEDIFF(CURRENT_DATE, tgl_lahir) / 30 AS usia", false)
-			->where($param)
+			->select("DATEDIFF('{$retrieveDate}', tgl_lahir) / 30 AS usia", false)
+			->where('uuid', $uuid)
 			->get($this->table)
 			->row_array();
 	}
@@ -142,10 +141,13 @@ class Anaks extends MY_Model
 			$this->db->where('posyandu', $this->session->userdata('posyandu'));
 		}
 
+		$retrieveDate = $this->input->post('createdAt');
+
 		return $this->db
 			->select("uuid as id", false)
 			->select("$field as text", false)
-			->where('DATEDIFF(CURRENT_DATE, tgl_lahir) / 30 <= ', 60, false)
+			->where("DATEDIFF('{$retrieveDate}', tgl_lahir) / 30 <= ", 60, false)
+			->where("DATEDIFF('{$retrieveDate}', tgl_lahir) / 30 >= ", 0, false)
 			->where("uuid NOT IN (SELECT anak FROM pengukuran WHERE DATE_FORMAT(pengukuran.createdAt, '%m-%Y') = DATE_FORMAT(CURRENT_DATE, '%m-%Y'))")
 			->limit(10)
 			->like($field, $term)->get($this->table)->result();

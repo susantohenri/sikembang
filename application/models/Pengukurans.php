@@ -21,7 +21,8 @@ class Pengukurans extends MY_Model
 				'label' => 'Tanggal',
 				'value' => date('Y-m-d'),
 				'attributes' => array(
-					array('data-date' => 'datepicker')
+					array('data-date' => 'datepicker'),
+					array('disabled' => 'disabled')
 				)
 			),
 			array(
@@ -33,7 +34,7 @@ class Pengukurans extends MY_Model
 					array('data-autocomplete' => 'true'),
 					array('data-model' => 'Anaks'),
 					array('data-field' => 'nama'),
-					array('onchange' => "window.location = '{$createPengukuran}' + $(this).val() ")
+					array('disabled' => 'disabled')
 				)
 			),
 			array(
@@ -116,12 +117,32 @@ class Pengukurans extends MY_Model
 		$this->childs = array();
 	}
 
-	function getForm($uuid = false, $isSubform = false, $anak = null)
+	function getFormFirstStep()
+	{
+		$form = array_values(array_filter(parent::getForm(), function ($field) {
+			return $field['name'] === 'createdAt';
+		}));
+		$form[0]['attr'] = str_replace('disabled="disabled', '', $form[0]['attr']);
+		return $form;
+	}
+
+	function getFormSecondStep($createdAt)
+	{
+		$form = array_values(array_filter(parent::getForm(), function ($field) {
+			return in_array($field['name'], array('anak', 'createdAt'));
+		}));
+		$form[0]['value'] = $createdAt;
+		$form[1]['attr'] = str_replace('disabled="disabled', '', $form[1]['attr']);
+		return $form;
+	}
+
+	function getForm($uuid = false, $isSubform = false, $anak = null, $retrieveDate = null)
 	{
 		$form = parent::getForm($uuid, $isSubform);
+
 		if (null !== $anak) {
 			$this->load->model('Anaks');
-			$found = $this->Anaks->findOne($anak);
+			$found = $this->Anaks->findOneWithUsia($anak, $retrieveDate);
 			$form = array_map(function ($field) use ($anak, $found) {
 				if ('anak' === $field['name']) {
 					$field['value'] = $anak;
@@ -140,9 +161,7 @@ class Pengukurans extends MY_Model
 				if ($found['usia'] > 6  && 'asi_eksklusif' === $field['name']) return false;
 				return true;
 			});
-		} elseif (false === $uuid)  $form = array_filter($form, function ($field) {
-			return $field['name'] === 'anak';
-		});
+		}
 
 		$form = array_map(function ($field) {
 			if (false === strpos($field['name'], 'hasil_')) return $field;
@@ -235,7 +254,12 @@ class Pengukurans extends MY_Model
 			||
 			$record['hasil_gizi'] !== 'Gizi Baik'
 		) $record['warning_sign'] = 1;
-		return parent::create($record);
+		$generate = $this->db->select('UUID() uuid', false)->get()->row_array();
+		$record['uuid'] = $generate['uuid'];
+		$record = $this->savechild($record);
+		$record['updatedAt'] = date('Y-m-d H:i:s');
+		$this->db->insert($this->table, $record);
+		return $record['uuid'];
 	}
 
 	function dt()
