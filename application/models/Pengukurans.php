@@ -70,8 +70,8 @@ class Pengukurans extends MY_Model
 				'label' => 'Vitamin A Februari',
 				'width' => 2,
 				'options' => array(
-					array('text' => 'Ya', 'value' => 'Ya'),
 					array('text' => 'Tidak', 'value' => 'Tidak'),
+					array('text' => 'Ya', 'value' => 'Ya'),
 				)
 			),
 			array(
@@ -79,8 +79,8 @@ class Pengukurans extends MY_Model
 				'label' => 'Vitamin A Agustus',
 				'width' => 2,
 				'options' => array(
-					array('text' => 'Ya', 'value' => 'Ya'),
 					array('text' => 'Tidak', 'value' => 'Tidak'),
+					array('text' => 'Ya', 'value' => 'Ya'),
 				)
 			),
 			array(
@@ -140,6 +140,24 @@ class Pengukurans extends MY_Model
 	{
 		$form = parent::getForm($uuid, $isSubform);
 
+		if (!is_null($retrieveDate)) {
+			$form = array_map(function ($field) use ($retrieveDate) {
+				if ('createdAt' === $field['name']) $field['value'] = $retrieveDate;
+				return $field;
+			}, $form);
+		}
+
+		if (false !== $uuid && is_null($anak) && is_null($retrieveDate)) {
+			$field_anak = array_values(array_filter($form, function ($field) {
+				return $field['name'] === 'anak';
+			}))[0];
+			$anak = $field_anak['value'];
+			$field_createdAt = array_values(array_filter($form, function ($field) {
+				return $field['name'] === 'createdAt';
+			}))[0];
+			$retrieveDate = $field_createdAt['value'];
+		}
+
 		if (null !== $anak) {
 			$this->load->model('Anaks');
 			$found = $this->Anaks->findOneWithUsia($anak, $retrieveDate);
@@ -155,9 +173,10 @@ class Pengukurans extends MY_Model
 				return $field;
 			}, $form);
 
-			$form = array_filter($form, function ($field) use ($anak, $found) {
-				if (2 !== (int) date('m') && 'vit_a_feb' === $field['name']) return false;
-				if (8 !== (int) date('m') && 'vit_a_aug' === $field['name']) return false;
+			$form = array_filter($form, function ($field) use ($anak, $found, $retrieveDate) {
+				$month = (int) date('m', strtotime($retrieveDate));
+				if (2 !== $month && 'vit_a_feb' === $field['name']) return false;
+				if (8 !== $month && 'vit_a_aug' === $field['name']) return false;
 				if ($found['usia'] > 6  && 'asi_eksklusif' === $field['name']) return false;
 				return true;
 			});
