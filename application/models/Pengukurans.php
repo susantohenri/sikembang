@@ -84,6 +84,114 @@ class Pengukurans extends MY_Model
 				)
 			),
 			array(
+				'name' => 'bcg',
+				'label' => 'Imunisasi BCG',
+				'width' => 2,
+				'options' => array(
+					array('text' => 'Tidak', 'value' => 'Tidak'),
+					array('text' => 'Ya', 'value' => 'Ya'),
+				)
+			),
+			array(
+				'name' => 'polio_1',
+				'label' => 'Imunisasi Polio 1',
+				'width' => 2,
+				'options' => array(
+					array('text' => 'Tidak', 'value' => 'Tidak'),
+					array('text' => 'Ya', 'value' => 'Ya'),
+				)
+			),
+			array(
+				'name' => 'dpt_combo_1',
+				'label' => 'Imunisasi DPT Combo 1',
+				'width' => 2,
+				'options' => array(
+					array('text' => 'Tidak', 'value' => 'Tidak'),
+					array('text' => 'Ya', 'value' => 'Ya'),
+				)
+			),
+			array(
+				'name' => 'polio_2',
+				'label' => 'Imunisasi Polio 2',
+				'width' => 2,
+				'options' => array(
+					array('text' => 'Tidak', 'value' => 'Tidak'),
+					array('text' => 'Ya', 'value' => 'Ya'),
+				)
+			),
+			array(
+				'name' => 'dpt_combo_2',
+				'label' => 'Imunisasi DPT Combo 2',
+				'width' => 2,
+				'options' => array(
+					array('text' => 'Tidak', 'value' => 'Tidak'),
+					array('text' => 'Ya', 'value' => 'Ya'),
+				)
+			),
+			array(
+				'name' => 'polio_3',
+				'label' => 'Imunisasi Polio 3',
+				'width' => 2,
+				'options' => array(
+					array('text' => 'Tidak', 'value' => 'Tidak'),
+					array('text' => 'Ya', 'value' => 'Ya'),
+				)
+			),
+			array(
+				'name' => 'dpt_combo_3',
+				'label' => 'Imunisasi DPT Combo 3',
+				'width' => 2,
+				'options' => array(
+					array('text' => 'Tidak', 'value' => 'Tidak'),
+					array('text' => 'Ya', 'value' => 'Ya'),
+				)
+			),
+			array(
+				'name' => 'polio_4',
+				'label' => 'Imunisasi Polio 4',
+				'width' => 2,
+				'options' => array(
+					array('text' => 'Tidak', 'value' => 'Tidak'),
+					array('text' => 'Ya', 'value' => 'Ya'),
+				)
+			),
+			array(
+				'name' => 'ipv',
+				'label' => 'Imunisasi IPV',
+				'width' => 2,
+				'options' => array(
+					array('text' => 'Tidak', 'value' => 'Tidak'),
+					array('text' => 'Ya', 'value' => 'Ya'),
+				)
+			),
+			array(
+				'name' => 'campak',
+				'label' => 'Imunisasi Campak',
+				'width' => 2,
+				'options' => array(
+					array('text' => 'Tidak', 'value' => 'Tidak'),
+					array('text' => 'Ya', 'value' => 'Ya'),
+				)
+			),
+			array(
+				'name' => 'dpt_combo_booster',
+				'label' => 'Imunisasi DPT Combo Booster',
+				'width' => 2,
+				'options' => array(
+					array('text' => 'Tidak', 'value' => 'Tidak'),
+					array('text' => 'Ya', 'value' => 'Ya'),
+				)
+			),
+			array(
+				'name' => 'campak_booster',
+				'label' => 'Imunisasi Campak Booster',
+				'width' => 2,
+				'options' => array(
+					array('text' => 'Tidak', 'value' => 'Tidak'),
+					array('text' => 'Ya', 'value' => 'Ya'),
+				)
+			),
+			array(
 				'name' => 'hasil_bb',
 				'width' => 2,
 				'label' => 'Status Gizi BB / U',
