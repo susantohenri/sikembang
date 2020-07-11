@@ -288,6 +288,106 @@ class Pengukurans extends MY_Model
 				if ($found['usia'] > 6  && 'asi_eksklusif' === $field['name']) return false;
 				return true;
 			});
+
+			$hide_imunisasi = array('bcg', 'polio_1', 'dpt_combo_1', 'polio_2', 'dpt_combo_2', 'polio_3', 'dpt_combo_3', 'polio_4', 'ipv', 'campak', 'dpt_combo_booster', 'campak_booster');
+			if (!$uuid) {
+				if ($found['usia'] <= 24) {
+					$imunisasi = $this->Pengukurans->getImunisasi($anak);
+
+					if ($found['usia'] >= 18) {
+						if (in_array('dpt_combo_booster', $imunisasi['belum'])) {
+							$hide_imunisasi = array_diff($hide_imunisasi, array('dpt_combo_booster'));
+						}
+						if (in_array('campak_booster', $imunisasi['belum'])) {
+							$hide_imunisasi = array_diff($hide_imunisasi, array('campak_booster'));
+						}
+					}
+
+					if ($found['usia'] <= 11) {
+						if ($found['usia'] >= 1) {
+							if (in_array('bcg', $imunisasi['belum'])) {
+								$hide_imunisasi = array_diff($hide_imunisasi, array('bcg'));
+							}
+							if (in_array('polio_1', $imunisasi['belum'])) {
+								$hide_imunisasi = array_diff($hide_imunisasi, array('polio_1'));
+							}
+						}
+						if ($found['usia'] >= 2) {
+							if (in_array('dpt_combo_1', $imunisasi['belum'])) {
+								$hide_imunisasi = array_diff($hide_imunisasi, array('dpt_combo_1'));
+							}
+							if (in_array('polio_2', $imunisasi['belum'])) {
+								$hide_imunisasi = array_diff($hide_imunisasi, array('polio_2'));
+							}
+						}
+						if ($found['usia'] >= 3) {
+							if (in_array('dpt_combo_2', $imunisasi['belum'])) {
+								$hide_imunisasi = array_diff($hide_imunisasi, array('dpt_combo_2'));
+							}
+							if (in_array('polio_3', $imunisasi['belum'])) {
+								$hide_imunisasi = array_diff($hide_imunisasi, array('polio_3'));
+							}
+						}
+						if ($found['usia'] >= 4) {
+							if (in_array('dpt_combo_3', $imunisasi['belum'])) {
+								$hide_imunisasi = array_diff($hide_imunisasi, array('dpt_combo_3'));
+							}
+							if (in_array('polio_4', $imunisasi['belum'])) {
+								$hide_imunisasi = array_diff($hide_imunisasi, array('polio_4'));
+							}
+							if (in_array('ipv', $imunisasi['belum'])) {
+								$hide_imunisasi = array_diff($hide_imunisasi, array('ipv'));
+							}
+						}
+						if ($found['usia'] >= 9) {
+							if (in_array('dpt_combo_booster', $imunisasi['belum'])) {
+								$hide_imunisasi = array_diff($hide_imunisasi, array('dpt_combo_booster'));
+							}
+							if (in_array('campak_booster', $imunisasi['belum'])) {
+								$hide_imunisasi = array_diff($hide_imunisasi, array('campak_booster'));
+							}
+						}
+					}
+				}
+				$form = array_values(array_filter($form, function ($field) use ($hide_imunisasi) {
+					return !in_array($field['name'], $hide_imunisasi);
+				}));
+			} else {
+				foreach ($form as $field) {
+					if (in_array($field['name'], $hide_imunisasi) && 'Ya' === $field['value']) {
+						$hide_imunisasi = array_diff($hide_imunisasi, array($field['name']));
+					}
+				}
+				switch ((int) $found['usia']) {
+					case 1:
+						$hide_imunisasi = array_diff($hide_imunisasi, array('bcg'));
+						$hide_imunisasi = array_diff($hide_imunisasi, array('polio_1'));
+						break;
+					case 2:
+						$hide_imunisasi = array_diff($hide_imunisasi, array('dpt_combo_1'));
+						$hide_imunisasi = array_diff($hide_imunisasi, array('polio_2'));
+						break;
+					case 3:
+						$hide_imunisasi = array_diff($hide_imunisasi, array('dpt_combo_2'));
+						$hide_imunisasi = array_diff($hide_imunisasi, array('polio_3'));
+						break;
+					case 4:
+						$hide_imunisasi = array_diff($hide_imunisasi, array('dpt_combo_3'));
+						$hide_imunisasi = array_diff($hide_imunisasi, array('polio_4'));
+						$hide_imunisasi = array_diff($hide_imunisasi, array('ipv'));
+						break;
+					case 9:
+						$hide_imunisasi = array_diff($hide_imunisasi, array('campak'));
+						break;
+					case 18:
+						$hide_imunisasi = array_diff($hide_imunisasi, array('dpt_combo_booster'));
+						$hide_imunisasi = array_diff($hide_imunisasi, array('campak_booster'));
+						break;
+				}
+				$form = array_values(array_filter($form, function ($field) use ($hide_imunisasi) {
+					return !in_array($field['name'], $hide_imunisasi);
+				}));
+			}
 		}
 
 		$form = array_map(function ($field) {
@@ -568,5 +668,22 @@ class Pengukurans extends MY_Model
 			->join('anak', 'anak.uuid = pengukuran.anak', 'left')
 			->where('warning_sign', 1);
 		return parent::dt();
+	}
+
+	function getImunisasi($anak)
+	{
+		$belum = $imuns = array('bcg', 'polio_1', 'dpt_combo_1', 'polio_2', 'dpt_combo_2', 'polio_3', 'dpt_combo_3', 'polio_4', 'ipv', 'campak', 'dpt_combo_booster', 'campak_booster');
+		$sudah = array();
+		foreach ($imuns as $im) $this->db->select($im);
+		$result = $this->db->get_where($this->table, array('anak' => $anak))->result();
+		foreach ($result as $record) {
+			foreach ($imuns as $im) {
+				if ($record->$im === 'Ya') {
+					$sudah[] = $im;
+					$belum = array_diff($belum, array($im));
+				}
+			}
+		}
+		return array('sudah' => $sudah, 'belum' => $belum);
 	}
 }
