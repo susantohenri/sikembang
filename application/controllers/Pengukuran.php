@@ -155,10 +155,21 @@ class Pengukuran extends MY_Controller
 			$rows = $this->Pengukurans->download($since, $until);
 			$colnames = array_keys($rows[0]);
 
+			$title = $blank = $prov = $kab = $puskesmas = array_fill(0, count($colnames), '');
+			$title[10] = 'DATA SASARAN BALITA';
+			$prov[1] = 'Provinsi :';
+			$kab[1] = 'Kabupaten/Kota :';
+			$puskesmas[1] = 'Pueskesmas :';
+
 			header('Content-Type: text/csv; charset=utf-8');
 			header('Content-Disposition: attachment; filename=sikembang.csv');
 
 			$output = fopen('php://output', 'w');
+			fputcsv($output, $title);
+			fputcsv($output, $blank);
+			fputcsv($output, $prov);
+			fputcsv($output, $kab);
+			fputcsv($output, $puskesmas);
 			fputcsv($output, $colnames);
 			foreach ($rows as $row) fputcsv($output, $row);
 		} else {
