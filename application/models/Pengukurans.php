@@ -555,19 +555,26 @@ class Pengukurans extends MY_Model
 			$datasets[] = $ds;
 		}
 
-		$chart->data->datasets[] = array_values(array_filter($datasets, function ($ds) {
+		$normal = array_values(array_filter($datasets, function ($ds) {
 			return in_array($ds->label, array('Gizi Baik', 'Normal'));
-		}))[0];
+		}));
+		if (count($normal) > 0) $chart->data->datasets[] = $normal[0];
 
-		$chart->data->datasets[] = array_values(array_filter($datasets, function ($ds) {
+		$buruk = array_values(array_filter($datasets, function ($ds) {
 			return in_array($ds->label, array('Gizi Buruk', 'Sangat Pendek', 'Sangat Kurang'));
-		}))[0];
-		$chart->data->datasets[] = array_values(array_filter($datasets, function ($ds) {
+		}));
+		if (count($buruk) > 0) $chart->data->datasets[] = $buruk[0];
+
+		$kurang = array_values(array_filter($datasets, function ($ds) {
 			return in_array($ds->label, array('Gizi Kurang', 'Pendek', 'Kurang'));
-		}))[0];
-		$chart->data->datasets[] = array_values(array_filter($datasets, function ($ds) {
+		}));
+		if (count($kurang) > 0) $chart->data->datasets[] = $kurang[0];
+
+		$lebih = array_values(array_filter($datasets, function ($ds) {
 			return in_array($ds->label, array('Gizi Lebih', 'Tinggi', 'Resiko Berlebih'));
-		}))[0];
+		}));
+		if (count($lebih) > 0) $chart->data->datasets[] = $lebih[0];
+
 		$obesitas = array_values(array_filter($datasets, function ($ds) {
 			return $ds->label === 'Obesitas';
 		}));

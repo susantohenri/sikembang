@@ -34,6 +34,7 @@
         </div>
         <div class="card-footer text-right">
             <a id="submit" class="btn btn-info btn-submit"><i class="fa fa-chart-line"></i> &nbsp; Filter</a>
+            <a class="btn btn-primary btn-download" download="sikembang.jpg"><i class="fa fa-image"></i> &nbsp; Download</a>
         </div>
     </div>
 </form>
@@ -50,6 +51,7 @@
 </div>
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", function() {
+        $('.btn-download').hide()
         $('[name="jenis"]').change(function() {
             var since = $('[name="since"]').parent().parent()
             var until = $('[name="until"]').parent().parent()
@@ -71,6 +73,17 @@
             })
             $.post('', params, function(data) {
                 data = JSON.parse(data)
+                data.options.animation = {}
+                data.options.animation.onComplete = function() {
+                    ctx.save()
+                    ctx.globalCompositeOperation = 'destination-over'
+                    ctx.fillStyle = 'white'
+                    ctx.fillRect(0, 0, window.myBar.chart.width, window.myBar.chart.height)
+                    ctx.restore()
+                    $('.btn-download')
+                        .attr('href', window.myBar.toBase64Image())
+                        .show()
+                }
                 window.myBar = new Chart(ctx, data)
             })
         })
