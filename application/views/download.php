@@ -17,16 +17,6 @@
                             <input class="form-control" type="text" name="until" data-date="datepicker" autocomplete="off">
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <label class="col-sm-3 control-label">Jenis Perhitungan</label>
-                        <div class="col-sm-9">
-                            <select name="jenis" class="form-control">
-                                <option value="bb">Berat Badan / Usia</option>
-                                <option value="tb">Tinggi Badan / Usia</option>
-                                <option value="gizi">Berat Badan / Tinggi Badan</option>
-                            </select>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>

@@ -623,28 +623,49 @@ class Pengukurans extends MY_Model
 		return json_encode($result);
 	}
 
-	function download($jenis, $since, $until)
+	function download($since, $until)
 	{
-		$monthsQ = $this->db
-			->select("DATE_FORMAT(createdAt, '%b %Y') monthYear", false)
-			->group_by("DATE_FORMAT(createdAt, '%b %Y')")
-			->order_by('createdAt');
-
-		if (strlen($since) > 0) $monthsQ->where("createdAt >= '{$since}'");
-		if (strlen($until) > 0) $monthsQ->where("createdAt <= '{$until}'");
-
-		$months = $monthsQ->get($this->table)->result();
-
-		$resultQ = $this->db
-			->select("hasil_{$jenis} KATEGORI", false)
-			->group_by("hasil_{$jenis}");
-
-		foreach ($months as $month) {
-			$resultQ->select("SUM(CASE WHEN DATE_FORMAT(createdAt, '%b %Y') = '{$month->monthYear}' THEN 1 ELSE 0 END) '{$month->monthYear}'", false);
-		}
-
-		$result = $resultQ->get($this->table)->result_array();
-		return $result;
+		if (strlen($since) > 0) $this->db->where("{$this->table}.createdAt >= '{$since}'");
+		if (strlen($until) > 0) $this->db->where("{$this->table}.createdAt <= '{$until}'");
+		$no = 0;
+		return array_map(function ($record) use (&$no) {
+			$no++;
+			return array (
+				'No' => $no,
+				'NIK (Nomor Induk Kependudukan)' => $record->nik,
+				'ANAK KE' => $record->anak_ke,
+				'NAMA ANAK' => $record->nama,
+				'TANGGAL LAHIR' => $record->tgl_lahir,
+				'JENIS KELAMIN' => $record->jenis_kelamin,
+				'Berat Badan Lahir (kg)' => $record->bb_lahir,
+				'Nama Orang Tua' => "{$record->nama_ayah} / {$record->nama_ibu}",
+				'NIK Orang Tua' => '',
+				'No. Tlp/HP Orang Tua' => $record->tlp_ortu,
+				'ALAMAT' => $record->alamat,
+				'RT' => $record->rt,
+				'RW' => $record->rw,
+				'IMD 1=YA, 2=Tidak' => 'Ya' === $record->imd ? 1 : 2,
+				'Umur (bulan)' => $record->usia,
+				'Tanggal Pengukuran' => $record->tanggal_pengukuran,
+				'BB (Kg)' => $record->bb,
+				'TB (Cm)' => $record->tb,
+				'Cara Ukur 1=Telentang 2=Berdiri' => $record->usia < 24 ? 1 : 2,
+				'ASI Eksklusif 1=Ya, 2=Tidak' => 'Ya' === $record->asi_eksklusif ? 1 : 2,
+				'Vitamin A Februari 1=Ya, 2=Tidak' => 'Ya' === $record->vit_a_feb ? 1 : 2,
+				'Vitamin A Agustus 1=Ya, 2=Tidak' => 'Ya' === $record->vit_a_aug ? 1 : 2,
+				'Status BB/U (sangat kurang/kurang/normal/risiko BB berlebih)' => $record->hasil_bb,
+				'Status TB/U (sangat pendek/pendek/normal/tinggi)' => $record->hasil_tb,
+				'Status BB/TB (gizi buruk/gizi kurang/gizi baik/risiko gizi lebih/gizi lebih/obesitas)' => $record->hasil_bb
+			);
+		}, $this->db
+			->select('*')
+			->select("DATE_FORMAT(tgl_lahir, '%d-%m-%Y') AS tgl_lahir", false)
+			->select("FLOOR(DATEDIFF({$this->table}.createdAt, tgl_lahir) / 30) AS usia", false)
+			->select("DATE_FORMAT({$this->table}.createdAt, '%d-%m-%Y') AS tanggal_pengukuran", false)
+			->join('anak', "anak.uuid = {$this->table}.anak", 'left')
+			->get($this->table)
+			->result()
+		);
 	}
 
 	function findOne($param)
