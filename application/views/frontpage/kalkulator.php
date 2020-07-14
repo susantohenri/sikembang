@@ -13,7 +13,7 @@
                                 <select name="jenis_kalkulator" class="form-control">
                                     <option value="bb">Berat Badan / Usia</option>
                                     <option value="tb">Tinggi Badan / Usia</option>
-                                    <option value="bbtb">Tinggi Badan / Tinggi Badan</option>
+                                    <option value="bbtb">Berat Badan / Tinggi Badan</option>
                                 </select>
                             </div>
                         </div>
