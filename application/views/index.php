@@ -35,7 +35,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
       </a>
       <div class="btn-group">
         <?php if (0 < $warning_signs && in_array('index_WarningSign', $permission)): ?>
-        <a class="btn btn-default" href="<?= site_url('Pengukuran/warning') ?>"><i class="fas fa-bell text-warning"></i></a>
+        <a class="btn btn-default" href="<?= site_url('Pengukuran/warning') ?>"><i class="fas fa-bell text-danger"></i></a>
         <?php endif ?>
         <a href="<?= site_url('Login/Logout') ?>" class="btn btn-warning">Logout</a>
       </div>
