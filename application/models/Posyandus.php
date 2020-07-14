@@ -40,4 +40,14 @@ class Posyandus extends MY_Model
       ->select('posyandu.nama');
     return parent::dt();
   }
+
+  function select2($field, $term)
+  {
+    return $this->db
+      ->select("uuid as id", false)
+      ->select("$field as text", false)
+      ->limit(11)
+      ->like($field, $term)->get($this->table)->result();
+  }
+
 }
