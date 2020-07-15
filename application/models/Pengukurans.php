@@ -661,6 +661,7 @@ class Pengukurans extends MY_Model
 				'No. KK' => $record->no_kk,
 				'ANAK KE' => $record->anak_ke,
 				'TANGGAL LAHIR' => $record->tgl_lahir,
+				'POSYANDU' => $record->nama_posyandu,
 				'JENIS KELAMIN' => $record->jenis_kelamin,
 				'Berat Badan Lahir (Kg)' => $record->bb_lahir,
 				'Panjang Badan Lahir (Cm)' => $record->tb_lahir,
@@ -687,6 +688,7 @@ class Pengukurans extends MY_Model
 				'No' => $no,
 				'NAMA ANAK' => $record->nama,
 				'TANGGAL LAHIR' => $record->tgl_lahir,
+				'POSYANDU' => $record->nama_posyandu,
 				'JENIS KELAMIN' => $record->jenis_kelamin,
 				'Berat Badan Lahir (Kg)' => $record->bb_lahir,
 				'Panjang Badan Lahir (Cm)' => $record->tb_lahir,
@@ -712,7 +714,9 @@ class Pengukurans extends MY_Model
 			->select("DATE_FORMAT(tgl_lahir, '%d-%m-%Y') AS tgl_lahir", false)
 			->select("FLOOR(DATEDIFF({$this->table}.createdAt, tgl_lahir) / 30) AS usia", false)
 			->select("DATE_FORMAT({$this->table}.createdAt, '%d-%m-%Y') AS tanggal_pengukuran", false)
+			->select('posyandu.nama nama_posyandu', false)
 			->join('anak', "anak.uuid = {$this->table}.anak", 'left')
+			->join('posyandu', 'anak.posyandu = posyandu.uuid', 'left')
 			->get($this->table)
 			->result()
 		);

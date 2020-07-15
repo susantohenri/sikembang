@@ -181,6 +181,7 @@ class Pengukuran extends MY_Controller
 			$alphabet = range('A', 'Z');
 			$alphabet[] = 'AA';
 			$alphabet[] = 'AB';
+			$alphabet[] = 'AC';
 
 			$merge_until = 'balita' === $type ? 'X1' : 'Q1';
 			$spreadsheet->getActiveSheet()->mergeCells("A1:{$merge_until}");
@@ -190,19 +191,18 @@ class Pengukuran extends MY_Controller
 
 			$spreadsheet->setActiveSheetIndex(0)->setCellValue('A3', 'Kabupaten    : Boyolali');
 			$spreadsheet->setActiveSheetIndex(0)->setCellValue('A4', 'Kecamatan    : Teras');
-			$spreadsheet->setActiveSheetIndex(0)->setCellValue('A5', 'Posyandu      :');
-			$spreadsheet->setActiveSheetIndex(0)->getStyle('A3:A5')->getFont()->setSize(11);
+			$spreadsheet->setActiveSheetIndex(0)->getStyle('A3:A4')->getFont()->setSize(11);
 
-			$spreadsheet->setActiveSheetIndex(0)->getStyle('A1:A7')->getFont()->setBold(true);
+			$spreadsheet->setActiveSheetIndex(0)->getStyle('A1:A6')->getFont()->setBold(true);
 
-			$rownum = 7;
+			$rownum = 6;
 			foreach ($colnames as $index => $content) {
 				$spreadsheet->setActiveSheetIndex(0)
 					->setCellValue("{$alphabet[$index]}$rownum", $content);
 			}
-			$spreadsheet->getActiveSheet()->getStyle("A7:{$alphabet[count($alphabet) - 1]}7")->getFont()->setBold(true);
+			$spreadsheet->getActiveSheet()->getStyle("A6:{$alphabet[count($alphabet) - 1]}6")->getFont()->setBold(true);
 
-			$rownum = 8;
+			$rownum = 7;
 			foreach ($rows as $row) {
 				foreach ($colnames as $index => $colname) {
 					$spreadsheet->setActiveSheetIndex(0)
