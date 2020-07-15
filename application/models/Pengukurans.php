@@ -630,39 +630,82 @@ class Pengukurans extends MY_Model
 		return json_encode($result);
 	}
 
-	function download($since, $until)
+	function download($type, $since, $until)
 	{
 		if (strlen($since) > 0) $this->db->where("{$this->table}.createdAt >= '{$since}'");
 		if (strlen($until) > 0) $this->db->where("{$this->table}.createdAt <= '{$until}'");
 		$no = 0;
-		return array_map(function ($record) use (&$no) {
+		return array_map(function ($record) use (&$no, $type) {
+			$all = array(
+				'bcg' => 'BCG',
+				'polio_1' => 'Polio 1',
+				'dpt_combo_1' => 'DPT Combo 1',
+				'polio_2' => 'Polio 2',
+				'dpt_combo_2' => 'DPT Combo 2',
+				'polio_3' => 'Polio 3',
+				'dpt_combo_3' => 'DPT Combo 3',
+				'polio_4' => 'Polio 4',
+				'ipv' => 'IPV',
+				'campak' => 'Campak',
+				'dpt_combo_booster' => 'DPT Combo Booster',
+				'campak_booster' => 'Campak Booster'
+			);
+			$imunisasi = array();
+			foreach ($all as $key => $value) if ('Ya' === $record->$key) $imunisasi[] = $value;
+
 			$no++;
-			return array (
+			return 'balita' === $type ? array(
 				'No' => $no,
-				'NIK (Nomor Induk Kependudukan)' => $record->nik,
-				'ANAK KE' => $record->anak_ke,
 				'NAMA ANAK' => $record->nama,
+				'NIK (Nomor Induk Kependudukan)' => $record->nik,
+				'No. KK' => $record->no_kk,
+				'ANAK KE' => $record->anak_ke,
 				'TANGGAL LAHIR' => $record->tgl_lahir,
 				'JENIS KELAMIN' => $record->jenis_kelamin,
-				'Berat Badan Lahir (kg)' => $record->bb_lahir,
+				'Berat Badan Lahir (Kg)' => $record->bb_lahir,
+				'Panjang Badan Lahir (Cm)' => $record->tb_lahir,
 				'Nama Orang Tua' => "{$record->nama_ayah} / {$record->nama_ibu}",
-				'NIK Orang Tua' => '',
 				'No. Tlp/HP Orang Tua' => $record->tlp_ortu,
 				'ALAMAT' => $record->alamat,
 				'RT' => $record->rt,
 				'RW' => $record->rw,
-				'IMD 1=YA, 2=Tidak' => 'Ya' === $record->imd ? 1 : 2,
+				'Kepemilikan BPJS Ya/Tidak' => $record->bpjs,
+				'IMD YA/Tidak' => $record->imd,
 				'Umur (bulan)' => $record->usia,
 				'Tanggal Pengukuran' => $record->tanggal_pengukuran,
 				'BB (Kg)' => $record->bb,
 				'TB (Cm)' => $record->tb,
-				'Cara Ukur 1=Telentang 2=Berdiri' => $record->usia < 24 ? 1 : 2,
-				'ASI Eksklusif 1=Ya, 2=Tidak' => 'Ya' === $record->asi_eksklusif ? 1 : 2,
-				'Vitamin A Februari 1=Ya, 2=Tidak' => 'Ya' === $record->vit_a_feb ? 1 : 2,
-				'Vitamin A Agustus 1=Ya, 2=Tidak' => 'Ya' === $record->vit_a_aug ? 1 : 2,
+				'Cara Ukur Telentang/Berdiri' => $record->usia < 24 ? 'Telentang' : 'Berdiri',
+				'ASI Eksklusif Ya/Tidak' => $record->asi_eksklusif,
+				'Vitamin A Februari Ya/Tidak' => $record->vit_a_feb,
+				'Vitamin A Agustus Ya/Tidak' => $record->vit_a_aug,
 				'Status BB/U (sangat kurang/kurang/normal/risiko BB berlebih)' => $record->hasil_bb,
 				'Status TB/U (sangat pendek/pendek/normal/tinggi)' => $record->hasil_tb,
-				'Status BB/TB (gizi buruk/gizi kurang/gizi baik/risiko gizi lebih/gizi lebih/obesitas)' => $record->hasil_bb
+				'Status BB/TB (gizi buruk/gizi kurang/gizi baik/risiko gizi lebih/gizi lebih/obesitas)' => $record->hasil_bb,
+				'Imunisasi (BCG/Polio 1/Polio 2/Polio 3/Polio 4/DPT Combo 1/ DPT Combo 2/DPT Combo 3/IPV/Campak/DPT Combo Booster/Campak Booster)' => implode(', ', $imunisasi)
+			) : array(
+				'No' => $no,
+				'NAMA ANAK' => $record->nama,
+				'TANGGAL LAHIR' => $record->tgl_lahir,
+				'JENIS KELAMIN' => $record->jenis_kelamin,
+				'Berat Badan Lahir (Kg)' => $record->bb_lahir,
+				'Panjang Badan Lahir (Cm)' => $record->tb_lahir,
+				'Nama Ayah' => $record->nama_ayah,
+				'Nama Ibu' => $record->nama_ibu,
+				'ALAMAT' => $record->alamat,
+				'RT' => $record->rt,
+				'RW' => $record->rw,
+				'Umur (bulan)' => $record->usia,
+				'Tanggal Pengukuran' => $record->tanggal_pengukuran,
+				'BB (Kg)' => $record->bb,
+				'TB (Cm)' => $record->tb,
+				'Cara Ukur Telentang/Berdiri' => $record->usia < 24 ? 'Telentang' : 'Berdiri',
+				'ASI Eksklusif Ya/Tidak' => $record->asi_eksklusif,
+				'Status BB/U (sangat kurang/kurang/normal/risiko BB berlebih)' => $record->hasil_bb,
+				'Status TB/U (sangat pendek/pendek/normal/tinggi)' => $record->hasil_tb,
+				'Status BB/TB (gizi buruk/gizi kurang/gizi baik/risiko gizi lebih/gizi lebih/obesitas)' => $record->hasil_bb,
+				'Imunisasi (BCG/Polio 1/Polio 2/Polio 3/Polio 4/DPT Combo 1/ DPT Combo 2/DPT Combo 3/IPV/Campak/DPT Combo Booster/Campak Booster)' => implode(', ', $imunisasi),
+				'Intervensi' => $record->intervensi
 			);
 		}, $this->db
 			->select('*')

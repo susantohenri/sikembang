@@ -17,6 +17,15 @@
                             <input class="form-control" type="text" name="until" data-date="datepicker" autocomplete="off">
                         </div>
                     </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 control-label">Jenis Dokumen</label>
+                        <div class="col-sm-9">
+                            <select name="type" class="form-control">
+                                <option value="balita">Balita</option>
+                                <option value="intervensi">Intervensi</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
