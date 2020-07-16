@@ -31,7 +31,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
       <a href="<?= base_url() ?>" class="navbar-brand">
         <!-- <img src="../../dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
              style="opacity: .8"> -->
-        <span class="brand-text font-weight-light"><b>Si</b><i style="color: #ffab00">Kembang</i></span>
+             <h2><span class="brand-text font-weight-light"><b>Si</b><i style="color: #ffab00">Kembang</i></span></h2>
         <a href="<?= site_url('Login') ?>" class="btn btn-warning">Login</a>
       </a>
     </div>
@@ -88,7 +88,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
       henry.dinus@gmail.com 081901088918
     </div>
     <!-- Default to the left -->
-    <strong>Copyright &copy; 2014-2019 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
+    <small><strong>Copyright &copy; 2014-2019 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.</small>
   </footer>
 </div>
 <!-- ./wrapper -->
