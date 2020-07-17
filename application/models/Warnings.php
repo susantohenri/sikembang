@@ -1,6 +1,6 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed');
 
-class Pengukurans extends MY_Model
+class Warnings extends MY_Model
 {
 
 	function __construct()
@@ -213,7 +213,13 @@ class Pengukurans extends MY_Model
 				'attributes' => array(
 					array('disabled' => 'disabled')
 				)
-			)
+			),
+			array(
+				'name' => 'intervensi',
+				'width' => 2,
+				'label' => 'Intervensi',
+				'type' => 'textarea'
+			),
 		);
 		$this->childs = array();
 	}
@@ -446,29 +452,6 @@ class Pengukurans extends MY_Model
 		return $form;
 	}
 
-	function create($record)
-	{
-		$default = array(
-			'asi_eksklusif', 'garam_yodium', 'vit_a_feb', 'vit_a_aug'
-		);
-		foreach ($default as $field) {
-			if (!isset($record[$field])) $record[$field] = 'Tidak';
-		}
-		if (
-			$record['hasil_bb'] !== 'Normal'
-			||
-			$record['hasil_tb'] !== 'Normal'
-			||
-			$record['hasil_gizi'] !== 'Gizi Baik'
-		) $record['warning_sign'] = 1;
-		$generate = $this->db->select('UUID() uuid', false)->get()->row_array();
-		$record['uuid'] = $generate['uuid'];
-		$record = $this->savechild($record);
-		$record['updatedAt'] = date('Y-m-d H:i:s');
-		$this->db->insert($this->table, $record);
-		return $record['uuid'];
-	}
-
 	function dt()
 	{
 		if ($term = $this->input->post('search')) {
@@ -479,219 +462,9 @@ class Pengukurans extends MY_Model
 			->select("{$this->table}.orders")
 			->select("DATE_FORMAT (pengukuran.createdAt, '%d-%m-%Y %h:%i:%s') createdAt", false)
 			->select("anak.nama anak", false)
+			->where('warning_sign', 1)
 			->join('anak', 'anak.uuid = pengukuran.anak', 'left');
 		return parent::dt();
-	}
-
-	function getWarningSigns()
-	{
-		$result = $this->db
-			->select("COUNT(uuid) total")
-			->where('warning_sign', 1)
-			->get($this->table)
-			->row_array();
-		return $result ? $result['total'] : 0;
-	}
-
-	function grafik($jenis, $since, $until)
-	{
-		$query = $this->db
-			->select("DATE_FORMAT(createdAt, '%b %Y') label", false)
-			->select("COUNT(uuid) 'data'", false)
-			->select("hasil_{$jenis} legend", false)
-			->group_by("DATE_FORMAT(createdAt, '%b/%Y'), hasil_{$jenis} ")
-			->order_by('createdAt');
-		if (strlen($since) > 0) $query->where("createdAt >= '{$since}'");
-		if (strlen($until) > 0) $query->where("createdAt <= '{$until}'");
-		$result = $query->get($this->table)->result();
-
-		$labels = array_values(array_unique(array_column($result, 'label')));
-		$legends = array_values(array_unique(array_column($result, 'legend')));
-
-		$data = array();
-		foreach ($legends as $legend) {
-			$data[] = array_map(function ($record) {
-				return $record->data;
-			}, array_values(array_filter($result, function ($record) use ($legend) {
-				return $record->legend === $legend;
-			})));
-		}
-
-		$chart = json_decode('{"type":"bar","data":{"labels":[],"datasets":[]},"options":{"responsive":true,"scales":{"yAxes":[{"id":"KIRI","type":"linear","position":"left"},{"id":"KANAN","type":"linear","position":"right"}]}}}');
-		$chart->data->labels = $labels;
-		$datasets = array();
-		foreach ($legends as $index => $legend) {
-			$ds = new stdClass();
-			$ds->label = $legend;
-			$ds->data = $data[$index];
-			$datasets[] = $ds;
-		}
-
-		$normal = array_values(array_filter($datasets, function ($ds) {
-			return in_array($ds->label, array('Gizi Baik', 'Normal'));
-		}));
-		if (count($normal) > 0) $chart->data->datasets[] = $normal[0];
-
-		$buruk = array_values(array_filter($datasets, function ($ds) {
-			return in_array($ds->label, array('Gizi Buruk', 'Sangat Pendek', 'Sangat Kurang'));
-		}));
-		if (count($buruk) > 0) $chart->data->datasets[] = $buruk[0];
-
-		$kurang = array_values(array_filter($datasets, function ($ds) {
-			return in_array($ds->label, array('Gizi Kurang', 'Pendek', 'Kurang'));
-		}));
-		if (count($kurang) > 0) $chart->data->datasets[] = $kurang[0];
-
-		$lebih = array_values(array_filter($datasets, function ($ds) {
-			return in_array($ds->label, array('Gizi Lebih', 'Tinggi', 'Resiko Berlebih'));
-		}));
-		if (count($lebih) > 0) $chart->data->datasets[] = $lebih[0];
-
-		$obesitas = array_values(array_filter($datasets, function ($ds) {
-			return $ds->label === 'Obesitas';
-		}));
-		if (count($obesitas) > 0) $chart->data->datasets[] = $obesitas[0];
-
-		foreach ($chart->data->datasets as $index => &$ds) {
-			switch ($index) {
-				case 0:
-					$ds->borderColor = 'green';
-					$ds->yAxisID = 'KANAN';
-					$ds->type = 'line';
-					$ds->fill = false;
-					$ds->lineTension = 0;
-					break;
-				case 1:
-					$ds->backgroundColor = 'lightblue';
-					break;
-				case 2:
-					$ds->backgroundColor = 'orange';
-					break;
-				case 3:
-					$ds->backgroundColor = 'yellow';
-					break;
-				case 4:
-					$ds->backgroundColor = 'blue';
-					break;
-			}
-		}
-
-		return json_encode($chart);
-	}
-
-	function grafik_asi()
-	{
-		$result = json_decode('{"type":"pie","data":{"datasets":[{"data":[100,2],"backgroundColor":["lightblue","orange"]}],"labels":["Ya","Tidak"]},"options":{"responsive":true}}');
-
-		$all = $this->db
-			->distinct('anak')
-			->group_by('anak')
-			->get($this->table)
-			->result();
-		$all = count($all);
-
-		$ekslusif = $this->db
-			->select('anak')
-			->group_by('anak')
-			->having("GROUP_CONCAT(DISTINCT asi_eksklusif) = 'Ya'")
-			->get($this->table)
-			->result();
-		$ekslusif = count($ekslusif);
-
-		$result->data->datasets[0]->data = array($ekslusif, $all - $ekslusif);
-		return json_encode($result);
-	}
-
-	function download($type, $since, $until)
-	{
-		if (strlen($since) > 0) $this->db->where("{$this->table}.createdAt >= '{$since}'");
-		if (strlen($until) > 0) $this->db->where("{$this->table}.createdAt <= '{$until}'");
-		$no = 0;
-		return array_map(function ($record) use (&$no, $type) {
-			$all = array(
-				'bcg' => 'BCG',
-				'polio_1' => 'Polio 1',
-				'dpt_combo_1' => 'DPT Combo 1',
-				'polio_2' => 'Polio 2',
-				'dpt_combo_2' => 'DPT Combo 2',
-				'polio_3' => 'Polio 3',
-				'dpt_combo_3' => 'DPT Combo 3',
-				'polio_4' => 'Polio 4',
-				'ipv' => 'IPV',
-				'campak' => 'Campak',
-				'dpt_combo_booster' => 'DPT Combo Booster',
-				'campak_booster' => 'Campak Booster'
-			);
-			$imunisasi = array();
-			foreach ($all as $key => $value) if ('Ya' === $record->$key) $imunisasi[] = $value;
-
-			$no++;
-			return 'balita' === $type ? array(
-				'No' => $no,
-				'NAMA ANAK' => $record->nama,
-				'NIK (Nomor Induk Kependudukan)' => $record->nik,
-				'No. KK' => $record->no_kk,
-				'ANAK KE' => $record->anak_ke,
-				'TANGGAL LAHIR' => $record->tgl_lahir,
-				'POSYANDU' => $record->nama_posyandu,
-				'JENIS KELAMIN' => $record->jenis_kelamin,
-				'Berat Badan Lahir (Kg)' => $record->bb_lahir,
-				'Panjang Badan Lahir (Cm)' => $record->tb_lahir,
-				'Nama Orang Tua' => "{$record->nama_ayah} / {$record->nama_ibu}",
-				'No. Tlp/HP Orang Tua' => $record->tlp_ortu,
-				'ALAMAT' => $record->alamat,
-				'RT' => $record->rt,
-				'RW' => $record->rw,
-				'Kepemilikan BPJS Ya/Tidak' => $record->bpjs,
-				'IMD YA/Tidak' => $record->imd,
-				'Umur (bulan)' => $record->usia,
-				'Tanggal Pengukuran' => $record->tanggal_pengukuran,
-				'BB (Kg)' => $record->bb,
-				'TB (Cm)' => $record->tb,
-				'Cara Ukur Telentang/Berdiri' => $record->usia < 24 ? 'Telentang' : 'Berdiri',
-				'ASI Eksklusif Ya/Tidak' => $record->asi_eksklusif,
-				'Vitamin A Februari Ya/Tidak' => $record->vit_a_feb,
-				'Vitamin A Agustus Ya/Tidak' => $record->vit_a_aug,
-				'Status BB/U (sangat kurang/kurang/normal/risiko BB berlebih)' => $record->hasil_bb,
-				'Status TB/U (sangat pendek/pendek/normal/tinggi)' => $record->hasil_tb,
-				'Status BB/TB (gizi buruk/gizi kurang/gizi baik/risiko gizi lebih/gizi lebih/obesitas)' => $record->hasil_bb,
-				'Imunisasi (BCG/Polio 1/Polio 2/Polio 3/Polio 4/DPT Combo 1/ DPT Combo 2/DPT Combo 3/IPV/Campak/DPT Combo Booster/Campak Booster)' => implode(', ', $imunisasi)
-			) : array(
-				'No' => $no,
-				'NAMA ANAK' => $record->nama,
-				'TANGGAL LAHIR' => $record->tgl_lahir,
-				'POSYANDU' => $record->nama_posyandu,
-				'JENIS KELAMIN' => $record->jenis_kelamin,
-				'Berat Badan Lahir (Kg)' => $record->bb_lahir,
-				'Panjang Badan Lahir (Cm)' => $record->tb_lahir,
-				'Nama Ayah' => $record->nama_ayah,
-				'Nama Ibu' => $record->nama_ibu,
-				'ALAMAT' => $record->alamat,
-				'RT' => $record->rt,
-				'RW' => $record->rw,
-				'Umur (bulan)' => $record->usia,
-				'Tanggal Pengukuran' => $record->tanggal_pengukuran,
-				'BB (Kg)' => $record->bb,
-				'TB (Cm)' => $record->tb,
-				'Cara Ukur Telentang/Berdiri' => $record->usia < 24 ? 'Telentang' : 'Berdiri',
-				'ASI Eksklusif Ya/Tidak' => $record->asi_eksklusif,
-				'Status BB/U (sangat kurang/kurang/normal/risiko BB berlebih)' => $record->hasil_bb,
-				'Status TB/U (sangat pendek/pendek/normal/tinggi)' => $record->hasil_tb,
-				'Status BB/TB (gizi buruk/gizi kurang/gizi baik/risiko gizi lebih/gizi lebih/obesitas)' => $record->hasil_bb,
-				'Imunisasi (BCG/Polio 1/Polio 2/Polio 3/Polio 4/DPT Combo 1/ DPT Combo 2/DPT Combo 3/IPV/Campak/DPT Combo Booster/Campak Booster)' => implode(', ', $imunisasi),
-				'Intervensi' => $record->intervensi
-			);
-		}, $this->db
-			->select('*')
-			->select("DATE_FORMAT(tgl_lahir, '%d-%m-%Y') AS tgl_lahir", false)
-			->select("FLOOR(DATEDIFF({$this->table}.createdAt, tgl_lahir) / 30) AS usia", false)
-			->select("DATE_FORMAT({$this->table}.createdAt, '%d-%m-%Y') AS tanggal_pengukuran", false)
-			->select('posyandu.nama nama_posyandu', false)
-			->join('anak', "anak.uuid = {$this->table}.anak", 'left')
-			->join('posyandu', 'anak.posyandu = posyandu.uuid', 'left')
-			->get($this->table)
-			->result()
-		);
 	}
 
 	function findOne($param)

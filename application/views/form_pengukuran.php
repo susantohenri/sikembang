@@ -3,17 +3,13 @@
 <form enctype='multipart/form-data' action="<?= $submit_url ?>" method="POST" class="main-form col-sm-12">
     <div class="card card-warning card-outline">
         <div class="card-header text-right">
-            <?php if (!empty($uuid) && $warningSignExists && in_array('delete_WarningSign', $permission)) : ?>
-                <a href="<?= site_url($current['controller'] . "/unsign/$uuid") ?>" class="btn btn-success"><i class="fa fa-check"></i> &nbsp; Solve</a>
-            <?php endif ?>
             <?php if ((empty($uuid) && in_array("create_{$current['controller']}", $permission)) || (!empty($uuid) && in_array("update_{$current['controller']}", $permission))) : ?>
                 <button class="btn btn-info btn-save"><i class="fa fa-<?= $submit_url === '' ? 'chevron-right' : 'save' ?>"></i> &nbsp; <?= $submit_url === '' ? 'Next' : 'Save' ?></button>
             <?php endif ?>
             <?php if (!empty($uuid) && in_array("delete_{$current['controller']}", $permission)) : ?>
                 <a href="<?= site_url($current['controller'] . "/delete/$uuid") ?>" class="btn btn-danger"><i class="fa fa-trash"></i> &nbsp; Delete</a>
             <?php endif ?>
-            <?php $warning = strpos($_SERVER['HTTP_REFERER'], 'warning') > -1 ? '/warning' : '' ?>
-            <a href="<?= site_url($current['controller'] . $warning) ?>" class="btn btn-warning"><i class="fa fa-arrow-left"></i> &nbsp; Cancel</a>
+            <a href="<?= site_url($current['controller']) ?>" class="btn btn-warning"><i class="fa fa-arrow-left"></i> &nbsp; Cancel</a>
         </div>
         <div class="card-body">
 
@@ -99,7 +95,7 @@
                 result = JSON.parse(result)
                 for (let field of ['hasil_bb', 'hasil_tb', 'hasil_gizi']) {
                     let hasil = JSON.parse(result[field])
-                    $(`[name="${field}"]`).val(hasil.hasil).css ('color', hasil.color)
+                    $(`[name="${field}"]`).val(hasil.hasil).css('color', hasil.color)
                 }
             })
         }
@@ -108,6 +104,29 @@
             $('[disabled="disabled"]').attr('disabled', false)
             return true
         })
+
+        if (window.location.href.indexOf('/Warning/') > -1) {
+            $('.btn-save')
+                .after(`<input type="hidden" name="warning_sign" value="2">`)
+                .after(`
+                <div class="modal fade" tabindex="-1" role="dialog" id="confirm_resolve">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                    <div class="modal-header"></div>
+                    <div class="modal-body text-center">
+                        <h2>Apakah anda yakin ?</h2>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success" onclick="$('.btn-save').click()"><i class="fa fa-check"></i> &nbsp; Confirm</button>
+                        <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-arrow-left"></i> &nbsp; Cancel</button>
+                    </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+                </div><!-- /.modal -->
+                `)
+                .before(`<a class="btn btn-success btn-save" data-toggle="modal" data-target="#confirm_resolve"><i class="fa fa-check"></i> &nbsp; Solve</a>`)
+                .hide()   
+        }
 
     });
 </script>

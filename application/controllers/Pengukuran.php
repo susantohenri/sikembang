@@ -86,9 +86,6 @@ class Pengukuran extends MY_Controller
 		$vars['form'] = $this->$model->getForm($id);
 		$vars['subform'] = $this->$model->getFormChild($id);
 
-		$found = $this->Pengukurans->findOne($id);
-		$vars['warningSignExists'] = 1 === (int) $found['warning_sign'];
-
 		$vars['uuid'] = $id;
 		$vars['js'] = array(
 			'moment.min.js',
@@ -241,30 +238,5 @@ class Pengukuran extends MY_Controller
 				'page_name' => 'download',
 			));
 		}
-	}
-
-	function warning()
-	{
-		$params = array(
-			'page_title' => 'Warning Signs',
-			'page_name' => 'table_warning',
-			'current' => array(
-				'controller' => 'Pengukuran',
-				'controller_url' => 'Pengukuran/warning_dt'
-			),
-			'js' => array(
-				'jquery.dataTables.min.js',
-				'dataTables.bootstrap4.js',
-				'table.js'
-			)
-		);
-		$this->loadview('index', $params);
-	}
-
-	function dt()
-	{
-		echo strpos($_SERVER['HTTP_REFERER'], 'warning') > -1 ?
-			$this->{$this->model}->warningDt() :
-			$this->{$this->model}->dt();
 	}
 }

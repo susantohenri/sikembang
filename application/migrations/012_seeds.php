@@ -47,16 +47,6 @@ class Migration_seeds extends CI_Migration
       'role' => $admin
     ));
 
-    $this->Permissions->create(array(
-      'role' => $admin,
-      'action' => 'index',
-      'entity' => 'WarningSign'
-    ));
-    $this->Permissions->create(array(
-      'role' => $admin,
-      'action' => 'delete',
-      'entity' => 'WarningSign'
-    ));
     $this->Menus->create(array(
       'role' => $admin,
       'name' => 'Imunisasi',
@@ -74,6 +64,37 @@ class Migration_seeds extends CI_Migration
       'name' => 'Download',
       'url' => 'Pengukuran/download',
       'icon' => 'download'
+    ));
+    $this->Menus->create(array(
+      'role' => $admin,
+      'name' => 'Intervensi',
+      'url' => 'Solved',
+      'icon' => 'bell-slash'
+    ));
+    $this->Permissions->create(array(
+      'role' => $admin,
+      'action' => 'index',
+      'entity' => 'Warning'
+    ));
+    $this->Permissions->create(array(
+      'role' => $admin,
+      'action' => 'read',
+      'entity' => 'Warning'
+    ));
+    $this->Permissions->create(array(
+      'role' => $admin,
+      'action' => 'update',
+      'entity' => 'Warning'
+    ));
+    $this->Permissions->create(array(
+      'role' => $admin,
+      'action' => 'index',
+      'entity' => 'Solved'
+    ));
+    $this->Permissions->create(array(
+      'role' => $admin,
+      'action' => 'read',
+      'entity' => 'Solved'
     ));
     // BIDAN END
 
