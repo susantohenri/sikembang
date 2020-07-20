@@ -7,6 +7,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="<?= base_url('manifest.json') ?>" rel="manifest">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
 
   <title>SiKembang</title>
@@ -101,6 +102,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="<?= base_url('assets/js/bootstrap.bundle.min.js') ?>"></script>
 <!-- AdminLTE App -->
 <!-- <script src="../../dist/js/adminlte.min.js"></script> -->
+<script type="text/javascript">
+   (function() {
+       if ('serviceWorker' in navigator) {
+          navigator.serviceWorker.register('<?= base_url('service-worker.js') ?>').then(function() {
+             console.log('Service Worker Registered');
+          })
+       }
+    })()
+</script>
 <script type="text/javascript">
   var site_url = '<?= site_url('/') ?>'
   var current_controller = '<?= $current['controller'] ?>'

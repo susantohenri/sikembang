@@ -1,13 +1,9 @@
-var dataCacheName = 'pwa-calculator-v1'
-var cacheName = 'pwa-calculator-v1'
-var dataUrl = 'https://henri.xsanisty.com/calculator/'
+var dataCacheName = 'pwa-sikembang-v1'
+var cacheName = 'pwa-sikembang-v1'
+var dataUrl = 'https://sikembang.com'
 var PATH = dataUrl
 var filesToCache = [
-   PATH + '/',
-   PATH + '/index.html',
-   PATH + '/js/jquery-3.2.1.min.js',
-   PATH + '/js/main.js',
-   PATH + '/css/main.css'
+   PATH + '/'
 ]
 self.addEventListener('install', function(e) {
    console.log('[ServiceWorker] Install')
