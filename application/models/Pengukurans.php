@@ -477,7 +477,7 @@ class Pengukurans extends MY_Model
 		$this->datatables
 			->select("{$this->table}.uuid")
 			->select("{$this->table}.orders")
-			->select("DATE_FORMAT (pengukuran.createdAt, '%d-%m-%Y %h:%i:%s') createdAt", false)
+			->select("DATE_FORMAT(pengukuran.createdAt, '%d-%m-%Y %h:%i:%s') createdAt", false)
 			->select("anak.nama anak", false)
 			->join('anak', 'anak.uuid = pengukuran.anak', 'left');
 		return parent::dt();

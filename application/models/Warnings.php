@@ -460,7 +460,7 @@ class Warnings extends MY_Model
 		$this->datatables
 			->select("{$this->table}.uuid")
 			->select("{$this->table}.orders")
-			->select("DATE_FORMAT (pengukuran.createdAt, '%d-%m-%Y %h:%i:%s') createdAt", false)
+			->select("DATE_FORMAT(pengukuran.createdAt, '%d-%m-%Y %h:%i:%s') createdAt", false)
 			->select("anak.nama anak", false)
 			->where('warning_sign', 1)
 			->join('anak', 'anak.uuid = pengukuran.anak', 'left');
