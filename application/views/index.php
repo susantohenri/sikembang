@@ -29,9 +29,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <nav class="main-header navbar navbar-expand navbar-light navbar-white">
     <div class="container">
       <a href="<?= base_url() ?>" class="navbar-brand">
-        <!-- <img src="../../dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
-             style="opacity: .8"> -->
-        <h2><span class="brand-text font-weight-light"><b>Si</b><i style="color: #ffab00">Kembang</i></span></h2>
+        <img src="<?= base_url('logo-sikembang.jpeg') ?>" alt="SiKembang Logo" class="brand-image" style="opacity: .8; height: 60px; max-height:60px">
       </a>
       <div class="btn-group">
         <?php if (0 < $warning_signs && in_array('index_Warning', $permission)): ?>
