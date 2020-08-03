@@ -22,12 +22,11 @@
 <body class="hold-transition login-page">
 <div class="login-box">
   <div class="login-logo">
-    <a href=""><b>Si</b><i style="color: #ffab00">Kembang</i></a>
-  </div>
-  <!-- /.login-logo -->
   <div class="card">
+    <div class="card-header login-card-header">
+      <img src="<?= base_url('logo-sikembang.jpeg') ?>" style="width: 100%">
+    </div>
     <div class="card-body login-card-body">
-      <p class="login-box-msg">Login Aplikasi</p>
 
       <form method="post">
         <div class="input-group mb-3">

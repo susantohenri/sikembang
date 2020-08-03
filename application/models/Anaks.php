@@ -182,4 +182,33 @@ class Anaks extends MY_Model
 
 		return json_encode($result);
 	}
+
+	function download()
+	{
+		$no = 0;
+		return array_map(function ($record) use (&$no) {
+			$no++;
+			return array(
+				'No' => $no,
+				'NAMA ANAK' => $record->nama,
+				'TANGGAL LAHIR' => $record->tgl_lahir,
+				'POSYANDU' => $record->nama_posyandu,
+				'JENIS KELAMIN' => $record->jenis_kelamin,
+				'Berat Badan Lahir (Kg)' => $record->bb_lahir,
+				'Panjang Badan Lahir (Cm)' => $record->tb_lahir,
+				'Nama Ayah' => $record->nama_ayah,
+				'Nama Ibu' => $record->nama_ibu,
+				'ALAMAT' => $record->alamat,
+				'RT' => $record->rt,
+				'RW' => $record->rw,
+				'Umur (bulan)' => $record->usia
+			);
+		}, $this->db
+			->select('anak.*')
+			->select('posyandu.nama nama_posyandu', false)
+			->select("FLOOR(DATEDIFF({$this->table}.createdAt, tgl_lahir) / 30) AS usia", false)
+			->join('posyandu', 'anak.posyandu = posyandu.uuid', 'left')
+			->get('anak')
+			->result());
+	}
 }
