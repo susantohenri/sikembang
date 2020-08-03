@@ -191,6 +191,9 @@ class Anaks extends MY_Model
 			return array(
 				'No' => $no,
 				'NAMA ANAK' => $record->nama,
+				'NIK (Nomor Induk Kependudukan)' => $record->nik,
+				'No. KK' => $record->no_kk,
+				'ANAK KE' => $record->anak_ke,
 				'TANGGAL LAHIR' => $record->tgl_lahir,
 				'POSYANDU' => $record->nama_posyandu,
 				'JENIS KELAMIN' => $record->jenis_kelamin,
