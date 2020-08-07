@@ -67,7 +67,10 @@ window.onload = function () {
           ajax: {
             url: current_controller_url + '/select2/' + model + '/' + field,
             type: 'POST', dataType: 'json'
-            , data: {createdAt: $('[name="createdAt"]').val()}
+            , data: function (params) {
+              params.createdAt = $('[name="createdAt"]').val()
+              return params
+            }
           }
         })
       } else if ($(this).is ('[data-suggestion]')) {
