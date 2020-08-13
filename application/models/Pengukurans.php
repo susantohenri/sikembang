@@ -628,7 +628,7 @@ class Pengukurans extends MY_Model
 			$no++;
 			return 'balita' === $type ? array(
 				'No' => $no,
-				'NAMA ANAK' => $record->nama,
+				'NAMA ANAK' => $record->nama_anak,
 				'NIK (Nomor Induk Kependudukan)' => $record->nik,
 				'No. KK' => $record->no_kk,
 				'ANAK KE' => $record->anak_ke,
@@ -658,7 +658,7 @@ class Pengukurans extends MY_Model
 				'Imunisasi (BCG/Polio 1/Polio 2/Polio 3/Polio 4/DPT Combo 1/ DPT Combo 2/DPT Combo 3/IPV/Campak/DPT Combo Booster/Campak Booster)' => implode(', ', $imunisasi)
 			) : array(
 				'No' => $no,
-				'NAMA ANAK' => $record->nama,
+				'NAMA ANAK' => $record->nama_anak,
 				'TANGGAL LAHIR' => $record->tgl_lahir,
 				'POSYANDU' => $record->nama_posyandu,
 				'JENIS KELAMIN' => $record->jenis_kelamin,
@@ -683,6 +683,7 @@ class Pengukurans extends MY_Model
 			);
 		}, $this->db
 			->select('*')
+			->select('anak.nama nama_anak', false)
 			->select("DATE_FORMAT(tgl_lahir, '%d-%m-%Y') AS tgl_lahir", false)
 			->select("FLOOR(DATEDIFF({$this->table}.createdAt, tgl_lahir) / 30) AS usia", false)
 			->select("DATE_FORMAT({$this->table}.createdAt, '%d-%m-%Y') AS tanggal_pengukuran", false)
