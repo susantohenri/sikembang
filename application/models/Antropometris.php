@@ -51,8 +51,9 @@ class Antropometris extends MY_Model
     return parent::dt();
   }
 
-  function bb($jenis_kelamin, $tgl_lahir, $bb)
+  function bb($jenis_kelamin, $tgl_lahir, $bb, $retrieveDate)
   {
+    $retrieveDate = is_null($retrieveDate) ? 'CURRENT_DATE' : "'{$retrieveDate}'";
     $bb = str_replace(',', '.', $bb);
     $found = $this->db->query("
         SELECT
@@ -64,8 +65,8 @@ class Antropometris extends MY_Model
           END color
         FROM antropometri
         WHERE nama = 'Berat Badan {$jenis_kelamin}'
-        AND DATEDIFF(CURRENT_DATE, '{$tgl_lahir}') / 30 >= usia_min
-        AND DATEDIFF(CURRENT_DATE, '{$tgl_lahir}') / 30 <= usia_max
+        AND DATEDIFF({$retrieveDate}, '{$tgl_lahir}') / 30 >= usia_min
+        AND DATEDIFF({$retrieveDate}, '{$tgl_lahir}') / 30 <= usia_max
         AND {$bb} >= bb_min
         AND {$bb} <= bb_max
       ")
@@ -73,8 +74,9 @@ class Antropometris extends MY_Model
     return $found ? json_encode($found) : '{"hasil": "Formula tidak ditemukan", "color": "black"}';
   }
 
-  function tb($jenis_kelamin, $tgl_lahir, $tb)
+  function tb($jenis_kelamin, $tgl_lahir, $tb, $retrieveDate)
   {
+    $retrieveDate = is_null($retrieveDate) ? 'CURRENT_DATE' : "'{$retrieveDate}'";
     $tb = str_replace(',', '.', $tb);
     $found = $this->db->query("
         SELECT 
@@ -86,8 +88,8 @@ class Antropometris extends MY_Model
           END color
         FROM antropometri
         WHERE nama = 'Tinggi Badan {$jenis_kelamin}'
-        AND DATEDIFF(CURRENT_DATE, '{$tgl_lahir}') / 30 >= usia_min
-        AND DATEDIFF(CURRENT_DATE, '{$tgl_lahir}') / 30 <= usia_max
+        AND DATEDIFF({$retrieveDate}, '{$tgl_lahir}') / 30 >= usia_min
+        AND DATEDIFF({$retrieveDate}, '{$tgl_lahir}') / 30 <= usia_max
         AND FLOOR(({$tb} / 0.5) * 0.5) >= tb_min
         AND FLOOR(({$tb} / 0.5) * 0.5) <= tb_max
       ")
@@ -95,8 +97,9 @@ class Antropometris extends MY_Model
     return $found ? json_encode($found) : '{"hasil": "Formula tidak ditemukan", "color": "black"}';
   }
 
-  function gizi($jenis_kelamin, $tgl_lahir, $bb, $tb)
+  function gizi($jenis_kelamin, $tgl_lahir, $bb, $tb, $retrieveDate)
   {
+    $retrieveDate = is_null($retrieveDate) ? 'CURRENT_DATE' : "'{$retrieveDate}'";
     $bb = str_replace(',', '.', $bb);
     $tb = str_replace(',', '.', $tb);
     $found = $this->db->query("
@@ -109,8 +112,8 @@ class Antropometris extends MY_Model
           END color
         FROM antropometri
         WHERE nama = 'Gizi {$jenis_kelamin}'
-        AND DATEDIFF(CURRENT_DATE, '{$tgl_lahir}') / 30 >= usia_min
-        AND DATEDIFF(CURRENT_DATE, '{$tgl_lahir}') / 30 <= usia_max
+        AND DATEDIFF({$retrieveDate}, '{$tgl_lahir}') / 30 >= usia_min
+        AND DATEDIFF({$retrieveDate}, '{$tgl_lahir}') / 30 <= usia_max
         AND FLOOR(({$tb} / 0.5) * 0.5) >= tb_min
         AND FLOOR(({$tb} / 0.5) * 0.5) <= tb_max
         AND {$bb} >= bb_min

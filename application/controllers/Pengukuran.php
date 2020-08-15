@@ -106,11 +106,11 @@ class Pengukuran extends MY_Controller
 		$tb = $this->input->post('tb');
 		$retrieveDate = $this->input->post('createdAt');
 
-		$found = $this->Anaks->findOneWithUsia($anak, $retrieveDate);
+		$found = $this->Anaks->findOne($anak, $retrieveDate);
 		echo json_encode(array(
-			'hasil_bb' => $this->Antropometris->bb($found['jenis_kelamin'], $found['tgl_lahir'], $bb),
-			'hasil_tb' => $this->Antropometris->tb($found['jenis_kelamin'], $found['tgl_lahir'], $tb),
-			'hasil_gizi' => $this->Antropometris->gizi($found['jenis_kelamin'], $found['tgl_lahir'], $bb, $tb),
+			'hasil_bb' => $this->Antropometris->bb($found['jenis_kelamin'], $found['tgl_lahir'], $bb, $retrieveDate),
+			'hasil_tb' => $this->Antropometris->tb($found['jenis_kelamin'], $found['tgl_lahir'], $tb, $retrieveDate),
+			'hasil_gizi' => $this->Antropometris->gizi($found['jenis_kelamin'], $found['tgl_lahir'], $bb, $tb, $retrieveDate),
 		));
 	}
 

@@ -33,13 +33,13 @@ class Frontpage extends CI_Controller
             $tb = $this->input->post('tb');
             switch ($this->input->post('jenis_kalkulator')) {
                 case 'bb':
-                    echo $this->Antropometris->bb($jenis_kelamin, $tgl_lahir, $bb);
+                    echo $this->Antropometris->bb($jenis_kelamin, $tgl_lahir, $bb, null);
                     break;
                 case 'tb':
-                    echo $this->Antropometris->tb($jenis_kelamin, $tgl_lahir, $tb);
+                    echo $this->Antropometris->tb($jenis_kelamin, $tgl_lahir, $tb, null);
                     break;
                 case 'bbtb':
-                    echo $this->Antropometris->gizi($jenis_kelamin, $tgl_lahir, $bb, $tb);
+                    echo $this->Antropometris->gizi($jenis_kelamin, $tgl_lahir, $bb, $tb, null);
                     break;
             }
         } else {
