@@ -9,14 +9,25 @@ class Posyandus extends MY_Model
     $this->table = 'posyandu';
     $this->thead = array(
       (object) array('mData' => 'orders', 'sTitle' => 'No', 'visible' => false),
-      (object) array('mData' => 'nama', 'sTitle' => 'Nama'),
-
+      (object) array('mData' => 'posyandu', 'sTitle' => 'Posyandu'),
+      (object) array('mData' => 'desa', 'sTitle' => 'Desa'),
     );
     $this->form = array(
       array(
         'name' => 'nama',
         'width' => 2,
         'label' => 'Nama',
+      ),
+      array(
+        'name' => 'desa',
+        'label' => 'Desa',
+        'width' => 2,
+        'options' => array(),
+        'attributes' => array(
+          array('data-autocomplete' => 'true'),
+          array('data-model' => 'Desas'),
+          array('data-field' => 'nama')
+        )
       ),
       array(
         'name' => 'alamat',
@@ -34,11 +45,23 @@ class Posyandus extends MY_Model
 
   function dt()
   {
-    $this->datatables
-      ->select("{$this->table}.uuid")
-      ->select("{$this->table}.orders")
-      ->select('posyandu.nama');
-    return parent::dt();
+    return $this->datatables
+      ->select('uuid')
+      ->select('orders')
+      ->select('posyandu')
+      ->select('desa')
+      ->from("
+      (
+        SELECT
+          posyandu.uuid
+          , posyandu.orders
+          , posyandu.nama posyandu
+          , desa.nama desa
+        FROM posyandu
+        LEFT JOIN desa ON posyandu.desa = desa.uuid
+      ) posyanduDesa
+      ")
+      ->generate();
   }
 
   function select2($field, $term)
@@ -49,5 +72,4 @@ class Posyandus extends MY_Model
       ->limit(11)
       ->like($field, $term)->get($this->table)->result();
   }
-
 }
