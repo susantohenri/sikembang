@@ -72,4 +72,14 @@ class Posyandus extends MY_Model
       ->limit(11)
       ->like($field, $term)->get($this->table)->result();
   }
+
+  function select2WithDesa($field, $term, $desa)
+  {
+    return $this->db
+      ->select("uuid as id", false)
+      ->select("$field as text", false)
+      ->limit(11)
+      ->where('desa', $desa)
+      ->like($field, $term)->get($this->table)->result();
+  }
 }

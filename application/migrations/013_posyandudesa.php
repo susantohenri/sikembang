@@ -17,6 +17,7 @@ class Migration_Posyandudesa extends CI_Migration
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8
         ");
         $this->db->query("ALTER TABLE `posyandu` ADD `desa` VARCHAR(36) NOT NULL AFTER `createdAt`;");
+        $this->db->query("ALTER TABLE `anak` ADD `desa` VARCHAR(36) NOT NULL AFTER `posyandu`;");
         $this->load->model(array('Roles', 'Menus', 'Permissions'));
         $bidan = $this->Roles->findOne(array('name' => 'Bidan'));
         $bidan = $bidan['uuid'];
@@ -39,6 +40,7 @@ class Migration_Posyandudesa extends CI_Migration
     {
         $this->db->query("DROP TABLE IF EXISTS `desa`");
         $this->db->query("ALTER TABLE `posyandu` DROP `desa`;");
+        $this->db->query("ALTER TABLE `anak` DROP `desa`;");
         $this->db->query("DELETE FROM menu WHERE `url` = 'Desa'");
         $this->db->query("DELETE FROM permission WHERE `entity` = 'Desa'");
     }

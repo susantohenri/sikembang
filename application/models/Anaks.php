@@ -9,9 +9,22 @@ class Anaks extends MY_Model
 		$this->table = 'anak';
 		$this->thead = array(
 			(object) array('mData' => 'orders', 'sTitle' => 'No', 'visible' => false),
-			(object) array('mData' => 'nama', 'sTitle' => 'Nama'),
+			(object) array('mData' => 'anak', 'sTitle' => 'Anak'),
+			(object) array('mData' => 'desa', 'sTitle' => 'Desa'),
+			(object) array('mData' => 'posyandu', 'sTitle' => 'Posyandu'),
 		);
 		$this->form = array(
+			array(
+				'name' => 'desa',
+				'label' => 'Desa',
+				'width' => 2,
+				'options' => array(),
+				'attributes' => array(
+					array('data-autocomplete' => 'true'),
+					array('data-model' => 'Desas'),
+					array('data-field' => 'nama')
+				)
+			),
 			array(
 				'name' => 'posyandu',
 				'label' => 'Posyandu',
@@ -155,11 +168,24 @@ class Anaks extends MY_Model
 
 	function dt()
 	{
-		$this->datatables
-			->select("{$this->table}.uuid")
-			->select("{$this->table}.orders")
-			->select('anak.nama');
-		return parent::dt();
+		return $this->datatables
+		->select('uuid')
+		->select('orders')
+		->select('anak')
+		->select('desa')
+		->select('posyandu')
+		->from("(
+			SELECT
+				{$this->table}.uuid,
+				{$this->table}.orders,
+				{$this->table}.nama anak,
+				desa.nama desa,
+				posyandu.nama posyandu
+			FROM {$this->table}
+			LEFT JOIN desa ON {$this->table}.desa = desa.uuid
+			LEFT JOIN posyandu ON {$this->table}.posyandu = posyandu.uuid
+		) anakDesaPosyandu")
+		->generate();
 	}
 
 	function imd()

@@ -45,6 +45,40 @@ class Anak extends MY_Controller
 		$this->loadview('index', $vars);
 	}
 
+	function create () {
+	  $model= $this->model;
+	  $vars = array();
+	  $vars['page_name'] = 'form';
+	  $vars['form']     = $this->$model->getForm();
+	  $vars['subform'] = $this->$model->getFormChild();
+	  $vars['uuid'] = '';
+	  $vars['js'] = array(
+		'moment.min.js',
+		'bootstrap-datepicker.js',
+		'daterangepicker.min.js',
+		'select2.full.min.js',
+		'form-anak.js'
+	  );
+	  $this->loadview('index', $vars);
+	}
+
+	function read ($id) {
+	  $vars = array();
+	  $vars['page_name'] = 'form';
+	  $model = $this->model;
+	  $vars['form'] = $this->$model->getForm($id);
+	  $vars['subform'] = $this->$model->getFormChild($id);
+	  $vars['uuid'] = $id;
+	  $vars['js'] = array(
+		'moment.min.js',
+		'bootstrap-datepicker.js',
+		'daterangepicker.min.js',
+		'select2.full.min.js',
+		'form-anak.js'
+	  );
+	  $this->loadview('index', $vars);
+	}
+
 	function download()
 	{
 		$rows = $this->Anaks->download();
@@ -115,5 +149,12 @@ class Anak extends MY_Controller
 		$writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
 		$writer->save('php://output');
 		exit;
+	}
+
+	function select2($model, $field)
+	{
+		$this->load->model($model);
+		if ('Posyandus' === $model) echo '{"results":' . json_encode($this->$model->select2WithDesa($field, $this->input->post('term'), $this->input->post('desa'))) . '}';
+		else echo '{"results":' . json_encode($this->$model->select2($field, $this->input->post('term'))) . '}';
 	}
 }
