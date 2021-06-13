@@ -21,6 +21,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
     a.btn:not([href]):not([tabindex]){color: white}
     .form-child .form-group.row > div {margin: 5px 0}
   </style>
+  <?php if (isset ($css)): foreach ($css as $style): ?>
+    <link rel="stylesheet" href="<?= base_url("assets/css/{$style}") ?>">
+  <?php endforeach; endif; ?>
 </head>
 <body class="hold-transition layout-top-nav">
 <div class="wrapper">

@@ -39,44 +39,50 @@ class Anak extends MY_Controller
 		$vars['js'] = array(
 			'jquery.dataTables.min.js',
 			'dataTables.bootstrap4.js',
-			'table.js'
+			'select2.full.min.js',
+			'table-anak.js'
 		);
+		$vars['css'] = array('select2.min.css');
 		$vars['thead'] = $this->$model->thead;
+		$this->load->model('Desas');
+		$vars['desas'] = $this->Desas->find();
 		$this->loadview('index', $vars);
 	}
 
-	function create () {
-	  $model= $this->model;
-	  $vars = array();
-	  $vars['page_name'] = 'form';
-	  $vars['form']     = $this->$model->getForm();
-	  $vars['subform'] = $this->$model->getFormChild();
-	  $vars['uuid'] = '';
-	  $vars['js'] = array(
-		'moment.min.js',
-		'bootstrap-datepicker.js',
-		'daterangepicker.min.js',
-		'select2.full.min.js',
-		'form-anak.js'
-	  );
-	  $this->loadview('index', $vars);
+	function create()
+	{
+		$model = $this->model;
+		$vars = array();
+		$vars['page_name'] = 'form';
+		$vars['form']     = $this->$model->getForm();
+		$vars['subform'] = $this->$model->getFormChild();
+		$vars['uuid'] = '';
+		$vars['js'] = array(
+			'moment.min.js',
+			'bootstrap-datepicker.js',
+			'daterangepicker.min.js',
+			'select2.full.min.js',
+			'form-anak.js'
+		);
+		$this->loadview('index', $vars);
 	}
 
-	function read ($id) {
-	  $vars = array();
-	  $vars['page_name'] = 'form';
-	  $model = $this->model;
-	  $vars['form'] = $this->$model->getForm($id);
-	  $vars['subform'] = $this->$model->getFormChild($id);
-	  $vars['uuid'] = $id;
-	  $vars['js'] = array(
-		'moment.min.js',
-		'bootstrap-datepicker.js',
-		'daterangepicker.min.js',
-		'select2.full.min.js',
-		'form-anak.js'
-	  );
-	  $this->loadview('index', $vars);
+	function read($id)
+	{
+		$vars = array();
+		$vars['page_name'] = 'form';
+		$model = $this->model;
+		$vars['form'] = $this->$model->getForm($id);
+		$vars['subform'] = $this->$model->getFormChild($id);
+		$vars['uuid'] = $id;
+		$vars['js'] = array(
+			'moment.min.js',
+			'bootstrap-datepicker.js',
+			'daterangepicker.min.js',
+			'select2.full.min.js',
+			'form-anak.js'
+		);
+		$this->loadview('index', $vars);
 	}
 
 	function download()
