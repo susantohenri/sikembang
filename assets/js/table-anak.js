@@ -1,6 +1,8 @@
 window.onload = function () {
 
-  $('select').select2()
+  $('select').select2().change(function () {
+    $('.btn-download').attr('href', `${current_controller_url}/download/${$(this).val()}`)
+  })
 
   for (var th in thead) {
     $('.table-model tfoot tr').append('<th></th>')

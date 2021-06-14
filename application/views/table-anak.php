@@ -41,15 +41,16 @@
                 </button>
             </div>
             <div class="modal-body">
-                <select class="form-control">
+                <select class="form-control" name="desa">
+                    <option></option>
                     <?php foreach ($desas as $desa): ?>
                         <option value="<?= $desa->uuid ?>"><?= $desa->nama ?></option>
                     <?php endforeach ?>
                 </select>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</button>
-                <a href="<?= site_url($current['controller'] . '/download') ?>" class="btn btn-info">
+                <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+                <a class="btn btn-info btn-download">
                     Download
                 </a>
             </div>

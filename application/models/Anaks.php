@@ -209,7 +209,7 @@ class Anaks extends MY_Model
 		return json_encode($result);
 	}
 
-	function download()
+	function download($desa)
 	{
 		$no = 0;
 		return array_map(function ($record) use (&$no) {
@@ -237,6 +237,7 @@ class Anaks extends MY_Model
 			->select('posyandu.nama nama_posyandu', false)
 			->select("FLOOR(DATEDIFF({$this->table}.createdAt, tgl_lahir) / 30) AS usia", false)
 			->join('posyandu', 'anak.posyandu = posyandu.uuid', 'left')
+			->where('anak.desa', $desa)
 			->get('anak')
 			->result());
 	}

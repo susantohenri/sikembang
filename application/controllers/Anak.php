@@ -85,9 +85,9 @@ class Anak extends MY_Controller
 		$this->loadview('index', $vars);
 	}
 
-	function download()
+	function download($desa)
 	{
-		$rows = $this->Anaks->download();
+		$rows = $this->Anaks->download($desa);
 		$colnames = array_keys($rows[0]);
 
 		$spreadsheet = new Spreadsheet();
