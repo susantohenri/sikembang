@@ -42,7 +42,7 @@
             </div>
             <div class="modal-body">
                 <select class="form-control" name="desa">
-                    <option></option>
+                    <option value="semua">SEMUA DESA</option>
                     <?php foreach ($desas as $desa): ?>
                         <option value="<?= $desa->uuid ?>"><?= $desa->nama ?></option>
                     <?php endforeach ?>
@@ -50,7 +50,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
-                <a class="btn btn-info btn-download">
+                <a class="btn btn-info btn-download" href="<?= site_url('Anak/Download/semua') ?>">
                     Download
                 </a>
             </div>
