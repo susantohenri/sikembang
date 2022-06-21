@@ -48,6 +48,12 @@ class Posyandus extends MY_Model
         'name' => 'puskesmas_kecamatan',
         'width' => 2,
         'label' => 'Puskesmas / Kecamatan',
+				'options' => array(
+          array('value' => '', 'text' => ''),
+          array('value' => 'Ampel', 'text' => 'Ampel'),
+          array('value' => 'Banyudono', 'text' => 'Banyudono'),
+          array('value' => 'Cepogo', 'text' => 'Cepogo'),
+        ),
       ),
       array(
         'name' => 'telepon',
