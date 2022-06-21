@@ -35,6 +35,21 @@ class Posyandus extends MY_Model
         'label' => 'Alamat',
       ),
       array(
+        'name' => 'provinsi',
+        'width' => 2,
+        'label' => 'Provinsi',
+      ),
+      array(
+        'name' => 'kabupaten_kota',
+        'width' => 2,
+        'label' => 'Kabupaten / Kota',
+      ),
+      array(
+        'name' => 'puskesmas_kecamatan',
+        'width' => 2,
+        'label' => 'Puskesmas / Kecamatan',
+      ),
+      array(
         'name' => 'telepon',
         'width' => 2,
         'label' => 'Telepon',
