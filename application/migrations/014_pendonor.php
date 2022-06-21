@@ -28,7 +28,7 @@ class Migration_Pendonor extends CI_Migration
             'role' => $bidan,
             'name' => 'Bank Darah Hidup',
             'url' => 'Pendonor',
-            'icon' => 'id-badge'
+            'icon' => 'burn'
         ));
         foreach (array('index', 'create', 'read', 'update', 'delete') as $action) {
             $this->Permissions->create(array(
