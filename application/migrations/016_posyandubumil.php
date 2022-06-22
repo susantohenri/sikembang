@@ -14,9 +14,11 @@ class Migration_posyandubumil extends CI_Migration
             `updatedAt` datetime DEFAULT NULL,
             `tanggal_pemeriksaan` DATE NOT NULL,
             `ibuhamil` varchar(255) NOT NULL,
+            `umur_kehamilan` float NOT NULL,
             `lingkar_lengan_atas` float NOT NULL,
             `berat_badan` float NOT NULL,
             `checklist_tablet_tambah_darah` float NOT NULL,
+            `keterangan` varchar(255) NOT NULL,
             PRIMARY KEY (`uuid`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8
         ");

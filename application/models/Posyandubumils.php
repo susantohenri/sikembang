@@ -11,6 +11,7 @@ class Posyandubumils extends MY_Model
       (object) array('mData' => 'orders', 'sTitle' => 'No', 'visible' => false),
       (object) array('mData' => 'tanggal_pemeriksaan', 'sTitle' => 'Tanggal Pemeriksaan'),
       (object) array('mData' => 'nama_ibuhamil', 'sTitle' => 'Nama Ibu Hamil'),
+      (object) array('mData' => 'keterangan', 'sTitle' => 'Keterangan'),
 
     );
 
@@ -34,6 +35,11 @@ class Posyandubumils extends MY_Model
             array('data-model' => 'Ibuhamils'),
             array('data-field' => 'nama_ibuhamil'),
         )
+      ),
+      array(
+        'name' => 'umur_kehamilan',
+        'width' => 2,
+        'label' => 'Umur Kehamilan',
       ),
       array(
         'name' => 'lingkar_lengan_atas',
@@ -61,7 +67,20 @@ class Posyandubumils extends MY_Model
       ->select("{$this->table}.orders")
       ->select('posyandubumil.tanggal_pemeriksaan')
       ->select('ibuhamil.nama_ibuhamil')
+      ->select('posyandubumil.keterangan')
       ->join('ibuhamil', 'posyandubumil.ibuhamil = ibuhamil.uuid', 'left');
     return parent::dt();
+  }
+
+  function save($record)
+  {
+    foreach ($record as $field => &$value) {
+      if (is_array($value)) $value = implode(',', $value);
+      else if (strpos($value, '[comma-replacement]') > -1) $value = str_replace('[comma-replacement]', ',', $value);
+    }
+    $record['keterangan'] = 'NORMAL';
+    if ($record['lingkar_lengan_atas'] && $record['lingkar_lengan_atas'] < 23.5) $record['keterangan'] = 'KEK';
+    if ($record['berat_badan'] && $record['berat_badan'] < 45) $record['keterangan'] = 'KEK';
+    return isset($record['uuid']) ? $this->update($record) : $this->create($record);
   }
 }
