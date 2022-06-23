@@ -17,6 +17,7 @@ class Migration_posyandubumil extends CI_Migration
             `umur_kehamilan` float NOT NULL,
             `lingkar_lengan_atas` float NOT NULL,
             `berat_badan` float NOT NULL,
+            `tensi` varchar(255) NOT NULL,
             `checklist_tablet_tambah_darah` float NOT NULL,
             `keterangan` varchar(255) NOT NULL,
             PRIMARY KEY (`uuid`)

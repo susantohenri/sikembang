@@ -52,6 +52,11 @@ class Posyandubumils extends MY_Model
         'label' => 'Berat Badan',
       ),
       array(
+        'name' => 'tensi',
+        'width' => 2,
+        'label' => 'Tensi',
+      ),
+      array(
         'name' => 'checklist_tablet_tambah_darah',
         'width' => 2,
         'label' => 'Checklist Tablet Penambah Darah',
