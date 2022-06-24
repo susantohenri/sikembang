@@ -88,4 +88,24 @@ class Posyandubumils extends MY_Model
     if ($record['berat_badan'] && $record['berat_badan'] < 45) $record['keterangan'] = 'KEK';
     return isset($record['uuid']) ? $this->update($record) : $this->create($record);
   }
+
+	function download()
+	{
+		$no = 0;
+		return array_map(function ($record) use (&$no) {
+			$no++;
+			return array(
+				'No' => $no,
+				'Tanggal Pemeriksaan' => $record->tanggal_pemeriksaan,
+				'Nama Ibu Hamil' => $record->nama_ibuhamil,
+				'Keterangan' => $record->keterangan,
+			);
+		}, $this->db
+			->select('posyandubumil.tanggal_pemeriksaan')
+			->select('ibuhamil.nama_ibuhamil')
+			->select('posyandubumil.keterangan')
+			->join('ibuhamil', 'posyandubumil.ibuhamil = ibuhamil.uuid', 'left')
+			->get('posyandubumil')
+			->result());
+	}
 }
