@@ -47,6 +47,7 @@ class Posyandubumil extends MY_Controller
 	  function download()
 	  {
 		  $rows = $this->Posyandubumils->download();
+		  if (!isset($rows[0])) redirect(site_url('posyandubumil'));
 		  $colnames = array_keys($rows[0]);
   
 		  $spreadsheet = new Spreadsheet();
