@@ -26,6 +26,11 @@ class Posyandubumils extends MY_Model
         )
       ),
       array(
+        'name' => 'tempat_periksa',
+        'width' => 2,
+        'label' => 'Tempat Periksa',
+      ),
+      array(
         'name' => 'ibuhamil',
         'label' => 'Ibu Hamil',
         'options' => array(),
@@ -37,9 +42,9 @@ class Posyandubumils extends MY_Model
         )
       ),
       array(
-        'name' => 'umur_kehamilan',
+        'name' => 'hpht',
         'width' => 2,
-        'label' => 'Umur Kehamilan',
+        'label' => 'HPHT',
       ),
       array(
         'name' => 'lingkar_lengan_atas',
@@ -60,6 +65,12 @@ class Posyandubumils extends MY_Model
         'name' => 'checklist_tablet_tambah_darah',
         'width' => 2,
         'label' => 'Checklist Tablet Penambah Darah',
+      ),
+      array(
+        'name' => 'keluhan',
+        'width' => 2,
+        'type' => 'textarea',
+        'label' => 'Keluhan',
       ),
     );
     $this->childs = array();
