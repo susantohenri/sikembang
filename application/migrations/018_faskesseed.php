@@ -7,7 +7,7 @@ class Migration_faskesseed extends CI_Migration {
     array('nama' => 'Selo', 'alamat' => 'Jl. Ki Hajar Saloka RT.04 / RW.21, Ds.Samiran, Kec. Selo, Kab. Boyolali', 'telepon' => ''),
     array('nama' => 'Cepogo', 'alamat' => 'Jl. Raya Cepogo Km. 11, RT.01 / RW.01, Kec. Cepogo, Kab. Boyolali', 'telepon' => ''),
     array('nama' => 'Ampel', 'alamat' => 'Ds.Candi, RT.04 / RW.06, Kec. Ampel, Kab. Boyolali', 'telepon' => ''),
-    array('nama' => 'Gladaksari', 'alamat' => 'Jl. Ampel-Pantaran Km.5, Ds. Candisari, Kec. Gladagsari, Kab. Boyolali', 'telepon' => ''),
+    array('nama' => 'Gladagsari', 'alamat' => 'Jl. Ampel-Pantaran Km.5, Ds. Candisari, Kec. Gladagsari, Kab. Boyolali', 'telepon' => ''),
     array('nama' => 'Musuk', 'alamat' => 'Dk. Drajidan, Ds. Sruni, RT.02 / RW.01, Kec. Musuk, Kab. Boyolali', 'telepon' => ''),
     array('nama' => 'Tamansari', 'alamat' => 'Ds. Karanganyar RT.01 / RW.01, Kec. Tamansari, Kab. Boyolali', 'telepon' => ''),
     array('nama' => 'Boyolali I', 'alamat' => 'Jl. Jambu No.11, Kel. Siswodipuran, Kec. Boyolali, Kab. Boyolali', 'telepon' => ''),

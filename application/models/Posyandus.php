@@ -38,16 +38,28 @@ class Posyandus extends MY_Model
         'name' => 'provinsi',
         'width' => 2,
         'label' => 'Provinsi',
+        'options' => array(
+          array('value' => 'Jawa Tengah', 'text' => 'Jawa Tengah')
+        )
       ),
       array(
         'name' => 'kabupaten_kota',
         'width' => 2,
         'label' => 'Kabupaten / Kota',
+        'options' => array(
+          array('value' => 'Boyolali', 'text' => 'Boyolali')
+        )
       ),
       array(
         'name' => 'puskesmas_kecamatan',
         'width' => 2,
-        'label' => 'Puskesmas / Kecamatan'
+        'label' => 'Puskesmas / Kecamatan',
+        'options' => array(),
+        'attributes' => array(
+          array('data-autocomplete' => 'true'),
+          array('data-model' => 'Faskess'),
+          array('data-field' => 'nama')
+        )
       ),
       array(
         'name' => 'telepon',
