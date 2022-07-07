@@ -158,6 +158,16 @@ class Ibuhamils extends MY_Model
         'width' => 2,
         'label' => 'Tinggi Badan',
       ),
+      array(
+        'name' => 'berat_badan',
+        'width' => 2,
+        'label' => 'Berat Badan',
+      ),
+      array(
+        'name' => 'lingkar_lengan_atas',
+        'width' => 2,
+        'label' => 'Lingkar Lengan Atas',
+      ),
     );
     $this->childs = array();
   }

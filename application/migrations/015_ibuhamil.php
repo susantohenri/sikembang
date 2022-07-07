@@ -42,7 +42,9 @@ class Migration_ibuhamil extends CI_Migration
             `hpht` varchar(255) NOT NULL,
             `kb_terakhir` varchar(255) NOT NULL,
             `penolong_kelahiran_sebelumnya` varchar(255) NOT NULL,
-            `tinggi_badan` varchar(255) NOT NULL,
+            `tinggi_badan` float NOT NULL,
+            `berat_badan` float NOT NULL,
+            `lingkar_lengan_atas` float NOT NULL,
             PRIMARY KEY (`uuid`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8
         ");
