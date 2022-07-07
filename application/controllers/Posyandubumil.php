@@ -10,7 +10,7 @@ class Posyandubumil extends MY_Controller
 	function __construct()
 	{
 		$this->model = 'Posyandubumils';
-		$this->page_title = 'Posyandu Ibu Hamil';
+		$this->page_title = 'Pemeriksaan Ibu Hamil';
 		parent::__construct();
 	}
 

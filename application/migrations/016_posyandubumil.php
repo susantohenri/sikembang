@@ -28,7 +28,7 @@ class Migration_posyandubumil extends CI_Migration
         $bidan = $bidan['uuid'];
         $this->Menus->create(array(
             'role' => $bidan,
-            'name' => 'Posyandu Bumil',
+            'name' => 'Pemeriksaan Ibu Hamil',
             'url' => 'posyandubumil',
             'icon' => 'pills'
         ));
