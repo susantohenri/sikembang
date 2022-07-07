@@ -51,7 +51,7 @@ class Migration_ibuhamil extends CI_Migration
         $bidan = $bidan['uuid'];
         $this->Menus->create(array(
             'role' => $bidan,
-            'name' => 'Ibu Hamil',
+            'name' => 'Ibu Hamil Baru',
             'url' => 'ibuhamil',
             'icon' => 'female'
         ));
