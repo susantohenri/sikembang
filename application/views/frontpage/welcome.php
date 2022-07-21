@@ -75,3 +75,15 @@
 		</div>
 	</a>
 </div>
+
+<div class="col-sm-3">
+	<a href="<?= site_url('Frontpage/kalkulator_bumil') ?>">
+		<div class="info-box">
+			<span class="info-box-icon bg-warning"><i class="fas fa-female"></i></span>
+			<div class="info-box-content">
+				<span class="info-box-text" style="color: #000">Kalkulator Ibu Hamil</span>
+				<span class="info-box-number"></span>
+			</div>
+		</div>
+	</a>
+</div>
