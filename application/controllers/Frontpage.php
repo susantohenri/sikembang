@@ -66,20 +66,21 @@ class Frontpage extends CI_Controller
     {
         if ($post = $this->input->post()) {
             foreach (array('umur_kehamilan', 'berat_badan_sebelum_hamil', 'tinggi_badan', 'berat_badan_sekarang') as $input) {
-                if ($post[$input] === '') die('{"hasil": "Error: Input Tidak Lengkap"}');
+                if (!isset($post[$input]) || $post[$input] === '') $post[$input] = 0;
+                // die('{"hasil": "Error: Input Tidak Lengkap"}');
             }
             $result = new stdClass();
             $post['tinggi_badan'] = $post['tinggi_badan'] / 100;
             $post['tinggi_badan'] = pow($post['tinggi_badan'], 2);
             $post['tinggi_badan'] = round($post['tinggi_badan'], 2);
 
-            $result->bmi = $post['berat_badan_sebelum_hamil'] / $post['tinggi_badan'];
+            $result->bmi = $post['tinggi_badan'] === 0 ? 0 : $post['berat_badan_sebelum_hamil'] / $post['tinggi_badan'];
             $result->bmi = round($result->bmi, 2);
 
-            $result->total_kenaikan_berat_badan = $post['berat_badan_sekarang'] - $post['berat_badan_sebelum_hamil'];
+            // $result->total_kenaikan_berat_badan = $post['berat_badan_sekarang'] - $post['berat_badan_sebelum_hamil'];
 
-            $result->rata2_kenaikan_berat_badan_per_minggu = $result->total_kenaikan_berat_badan / $post['umur_kehamilan'];
-            $result->rata2_kenaikan_berat_badan_per_minggu = round($result->rata2_kenaikan_berat_badan_per_minggu, 2);
+            // $result->rata2_kenaikan_berat_badan_per_minggu = $post['umur_kehamilan'] === 0 ? 0 : $result->total_kenaikan_berat_badan / $post['umur_kehamilan'];
+            // $result->rata2_kenaikan_berat_badan_per_minggu = round($result->rata2_kenaikan_berat_badan_per_minggu, 2);
 
             $ideals = array(
                 "Underweight" => array(
@@ -131,12 +132,12 @@ class Frontpage extends CI_Controller
             else if ($result->bmi >= 30) $result->imt_sebelum_kehamilan = 'Obese';
 
             $result->bmi .= ' Kg/m<sup>2</sup>';
-            $result->total_kenaikan_berat_badan .= ' Kg';
-            $result->rata2_kenaikan_berat_badan_per_minggu .= ' Kg/Minggu';
+            // $result->total_kenaikan_berat_badan .= ' Kg';
+            // $result->rata2_kenaikan_berat_badan_per_minggu .= ' Kg/Minggu';
 
             $result->penjelasan = $ideals[$result->imt_sebelum_kehamilan]['penjelasan'];
-            $result->total_kenaikan_berat_badan .= " (nilai ideal {$ideals[$result->imt_sebelum_kehamilan]['total_kenaikan_berat_badan']})";
-            $result->rata2_kenaikan_berat_badan_per_minggu .= " (nilai ideal {$ideals[$result->imt_sebelum_kehamilan]['rata2_kenaikan_berat_badan_per_minggu']})";
+            // $result->total_kenaikan_berat_badan .= " (nilai ideal {$ideals[$result->imt_sebelum_kehamilan]['total_kenaikan_berat_badan']})";
+            // $result->rata2_kenaikan_berat_badan_per_minggu .= " (nilai ideal {$ideals[$result->imt_sebelum_kehamilan]['rata2_kenaikan_berat_badan_per_minggu']})";
 
             echo json_encode($result);
         } else {
