@@ -97,7 +97,7 @@ switch (ENVIRONMENT)
  * This variable must contain the name of your "system" directory.
  * Set the path if it is not in the same directory as this file.
  */
-	$system_path = '../asset-mgmt/system';
+	$system_path = '../CodeIgniter-3.1.13/system';
 
 /*
  *---------------------------------------------------------------
