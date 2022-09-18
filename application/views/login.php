@@ -65,14 +65,5 @@
 <!-- <script src="../../plugins/jquery/jquery.min.js"></script> -->
 <!-- Bootstrap 4 -->
 <!-- <script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script> -->
-<script type="text/javascript">
-   (function() {
-       if ('serviceWorker' in navigator) {
-          navigator.serviceWorker.register('<?= base_url('service-worker.js') ?>').then(function() {
-             console.log('Service Worker Registered');
-          })
-       }
-    })()
-</script>
 </body>
 </html>

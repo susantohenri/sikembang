@@ -12,7 +12,7 @@ class Login extends CI_Controller {
 			if (isset ($login['uuid'])) {
 				$this->load->library('session');
 				$this->session->set_userdata($login);
-				redirect(base_url());
+				redirect(site_url());
 			}
 		}
 		$this->load->view('login');
