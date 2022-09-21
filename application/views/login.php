@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -19,60 +20,62 @@
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 </head>
+
 <body class="hold-transition login-page">
-<div class="login-box">
-  <div class="login-logo">
-  <div class="card">
-    <div class="card-header login-card-header">
-      <img src="<?= base_url('logo-sikembang.jpeg') ?>" style="width: 100%">
-    </div>
-    <div class="card-body login-card-body">
+  <div class="login-box">
+    <div class="login-logo">
+      <div class="card">
+        <div class="card-header login-card-header">
+          <img src="<?= base_url('logo-sikembang.jpeg') ?>" style="width: 100%">
+        </div>
+        <div class="card-body login-card-body">
 
-      <form method="post">
-        <div class="input-group mb-3">
-          <input type="text" class="form-control" placeholder="Nama" name="username">
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-envelope"></span>
+          <form method="post">
+            <div class="input-group mb-3">
+              <input type="text" class="form-control" placeholder="Nama" name="username">
+              <div class="input-group-append">
+                <div class="input-group-text">
+                  <span class="fas fa-envelope"></span>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-        <div class="input-group mb-3">
-          <input type="password" class="form-control" placeholder="Kata Sandi" name="password">
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-lock"></span>
+            <div class="input-group mb-3">
+              <input type="password" class="form-control" placeholder="Kata Sandi" name="password">
+              <div class="input-group-append">
+                <div class="input-group-text">
+                  <span class="fas fa-lock"></span>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-        <div class="row">
-          <!-- /.col -->
-          <div class="col-12">
-            <button type="submit" style="background-color: #ffab00; color: #fff" class="btn btn-block btn-flat">Masuk</button>
-            <a href="<?= site_url () ?>" class="btn btn-block btn-flat btn-info">Kembali</a>
-          </div>
-          <!-- /.col -->
-        </div>
-      </form>
+            <div class="row">
+              <!-- /.col -->
+              <div class="col-12">
+                <button type="submit" style="background-color: #ffab00; color: #fff" class="btn btn-block btn-flat">Masuk</button>
+                <a href="<?= site_url() ?>" class="btn btn-block btn-flat btn-info">Kembali</a>
+              </div>
+              <!-- /.col -->
+            </div>
+          </form>
 
+        </div>
+        <!-- /.login-card-body -->
+      </div>
     </div>
-    <!-- /.login-card-body -->
-  </div>
-</div>
-<!-- /.login-box -->
+    <!-- /.login-box -->
 
-<!-- jQuery -->
-<!-- <script src="../../plugins/jquery/jquery.min.js"></script> -->
-<!-- Bootstrap 4 -->
-<!-- <script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script> -->
-<script type="text/javascript">
-   (function() {
-       if ('serviceWorker' in navigator) {
+    <!-- jQuery -->
+    <!-- <script src="../../plugins/jquery/jquery.min.js"></script> -->
+    <!-- Bootstrap 4 -->
+    <!-- <script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script> -->
+    <script type="text/javascript">
+      (function() {
+        if ('serviceWorker' in navigator) {
           navigator.serviceWorker.register('<?= base_url('service-worker.js') ?>').then(function() {
-             console.log('Service Worker Registered');
+            console.log('Service Worker Registered');
           })
-       }
-    })()
-</script>
+        }
+      })()
+    </script>
 </body>
+
 </html>
