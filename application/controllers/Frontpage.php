@@ -15,7 +15,8 @@ class Frontpage extends CI_Controller
             'page_title' => 'Selamat Datang',
             'page_name' => 'frontpage/welcome',
             'current' => array(
-                'controller' => 'Frontpage'
+                'controller' => 'Frontpage',
+                'controller_url' => 'Frontpage'
             ),
             'artikels' => $this->Artikels->find()
         );
