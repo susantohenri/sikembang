@@ -38,7 +38,7 @@ self.addEventListener('fetch', function (event) {
 
    event.respondWith(
       isOnline ?
-      fetch(event.request).then(response => response).catch (e => {console.log(event.request.url, isOnline)}):
+      fetch(event.request).then(response => response):
       caches.open(cacheName).then(cache => cache.match(event.request))
    )
 })
