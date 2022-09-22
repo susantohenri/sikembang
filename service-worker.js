@@ -1,41 +1,41 @@
-var dataCacheName = 'pwa-sikembang-v1'
-var cacheName = 'pwa-sikembang-v1'
-var dataUrl = 'https://sikembang.com'
-var PATH = dataUrl
+var cacheName = 'sikembang-v1'
 var filesToCache = [
-   PATH + '/'
+    'https://192.168.43.39/sikembang/',
+    'https://192.168.43.39/sikembang/assets/css/all.min.css',
+    'https://192.168.43.39/sikembang/assets/css/adminlte.min.css',
+    'https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700',
+    'https://192.168.43.39/sikembang/assets/js/jquery.min.js',
+    'https://192.168.43.39/sikembang/assets/js/bootstrap.bundle.min.js',
+    'https://192.168.43.39/sikembang/assets/js/offline.js',
+    'https://192.168.43.39/sikembang/logo-sikembang.jpeg',
+    'https://192.168.43.39/sikembang/assets/webfonts/fa-solid-900.woff2',
+    'https://fonts.gstatic.com/s/sourcesanspro/v21/6xK3dSBYKcSV-LCoeQqfX1RYOo3qOK7lujVj9w.woff2',
+    'https://fonts.gstatic.com/s/sourcesanspro/v21/6xKydSBYKcSV-LCoeQqfX1RYOo3ig4vwlxdu3cOWxw.woff2',
+    'https://192.168.43.39/favicon.ico'
 ]
-self.addEventListener('install', function(e) {
-   console.log('[ServiceWorker] Install')
-   e.waitUntil(caches.open(cacheName).then(function(cache) {
-      console.log('[ServiceWorker] Caching app shell')
-      return cache.addAll(filesToCache)
-   }))
+
+self.addEventListener('install', function (event) {
+    event.waitUntil(caches
+        .open(cacheName)
+        .then(function (cache) {
+            return cache.addAll(filesToCache)
+        }))
 })
-self.addEventListener('activate', function(e) {
-   console.log('[ServiceWorker] Activate')
-   e.waitUntil(caches.keys().then(function(keyList) {
-      return Promise.all(keyList.map(function(key) {
-         if (key !== cacheName) {
-            console.log('[ServiceWorker] Removing old cache', key)
-            return caches.delete(key)
-         }
-      }))
-   }))
+
+self.addEventListener('activate', function (event) {
 })
-self.addEventListener('fetch', function(e) {
-   console.log('[ServiceWorker] Fetch', e.request.url)
-   if (e.request.url.indexOf(dataUrl) === 0) {
-      e.respondWith(fetch(e.request).then(function(response) {
-         return caches.open(dataCacheName).then(function(cache) {
-            cache.put(e.request.url, response.clone())
-            console.log('[ServiceWorker] Fetched&Cached Data')
-            return response;
-         })
-      }))
-   } else {
-      e.respondWith(caches.match(e.request).then(function(response) {
-         return response || fetch(e.request)
-      }))
-   }
+
+self.addEventListener('fetch', function (event) {
+    if (filesToCache.indexOf(event.request.url) < 0) return;
+    var isOnline = false
+    var isPage = -1 === event.request.url.split('/').pop().indexOf('.')
+    var isNavigate = 'navigate' === event.request.mode
+    var navigatorOnline = navigator.onLine
+    isOnline = isPage ? !isNavigate : navigatorOnline
+
+    event.respondWith(
+        isOnline ?
+            fetch(event.request).then(response => response) :
+            caches.open(cacheName).then(cache => cache.match(event.request))
+    )
 })
