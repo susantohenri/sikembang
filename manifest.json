@@ -4,8 +4,8 @@
   "theme_color": "#ffab00",
   "background_color": "#ffffff",
   "display": "standalone",
-  "scope": "https://sikembang.com",
-  "start_url": "https://sikembang.com",
+  "scope": "https://192.168.43.39/sikembang",
+  "start_url": "https://192.168.43.39/sikembang",
   "icons": [
     {
       "src": "icon.png",

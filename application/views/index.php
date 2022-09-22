@@ -129,6 +129,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
       <script type="text/javascript" src="<?= base_url("assets/js/{$script}") ?>"></script>
   <?php endforeach;
   endif; ?>
+  <script type="text/javascript">
+    (function() {
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('<?= base_url('service-worker.js') ?>')
+      }
+    })()
+  </script>
 </body>
 
 </html>
