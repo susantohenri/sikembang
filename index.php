@@ -61,7 +61,7 @@ switch ($_SERVER['SERVER_NAME']) {
 		$system_path = 'system';
 		break;
 	case 'dev.sikembang.com':
-		define('ENVIRONMENT', 'staging');
+		define('ENVIRONMENT', 'testing');
 		$system_path = '../system';
 		break;
 	default:
@@ -69,7 +69,6 @@ switch ($_SERVER['SERVER_NAME']) {
 		$system_path = '../CodeIgniter-3.1.13/system';
 		break;
 }
-
 
 /*
  *---------------------------------------------------------------
