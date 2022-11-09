@@ -53,6 +53,6 @@ class Pwa extends CI_Controller
 
     function manifest()
     {
-        echo '{"name":"SiKembang","short_name":"SiKembang","theme_color":"#ffab00","background_color":"#ffffff","display":"standalone","scope":"' . base_url() . '","start_url":"' . base_url() . '","icons":[{"src":"icon.png","sizes":"144x144","type":"image/png"},{"src":"icon192.png","sizes":"192x192","type":"image/png"}],"splash_pages":null}';
+        echo '{"name":"SiKembang","short_name":"SiKembang","theme_color":"#ffab00","background_color":"#ffffff","display":"standalone","scope":"'. base_url() .'","start_url":"'. base_url() .'","icons":[{"src":"'. base_url('icon.png') .'","sizes":"144x144","type":"image/png"},{"src":"'. base_url('icon192.png') .'","sizes":"192x192","type":"image/png"}],"splash_pages":null}';
     }
 }
