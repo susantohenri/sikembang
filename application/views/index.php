@@ -11,6 +11,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <meta http-equiv="x-ua-compatible" content="ie=edge">
 
   <title>SiKembang</title>
+  <link href="<?= site_url('Pwa/manifest') ?>" rel="manifest">
 
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="<?= base_url('assets/css/all.min.css') ?>">
@@ -114,12 +115,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
   <!-- REQUIRED SCRIPTS -->
 
-  <!-- jQuery -->
   <script src="<?= base_url('assets/js/jquery.min.js') ?>"></script>
-  <!-- Bootstrap 4 -->
   <script src="<?= base_url('assets/js/bootstrap.bundle.min.js') ?>"></script>
-  <!-- AdminLTE App -->
-  <!-- <script src="../../dist/js/adminlte.min.js"></script> -->
+  <script type="text/javascript">
+    (function() {
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('<?= site_url('Pwa/serviceWorker') ?>')
+      }
+    })()
+  </script>
   <script type="text/javascript">
     var site_url = '<?= site_url('/') ?>'
     var current_controller = '<?= $current['controller'] ?>'
