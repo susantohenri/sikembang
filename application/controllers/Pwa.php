@@ -6,6 +6,7 @@ class Pwa extends CI_Controller
     function serviceWorker()
     {
         $base_url = base_url();
+        header("content-type: application/javascript");
         echo "
             var cacheName = 'sikembang-v1'
             var filesToCache = [
