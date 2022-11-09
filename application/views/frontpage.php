@@ -101,21 +101,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
   <!-- REQUIRED SCRIPTS -->
 
-  <!-- jQuery -->
   <script src="<?= base_url('assets/js/jquery.min.js') ?>"></script>
-  <!-- Bootstrap 4 -->
   <script src="<?= base_url('assets/js/bootstrap.bundle.min.js') ?>"></script>
-  <!-- AdminLTE App -->
-  <!-- <script src="../../dist/js/adminlte.min.js"></script> -->
-  <script type="text/javascript">
-    (function() {
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('<?= base_url('service-worker.js') ?>').then(function() {
-          console.log('Service Worker Registered');
-        })
-      }
-    })()
-  </script>
   <script type="text/javascript">
     var site_url = '<?= site_url('/') ?>'
     var current_controller = '<?= $current['controller'] ?>'
