@@ -120,7 +120,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <script type="text/javascript">
     (function() {
       if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('<?= base_url('service-worker-'. ENVIRONMENT .'.json') ?>')
+        navigator.serviceWorker.register('<?= base_url('service-worker-'. ENVIRONMENT .'.js') ?>')
       }
     })()
   </script>
