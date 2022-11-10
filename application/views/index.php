@@ -11,7 +11,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <meta http-equiv="x-ua-compatible" content="ie=edge">
 
   <title>SiKembang</title>
-  <link href="<?= site_url('Pwa/manifest') ?>" rel="manifest">
+  <link href="<?= site_url('manifest.json') ?>" rel="manifest">
 
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="<?= base_url('assets/css/all.min.css') ?>">
