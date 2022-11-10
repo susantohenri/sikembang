@@ -4,8 +4,8 @@
     "theme_color": "#ffab00",
     "background_color": "#ffffff",
     "display": "standalone",
-    "scope": "https://localhost/sikembang",
-    "start_url": "https://localhost/sikembang",
+    "scope": "http://localhost/sikembang/",
+    "start_url": "http://localhost/sikembang/",
     "icons": [
       {
         "src": "https://localhost/sikembang/icon.png",
