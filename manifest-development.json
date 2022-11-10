@@ -1,0 +1,22 @@
+{
+    "name": "SiKembang",
+    "short_name": "SiKembang",
+    "theme_color": "#ffab00",
+    "background_color": "#ffffff",
+    "display": "standalone",
+    "scope": "https://localhost/sikembang",
+    "start_url": "https://localhost/sikembang",
+    "icons": [
+      {
+        "src": "https://localhost/sikembangicon.png",
+        "sizes": "144x144",
+        "type": "image/png"
+      },
+      {
+        "src": "https://localhost/sikembangicon192.png",
+        "sizes": "192x192",
+        "type": "image/png"
+      }
+    ],
+    "splash_pages": null
+  }

@@ -11,7 +11,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <meta http-equiv="x-ua-compatible" content="ie=edge">
 
   <title>SiKembang</title>
-  <link href="<?= site_url('manifest.json') ?>" rel="manifest">
+  <link href="<?= base_url('manifest-'. ENVIRONMENT .'.json') ?>" rel="manifest">
 
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="<?= base_url('assets/css/all.min.css') ?>">
@@ -120,7 +120,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <script type="text/javascript">
     (function() {
       if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('<?= site_url('service-worker.js') ?>')
+        navigator.serviceWorker.register('<?= base_url('service-worker-'. ENVIRONMENT .'.json') ?>')
       }
     })()
   </script>
