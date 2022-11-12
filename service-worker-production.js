@@ -1,8 +1,25 @@
 var cacheName = 'sikembang-v1'
 var filesToCache = [
     'https://sikembang.com/',
-    'https://sikembang.com/manifest-testing.json',
+    'https://sikembang.com/manifest-development.json',
     'https://sikembang.com/icon.png',
+
+    'https://sikembang.com/index.php/Pengukuran',
+    'https://sikembang.com/index.php/Pengukuran/create',
+    'https://sikembang.com/index.php/posyandubumil',
+    'https://sikembang.com/index.php/posyandubumil/create',
+    'https://sikembang.com/assets/css/dataTables.bootstrap4.css',
+    'https://sikembang.com/assets/js/jquery.dataTables.min.js',
+    'https://sikembang.com/assets/js/dataTables.bootstrap4.js',
+    'https://sikembang.com/assets/js/table.js',
+    'https://sikembang.com/assets/css/select2.min.css',
+    'https://sikembang.com/assets/css/bootstrap-datepicker.css',
+    'https://sikembang.com/assets/js/moment.min.js',
+    'https://sikembang.com/assets/js/bootstrap-datepicker.js',
+    'https://sikembang.com/assets/js/daterangepicker.min.js',
+    'https://sikembang.com/assets/js/select2.full.min.js',
+    'https://sikembang.com/assets/js/form_pengukuran.js',
+
     'https://sikembang.com/assets/css/all.min.css',
     'https://sikembang.com/assets/css/adminlte.min.css',
     'https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700',
