@@ -1,6 +1,7 @@
 var cacheName = 'sikembang-v1'
 var filesToCache = [
     'https://localhost/sikembang/',
+    'https://localhost/sikembang/icon.png',
     'https://localhost/sikembang/assets/css/all.min.css',
     'https://localhost/sikembang/assets/css/adminlte.min.css',
     'https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700',
@@ -27,15 +28,7 @@ self.addEventListener('activate', function (event) {
 
 self.addEventListener('fetch', function (event) {
     if (filesToCache.indexOf(event.request.url) < 0) return;
-    var isOnline = false
-    var isPage = -1 === event.request.url.split('/').pop().indexOf('.')
-    var isNavigate = 'navigate' === event.request.mode
-    var navigatorOnline = navigator.onLine
-    isOnline = isPage ? !isNavigate : navigatorOnline
-
     event.respondWith(
-        isOnline ?
-            fetch(event.request).then(response => response) :
-            caches.open(cacheName).then(cache => cache.match(event.request))
+        caches.open(cacheName).then(cache => cache.match(event.request.url.replace('https://localhost/sikembang/', '/sikembang/')))
     )
 })
