@@ -1,7 +1,19 @@
 var cacheName = 'sikembang-v1'
 var filesToCache = [
     'https://localhost/sikembang/',
+
+    'https://localhost/sikembang/index.php/Pengukuran',
+    'https://localhost/sikembang/index.php/Pengukuran/create',
+    'https://localhost/sikembang/index.php/posyandubumil',
+    'https://localhost/sikembang/index.php/posyandubumil/create',
+    'https://localhost/sikembang/assets/css/dataTables.bootstrap4.css',
+    'https://localhost/sikembang/assets/js/jquery.dataTables.min.js',
+    'https://localhost/sikembang/assets/js/dataTables.bootstrap4.js',
+    'https://localhost/sikembang/assets/js/table.js',
+
+    'https://localhost/sikembang/manifest-development.json',
     'https://localhost/sikembang/icon.png',
+
     'https://localhost/sikembang/assets/css/all.min.css',
     'https://localhost/sikembang/assets/css/adminlte.min.css',
     'https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700',
