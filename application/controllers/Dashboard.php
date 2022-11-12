@@ -14,7 +14,6 @@ class Dashboard extends MY_Controller {
 	    $this->load->model('Menus');
 	    $vars['menu'] = $this->Menus->find(array('role' => $this->session->userdata('role')));
 	    $vars['page_name'] = 'dashboard';
-		$vars['js'] = ['offline.js'];
 		$this->loadview('index', $vars);
 	}
 
