@@ -10,6 +10,13 @@ var filesToCache = [
     'https://localhost/sikembang/assets/js/jquery.dataTables.min.js',
     'https://localhost/sikembang/assets/js/dataTables.bootstrap4.js',
     'https://localhost/sikembang/assets/js/table.js',
+    'https://localhost/sikembang/assets/css/select2.min.css',
+    'https://localhost/sikembang/assets/css/bootstrap-datepicker.css',
+    'https://localhost/sikembang/assets/js/moment.min.js',
+    'https://localhost/sikembang/assets/js/bootstrap-datepicker.js',
+    'https://localhost/sikembang/assets/js/daterangepicker.min.js',
+    'https://localhost/sikembang/assets/js/select2.full.min.js',
+    'https://localhost/sikembang/assets/js/form_pengukuran.js',
 
     'https://localhost/sikembang/manifest-development.json',
     'https://localhost/sikembang/icon.png',
