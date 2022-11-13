@@ -163,4 +163,8 @@ class Anak extends MY_Controller
 		if ('Posyandus' === $model) echo '{"results":' . json_encode($this->$model->select2WithDesa($field, $this->input->post('term'), $this->input->post('desa'))) . '}';
 		else echo '{"results":' . json_encode($this->$model->select2($field, $this->input->post('term'))) . '}';
 	}
+
+	function all () {
+		echo json_encode($this->{$this->model}->find());
+	}
 }

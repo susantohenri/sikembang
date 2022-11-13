@@ -4,10 +4,11 @@ jQuery(function () {
         switch (window.location.href.replace(site_url, '')) {
             case 'Pengukuran':
                 ; break
-            case 'posyandubumil':
-                jQuery(`[href="https://localhost/sikembang/index.php/posyandubumil/download"]`).hide()
-                    ; break
             case 'Pengukuran/create':
+                var options = JSON.parse(localStorage.getItem('anak')).map(anak => {
+                    return `<option value="${anak.uuid}">${anak.nama}</option>`
+                })
+                jQuery(`[name="anak"]`).html(options).select2('destroy').select2()
                 jQuery('.btn-save').click(function (e) {
                     e.preventDefault()
                     var record = {}
@@ -17,15 +18,18 @@ jQuery(function () {
                         var value = jQuery(this).val()
                         record[name] = value
                     })
-                    var stored = localStorage.getItem('pengukuran')
-                    if (null === stored) stored = [record]
+                    var storedPengukuran = localStorage.getItem('pengukuran')
+                    if (null === storedPengukuran) storedPengukuran = [record]
                     else {
-                        stored = JSON.parse(stored)
-                        stored.push(record)
+                        storedPengukuran = JSON.parse(storedPengukuran)
+                        storedPengukuran.push(record)
                     }
-                    localStorage.setItem('pengukuran', JSON.stringify(stored))
+                    localStorage.setItem('pengukuran', JSON.stringify(storedPengukuran))
                     window.location = `${site_url}Pengukuran`
                 })
+                    ; break
+            case 'posyandubumil':
+                jQuery(`[href="${site_url}posyandubumil/download"]`).hide()
                     ; break
             default:
                 jQuery(`a[href^="${site_url}"]`)
@@ -37,6 +41,7 @@ jQuery(function () {
         }
     } else {
         /*
+            BLOCK ACTIVITY
             CHECK EXISTS LOCALSTORAGE
             IF EXISTS:
                 UPLOAD
@@ -49,6 +54,10 @@ jQuery(function () {
             caches.keys().then(function (names) {
                 for (let name of names) caches.delete(name)
             });
+        })
+
+        if (null === localStorage.getItem('anak')) jQuery.get(`${site_url}Anak/all`, function (anak) {
+            localStorage.setItem('anak', anak)
         })
     }
 })
