@@ -21,7 +21,7 @@ class Pengukurans extends MY_Model
 				'value' => date('Y-m-d'),
 				'attributes' => array(
 					array('data-date' => 'datepicker'),
-					array('disabled' => 'disabled')
+					// array('disabled' => 'disabled')
 				)
 			),
 			array(
@@ -33,7 +33,7 @@ class Pengukurans extends MY_Model
 					array('data-autocomplete' => 'true'),
 					array('data-model' => 'Anaks'),
 					array('data-field' => 'nama'),
-					array('disabled' => 'disabled')
+					// array('disabled' => 'disabled')
 				)
 			),
 			array(

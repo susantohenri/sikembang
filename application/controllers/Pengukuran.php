@@ -47,7 +47,7 @@ class Pengukuran extends MY_Controller
 		$this->loadview('index', $vars);
 	}
 
-	function create()
+	function _create()
 	{
 		$model = $this->model;
 		$vars = array(
