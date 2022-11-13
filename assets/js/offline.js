@@ -64,17 +64,36 @@ jQuery(function () {
                 UPLOAD
                 CLEAR
         */
-        jQuery(`a[href="${site_url}Login/Logout"]`).click(function (e) {
-            navigator.serviceWorker.getRegistrations().then(function (registrations) {
-                for (let registration of registrations) registration.unregister()
-            })
-            caches.keys().then(function (names) {
-                for (let name of names) caches.delete(name)
-            });
-        })
+        switch (window.location.href.replace(site_url, '')) {
+            case 'Pengukuran/create':
+                jQuery('.btn-save').click(function (e) {
+                    e.preventDefault()
+                    var record = {}
+                    jQuery('form').find('input, select').each(function () {
+                        jQuery(this).removeAttr('disabled')
+                        var name = jQuery(this).attr('name')
+                        var value = jQuery(this).val()
+                        record[name] = value
+                    })
+                    jQuery.post(`${site_url}Pengukuran/bulkCreate`, {records: [record]}, function () {
+                        window.location = `${site_url}Pengukuran`
+                    })
+                })
+                    ; break
+            default:
+                jQuery(`a[href="${site_url}Login/Logout"]`).click(function (e) {
+                    navigator.serviceWorker.getRegistrations().then(function (registrations) {
+                        for (let registration of registrations) registration.unregister()
+                    })
+                    caches.keys().then(function (names) {
+                        for (let name of names) caches.delete(name)
+                    });
+                })
 
-        if (null === localStorage.getItem('anak')) jQuery.get(`${site_url}Anak/all`, function (anak) {
-            localStorage.setItem('anak', anak)
-        })
+                if (null === localStorage.getItem('anak')) jQuery.get(`${site_url}Anak/all`, function (anak) {
+                    localStorage.setItem('anak', anak)
+                })
+                    ; break
+        }
     }
 })

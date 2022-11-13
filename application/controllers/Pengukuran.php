@@ -239,4 +239,13 @@ class Pengukuran extends MY_Controller
 			));
 		}
 	}
+
+	function bulkCreate()
+	{
+		foreach ($this->input->post('records') as $record) {
+			unset($record['last_submit']);
+			$this->{$this->model}->create($record);
+		}
+		return true;
+	}
 }
