@@ -18,7 +18,6 @@ var filesToCache = [
     'https://sikembang.com/assets/js/bootstrap-datepicker.js',
     'https://sikembang.com/assets/js/daterangepicker.min.js',
     'https://sikembang.com/assets/js/select2.full.min.js',
-    'https://sikembang.com/assets/js/form_pengukuran.js',
 
     'https://sikembang.com/assets/css/all.min.css',
     'https://sikembang.com/assets/css/adminlte.min.css',
