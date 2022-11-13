@@ -81,6 +81,13 @@ jQuery(function () {
                 })
                     ; break
             default:
+                var storedPengukuran = localStorage.getItem('pengukuran')
+                if (null !== storedPengukuran) {
+                    storedPengukuran = JSON.parse(storedPengukuran)
+                    jQuery.post(`${site_url}Pengukuran/bulkCreate`, {records: storedPengukuran}, function () {
+                        localStorage.removeItem('pengukuran')
+                    })
+                }
                 jQuery(`a[href="${site_url}Login/Logout"]`).click(function (e) {
                     navigator.serviceWorker.getRegistrations().then(function (registrations) {
                         for (let registration of registrations) registration.unregister()
