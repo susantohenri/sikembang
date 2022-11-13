@@ -3,12 +3,29 @@ jQuery(function () {
         jQuery('.main-header .btn-group').hide()
         switch (window.location.href.replace(site_url, '')) {
             case 'Pengukuran':
-                ; break
+                var storedPengukuran = localStorage.getItem('pengukuran')
+                if (null === storedPengukuran) return true;
+                storedPengukuran = JSON.parse(storedPengukuran)
+                var storedAnak = JSON.parse(localStorage.getItem('anak'))
+                storedPengukuran = storedPengukuran.map(pengukuran => {
+                    var anak = storedAnak.filter(anak => {
+                        return anak.uuid === pengukuran.anak
+                    })
+                    var nama_anak = anak[0] ? anak[0].nama : ''
+                    return `
+                        <tr>
+                            <td>${pengukuran.createdAt}</td>
+                            <td>${nama_anak}</td>
+                        </tr>
+                    `
+                })
+                $('.table-model tbody').html(storedPengukuran.join(''))
+                    ; break
             case 'Pengukuran/create':
-                var options = JSON.parse(localStorage.getItem('anak')).map(anak => {
+                var storedAnak = JSON.parse(localStorage.getItem('anak')).map(anak => {
                     return `<option value="${anak.uuid}">${anak.nama}</option>`
                 })
-                jQuery(`[name="anak"]`).html(options).select2('destroy').select2()
+                jQuery(`[name="anak"]`).html(storedAnak).select2('destroy').select2()
                 jQuery('.btn-save').click(function (e) {
                     e.preventDefault()
                     var record = {}

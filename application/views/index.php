@@ -117,7 +117,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
   <script src="<?= base_url('assets/js/jquery.min.js') ?>"></script>
   <script src="<?= base_url('assets/js/bootstrap.bundle.min.js') ?>"></script>
-  <script src="<?= base_url('assets/js/offline.js') ?>"></script>
   <script type="text/javascript">
     (function() {
       if ('serviceWorker' in navigator) {
@@ -134,6 +133,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
       <script type="text/javascript" src="<?= base_url("assets/js/{$script}") ?>"></script>
   <?php endforeach;
   endif; ?>
+  <script src="<?= base_url('assets/js/offline.js') ?>"></script>
 </body>
 
 </html>
