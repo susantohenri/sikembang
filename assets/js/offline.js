@@ -19,8 +19,12 @@ jQuery(function () {
                     })
                     var stored = localStorage.getItem('pengukuran')
                     if (null === stored) stored = [record]
-                    else stored.push(record)
-                    localStorage.setItem('pengukuran', stored)
+                    else {
+                        stored = JSON.parse(stored)
+                        stored.push(record)
+                    }
+                    localStorage.setItem('pengukuran', JSON.stringify(stored))
+                    window.location = `${site_url}Pengukuran`
                 })
                     ; break
             default:
