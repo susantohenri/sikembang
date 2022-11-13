@@ -38,5 +38,10 @@ jQuery(function () {
                 UPLOAD
                 CLEAR
         */
+        jQuery(`a[href="${site_url}Login/Logout"]`).click(function (e) {
+            navigator.serviceWorker.getRegistrations().then(function (registrations) {
+                for (let registration of registrations) registration.unregister()
+            })
+        })
     }
 })
