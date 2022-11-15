@@ -47,6 +47,51 @@ jQuery(function () {
                     ; break
             case 'posyandubumil':
                 jQuery(`[href="${site_url}posyandubumil/download"]`).hide()
+                var storedPemeriksaanBumil = localStorage.getItem('pemeriksaan_bumil')
+                if (null === storedPemeriksaanBumil) return true;
+                storedPemeriksaanBumil = JSON.parse(storedPemeriksaanBumil)
+                var ibuhamil = JSON.parse(localStorage.getItem('ibuhamil'))
+                var pemeriksaanList = storedPemeriksaanBumil.map(pemeriksaan => {
+                    var ibu = ibuhamil.filter(ibu => {
+                        return ibu.uuid === pemeriksaan.ibuhamil
+                    })
+                    var nama_ibu = ibu[0] ? ibu[0].nama_ibuhamil : ''
+                    return `
+                        <tr>
+                            <td>${pemeriksaan.tanggal_pemeriksaan}</td>
+                            <td>${nama_ibu}</td>
+                            <td></td>
+                        </tr>
+                    `
+                }).join('')
+                $('.table-model').append(`<tbody>${pemeriksaanList}</tbody>`)
+                    ; break
+            case 'posyandubumil/create':
+                var options = JSON.parse(localStorage.getItem('ibuhamil')).map(ibuhamil => {
+                    return `<option value="${ibuhamil.uuid}">${ibuhamil.nama_ibuhamil}</option>`
+                })
+                jQuery(`[name="ibuhamil"]`).html(options)
+                if (jQuery(`[name="ibuhamil"]`).data('select2')) {
+                    jQuery(`[name="ibuhamil"]`).select2('destroy')
+                }
+                jQuery(`[name="ibuhamil"]`).select2()
+                jQuery('.btn-save').click(function (e) {
+                    e.preventDefault()
+                    var record = {}
+                    jQuery('form').find('input, select, textarea').each(function () {
+                        var name = jQuery(this).attr('name')
+                        var value = jQuery(this).val()
+                        record[name] = value
+                    })
+                    var storedPemeriksaanBumil = localStorage.getItem('pemeriksaan_bumil')
+                    if (null === storedPemeriksaanBumil) storedPemeriksaanBumil = [record]
+                    else {
+                        storedPemeriksaanBumil = JSON.parse(storedPemeriksaanBumil)
+                        storedPemeriksaanBumil.push(record)
+                    }
+                    localStorage.setItem('pemeriksaan_bumil', JSON.stringify(storedPemeriksaanBumil))
+                    window.location = `${site_url}posyandubumil`
+                })
                     ; break
             default:
                 jQuery(`a[href^="${site_url}"]`)
@@ -65,6 +110,15 @@ jQuery(function () {
                 localStorage.removeItem('pengukuran')
             })
         }
+
+        var storedPemeriksaanBumil = localStorage.getItem('pemeriksaan_bumil')
+        if (null !== storedPemeriksaanBumil) {
+            storedPemeriksaanBumil = JSON.parse(storedPemeriksaanBumil)
+            jQuery.post(`${site_url}posyandubumil/bulkCreate`, { records: storedPemeriksaanBumil }, function () {
+                localStorage.removeItem('pemeriksaan_bumil')
+            })
+        }
+
         jQuery(`a[href="${site_url}Login/Logout"]`).click(function (e) {
             navigator.serviceWorker.getRegistrations().then(function (registrations) {
                 for (let registration of registrations) registration.unregister()
@@ -78,6 +132,10 @@ jQuery(function () {
             localStorage.setItem('anak', anak)
         })
 
+        jQuery.get(`${site_url}Ibuhamil/all`, function (res) {
+            localStorage.setItem('ibuhamil', res)
+        })
+
         var route = window.location.href.replace(site_url, '')
             , controller = route.split('/')[0]
             , method = route.split('/')[1]
@@ -87,7 +145,7 @@ jQuery(function () {
                 jQuery('.btn-save').click(function (e) {
                     e.preventDefault()
                     var record = {}
-                    jQuery('form').find('input, select').each(function () {
+                    jQuery('form').find('input, select, textarea').each(function () {
                         jQuery(this).removeAttr('disabled')
                         var name = jQuery(this).attr('name')
                         var value = jQuery(this).val()
@@ -102,7 +160,7 @@ jQuery(function () {
                 jQuery('.btn-save').click(function (e) {
                     e.preventDefault()
                     var record = {}
-                    jQuery('form').find('input, select').each(function () {
+                    jQuery('form').find('input, select, textarea').each(function () {
                         jQuery(this).removeAttr('disabled')
                         var name = jQuery(this).attr('name')
                         var value = jQuery(this).val()
