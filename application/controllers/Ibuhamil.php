@@ -73,4 +73,8 @@ class Ibuhamil extends MY_Controller
 	  );
 	  $this->loadview('index', $vars);
 	}
+
+	function all () {
+		echo json_encode($this->{$this->model}->find());
+	}
 }

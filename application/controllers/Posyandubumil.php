@@ -103,4 +103,31 @@ class Posyandubumil extends MY_Controller
 		  exit;
 	  }
 
+	function bulkCreate()
+	{
+		foreach ($this->input->post('records') as $record) {
+			unset($record['last_submit']);
+			$this->{$this->model}->create($record);
+		}
+		return true;
+	}
+
+	function bulkUpdate()
+	{
+		foreach ($this->input->post('records') as $record) {
+			unset($record['last_submit']);
+			$this->{$this->model}->update($record);
+		}
+		return true;
+	}
+
+	function bulkDelete()
+	{
+		foreach ($this->input->post('records') as $record) {
+			unset($record['last_submit']);
+			$this->{$this->model}->delete($record['delete']);
+		}
+		return true;
+	}
+
 }
