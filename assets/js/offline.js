@@ -57,17 +57,32 @@ jQuery(function () {
                     ; break
         }
     } else {
-        /*
-            BLOCK ACTIVITY
-            CHECK EXISTS LOCALSTORAGE
-            IF EXISTS:
-                UPLOAD
-                CLEAR
-        */
+
+        var storedPengukuran = localStorage.getItem('pengukuran')
+        if (null !== storedPengukuran) {
+            storedPengukuran = JSON.parse(storedPengukuran)
+            jQuery.post(`${site_url}Pengukuran/bulkCreate`, { records: storedPengukuran }, function () {
+                localStorage.removeItem('pengukuran')
+            })
+        }
+        jQuery(`a[href="${site_url}Login/Logout"]`).click(function (e) {
+            navigator.serviceWorker.getRegistrations().then(function (registrations) {
+                for (let registration of registrations) registration.unregister()
+            })
+            caches.keys().then(function (names) {
+                for (let name of names) caches.delete(name)
+            });
+        })
+
+        if (null === localStorage.getItem('anak')) jQuery.get(`${site_url}Anak/all`, function (anak) {
+            localStorage.setItem('anak', anak)
+        })
+
         var route = window.location.href.replace(site_url, '')
             , controller = route.split('/')[0]
             , method = route.split('/')[1]
-        switch (method) {
+
+        if (['posyandubumil', 'Pengukuran'].indexOf(controller) > -1) switch (method) {
             case 'create':
                 jQuery('.btn-save').click(function (e) {
                     e.preventDefault()
@@ -111,27 +126,6 @@ jQuery(function () {
                     jQuery.post(`${site_url}${controller}/bulkDelete`, { records: [record] }, function () {
                         window.location = `${site_url}${controller}`
                     })
-                })
-                    ; break
-            default:
-                var storedPengukuran = localStorage.getItem('pengukuran')
-                if (null !== storedPengukuran) {
-                    storedPengukuran = JSON.parse(storedPengukuran)
-                    jQuery.post(`${site_url}Pengukuran/bulkCreate`, { records: storedPengukuran }, function () {
-                        localStorage.removeItem('pengukuran')
-                    })
-                }
-                jQuery(`a[href="${site_url}Login/Logout"]`).click(function (e) {
-                    navigator.serviceWorker.getRegistrations().then(function (registrations) {
-                        for (let registration of registrations) registration.unregister()
-                    })
-                    caches.keys().then(function (names) {
-                        for (let name of names) caches.delete(name)
-                    });
-                })
-
-                if (null === localStorage.getItem('anak')) jQuery.get(`${site_url}Anak/all`, function (anak) {
-                    localStorage.setItem('anak', anak)
                 })
                     ; break
         }
