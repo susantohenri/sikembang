@@ -248,4 +248,22 @@ class Pengukuran extends MY_Controller
 		}
 		return true;
 	}
+
+	function bulkUpdate()
+	{
+		foreach ($this->input->post('records') as $record) {
+			unset($record['last_submit']);
+			$this->{$this->model}->update($record);
+		}
+		return true;
+	}
+
+	function bulkDelete()
+	{
+		foreach ($this->input->post('records') as $record) {
+			unset($record['last_submit']);
+			$this->{$this->model}->delete($record['delete']);
+		}
+		return true;
+	}
 }

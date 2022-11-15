@@ -64,8 +64,11 @@ jQuery(function () {
                 UPLOAD
                 CLEAR
         */
-        switch (window.location.href.replace(site_url, '')) {
-            case 'Pengukuran/create':
+        var route = window.location.href.replace(site_url, '')
+            , controller = route.split('/')[0]
+            , method = route.split('/')[1]
+        switch (method) {
+            case 'create':
                 jQuery('.btn-save').click(function (e) {
                     e.preventDefault()
                     var record = {}
@@ -75,8 +78,38 @@ jQuery(function () {
                         var value = jQuery(this).val()
                         record[name] = value
                     })
-                    jQuery.post(`${site_url}Pengukuran/bulkCreate`, {records: [record]}, function () {
-                        window.location = `${site_url}Pengukuran`
+                    jQuery.post(`${site_url}${controller}/bulkCreate`, { records: [record] }, function () {
+                        window.location = `${site_url}${controller}`
+                    })
+                })
+                    ; break
+            case 'read':
+                jQuery('.btn-save').click(function (e) {
+                    e.preventDefault()
+                    var record = {}
+                    jQuery('form').find('input, select').each(function () {
+                        jQuery(this).removeAttr('disabled')
+                        var name = jQuery(this).attr('name')
+                        var value = jQuery(this).val()
+                        record[name] = value
+                    })
+                    jQuery.post(`${site_url}${controller}/bulkUpdate`, { records: [record] }, function () {
+                        window.location = `${site_url}${controller}`
+                    })
+                })
+                    ; break
+            case 'delete':
+                jQuery('.btn-danger').click(function (e) {
+                    e.preventDefault()
+                    var record = {}
+                    jQuery('form').find('input, select').each(function () {
+                        jQuery(this).removeAttr('disabled')
+                        var name = jQuery(this).attr('name')
+                        var value = jQuery(this).val()
+                        record[name] = value
+                    })
+                    jQuery.post(`${site_url}${controller}/bulkDelete`, { records: [record] }, function () {
+                        window.location = `${site_url}${controller}`
                     })
                 })
                     ; break
@@ -84,7 +117,7 @@ jQuery(function () {
                 var storedPengukuran = localStorage.getItem('pengukuran')
                 if (null !== storedPengukuran) {
                     storedPengukuran = JSON.parse(storedPengukuran)
-                    jQuery.post(`${site_url}Pengukuran/bulkCreate`, {records: storedPengukuran}, function () {
+                    jQuery.post(`${site_url}Pengukuran/bulkCreate`, { records: storedPengukuran }, function () {
                         localStorage.removeItem('pengukuran')
                     })
                 }
