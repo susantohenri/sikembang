@@ -151,7 +151,7 @@ jQuery(function () {
                     localStorage.setItem('pemeriksaan_bumil', JSON.stringify(storedPemeriksaanBumil))
                     window.location = `${site_url}posyandubumil`
                 })
-                ; break
+                    ; break
             default:
                 jQuery(`a[href^="${site_url}"]`)
                     .not(`a[href$="Pengukuran"]`)
@@ -164,21 +164,31 @@ jQuery(function () {
 
         var storedPengukuran = localStorage.getItem('pengukuran')
         if (null !== storedPengukuran) {
+            jQuery('body').append(`<div data-backdrop="static" class="modal fade" id="offline_sync_pengukuran" tabindex="-1" role="dialog" aria-labelledby="offine_sync_label" aria-hidden="true"><div class="modal-dialog" role="document"><div class="modal-content"><div class="modal-body">Proses sinkronisasi data pengukuran anak sedang berlangsung,<br>mohon menunggu sejenak</div></div></div></div>`)
+            jQuery('#offline_sync_pengukuran').modal('show')
             storedPengukuran = JSON.parse(storedPengukuran)
             jQuery.post(`${site_url}Pengukuran/bulkCreate`, { records: storedPengukuran }, function () {
+                alert('asw')
+                jQuery('#offline_sync_pengukuran').modal('hide')
                 localStorage.removeItem('pengukuran')
+                // jQuery('#offline_sync_pengukuran').remove()
             })
         }
 
         var storedPemeriksaanBumil = localStorage.getItem('pemeriksaan_bumil')
         if (null !== storedPemeriksaanBumil) {
+            jQuery('body').append(`<div data-backdrop="static" class="modal fade" id="offline_sync_posyandubumil" tabindex="-1" role="dialog" aria-labelledby="offine_sync_label" aria-hidden="true"><div class="modal-dialog" role="document"><div class="modal-content"><div class="modal-body">Proses sinkronisasi data posyandu ibu hamil sedang berlangsung,<br>mohon menunggu sejenak</div></div></div></div>`)
+            jQuery('#offline_sync_posyandubumil').modal('show')
             storedPemeriksaanBumil = JSON.parse(storedPemeriksaanBumil)
             storedPemeriksaanBumil = storedPemeriksaanBumil.map(pemeriksaan => {
                 delete pemeriksaan.id
                 return pemeriksaan
             })
             jQuery.post(`${site_url}posyandubumil/bulkCreate`, { records: storedPemeriksaanBumil }, function () {
+                alert('clg')
+                jQuery('#offline_sync_posyandubumil').modal('hide')
                 localStorage.removeItem('pemeriksaan_bumil')
+                // jQuery('#offline_sync_posyandubumil').remove()
             })
         }
 
