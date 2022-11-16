@@ -8,6 +8,7 @@ var filesToCache = [
     'https://localhost/sikembang/index.php/Pengukuran/create',
     'https://localhost/sikembang/index.php/posyandubumil',
     'https://localhost/sikembang/index.php/posyandubumil/create',
+    'https://localhost/sikembang/index.php/posyandubumil/show',
     'https://localhost/sikembang/assets/css/dataTables.bootstrap4.css',
     'https://localhost/sikembang/assets/js/jquery.dataTables.min.js',
     'https://localhost/sikembang/assets/js/dataTables.bootstrap4.js',
