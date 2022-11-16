@@ -47,6 +47,7 @@ jQuery(function () {
                     ; break
             case 'posyandubumil':
                 jQuery(`[href="${site_url}posyandubumil/download"]`).hide()
+                localStorage.removeItem('pemeriksaan_bumil_id')
                 var storedPemeriksaanBumil = localStorage.getItem('pemeriksaan_bumil')
                 if (null === storedPemeriksaanBumil) return true;
                 storedPemeriksaanBumil = JSON.parse(storedPemeriksaanBumil)
@@ -57,7 +58,7 @@ jQuery(function () {
                     })
                     var nama_ibu = ibu[0] ? ibu[0].nama_ibuhamil : ''
                     return `
-                        <tr>
+                        <tr data-id='${pemeriksaan.id}' style='cursor: pointer'>
                             <td>${pemeriksaan.tanggal_pemeriksaan}</td>
                             <td>${nama_ibu}</td>
                             <td></td>
@@ -65,6 +66,11 @@ jQuery(function () {
                     `
                 }).join('')
                 $('.table-model').append(`<tbody>${pemeriksaanList}</tbody>`)
+                $('.table-model tbody tr').click(function () {
+                    var id = $(this).data('id')
+                    window.location = `${site_url}posyandubumil/show`
+                    localStorage.setItem('pemeriksaan_bumil_id', id)
+                })
                     ; break
             case 'posyandubumil/create':
                 var options = JSON.parse(localStorage.getItem('ibuhamil')).map(ibuhamil => {
@@ -83,6 +89,7 @@ jQuery(function () {
                         var value = jQuery(this).val()
                         record[name] = value
                     })
+                    record.id = new Date().getTime()
                     var storedPemeriksaanBumil = localStorage.getItem('pemeriksaan_bumil')
                     if (null === storedPemeriksaanBumil) storedPemeriksaanBumil = [record]
                     else {
@@ -93,6 +100,58 @@ jQuery(function () {
                     window.location = `${site_url}posyandubumil`
                 })
                     ; break
+            case 'posyandubumil/show':
+                $('.card-header .btn-save').after(`
+                    <button class="btn btn-danger btn-delete"><i class="fa fa-trash"></i> &nbsp; Delete</button>
+                `)
+                var storedPemeriksaanBumil = localStorage.getItem('pemeriksaan_bumil')
+                if (null === storedPemeriksaanBumil) return true;
+                storedPemeriksaanBumil = JSON.parse(storedPemeriksaanBumil)
+                var id = localStorage.getItem('pemeriksaan_bumil_id')
+                var currentPemeriksaanBumil = storedPemeriksaanBumil.filter(pemeriksaan => {
+                    return pemeriksaan.id == id
+                })[0]
+                jQuery('form').find('input, select, textarea').each(function () {
+                    var name = jQuery(this).attr('name')
+                    var value = currentPemeriksaanBumil[name]
+                    jQuery(this).val(value)
+                })
+                var options = JSON.parse(localStorage.getItem('ibuhamil')).map(ibuhamil => {
+                    return `<option value="${ibuhamil.uuid}">${ibuhamil.nama_ibuhamil}</option>`
+                })
+                jQuery(`[name="ibuhamil"]`).html(options)
+                if (jQuery(`[name="ibuhamil"]`).data('select2')) {
+                    jQuery(`[name="ibuhamil"]`).select2('destroy')
+                }
+                jQuery(`[name="ibuhamil"]`).select2()
+                jQuery(`[name="ibuhamil"]`).val(currentPemeriksaanBumil.ibuhamil).trigger('change')
+                jQuery('.btn-save').click(function (e) {
+                    e.preventDefault()
+                    var record = {}
+                    jQuery('form').find('input, select, textarea').each(function () {
+                        var name = jQuery(this).attr('name')
+                        var value = jQuery(this).val()
+                        record[name] = value
+                    })
+                    record.id = id
+                    storedPemeriksaanBumil = storedPemeriksaanBumil.map(pemeriksaan => {
+                        if (pemeriksaan.id == id) {
+                            return record
+                        }
+                        return pemeriksaan
+                    })
+                    localStorage.setItem('pemeriksaan_bumil', JSON.stringify(storedPemeriksaanBumil))
+                    window.location = `${site_url}posyandubumil`
+                })
+                jQuery('.btn-delete').click(function (e) {
+                    e.preventDefault()
+                    storedPemeriksaanBumil = storedPemeriksaanBumil.filter(pemeriksaan => {
+                        return pemeriksaan.id != id
+                    })
+                    localStorage.setItem('pemeriksaan_bumil', JSON.stringify(storedPemeriksaanBumil))
+                    window.location = `${site_url}posyandubumil`
+                })
+                ; break
             default:
                 jQuery(`a[href^="${site_url}"]`)
                     .not(`a[href$="Pengukuran"]`)
@@ -114,6 +173,10 @@ jQuery(function () {
         var storedPemeriksaanBumil = localStorage.getItem('pemeriksaan_bumil')
         if (null !== storedPemeriksaanBumil) {
             storedPemeriksaanBumil = JSON.parse(storedPemeriksaanBumil)
+            storedPemeriksaanBumil = storedPemeriksaanBumil.map(pemeriksaan => {
+                delete pemeriksaan.id
+                return pemeriksaan
+            })
             jQuery.post(`${site_url}posyandubumil/bulkCreate`, { records: storedPemeriksaanBumil }, function () {
                 localStorage.removeItem('pemeriksaan_bumil')
             })
