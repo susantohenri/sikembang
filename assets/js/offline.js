@@ -3,6 +3,7 @@ jQuery(function () {
         jQuery('.main-header .btn-group').hide()
         switch (window.location.href.replace(site_url, '')) {
             case 'Pengukuran':
+                localStorage.removeItem('pengukuran_id')
                 var storedPengukuran = localStorage.getItem('pengukuran')
                 if (null === storedPengukuran) return true;
                 storedPengukuran = JSON.parse(storedPengukuran)
@@ -13,19 +14,28 @@ jQuery(function () {
                     })
                     var nama_anak = anak[0] ? anak[0].nama : ''
                     return `
-                        <tr>
+                        <tr data-id='${pengukuran.id}' style='cursor: pointer'>
                             <td>${pengukuran.createdAt}</td>
                             <td>${nama_anak}</td>
                         </tr>
                     `
+                }).join('')
+                $('.table-model').append(`<tbody>${storedPengukuran}</tbody>`)
+                $('.table-model tbody tr').click(function () {
+                    var id = $(this).data('id')
+                    window.location = `${site_url}Pengukuran/show`
+                    localStorage.setItem('pengukuran_id', id)
                 })
-                $('.table-model tbody').html(storedPengukuran.join(''))
                     ; break
             case 'Pengukuran/create':
                 var storedAnak = JSON.parse(localStorage.getItem('anak')).map(anak => {
                     return `<option value="${anak.uuid}">${anak.nama}</option>`
                 })
-                jQuery(`[name="anak"]`).html(storedAnak).select2('destroy').select2()
+                jQuery(`[name="anak"]`).html(storedAnak)
+                if (jQuery(`[name="anak"]`).data('select2')) {
+                    jQuery(`[name="anak"]`).select2('destroy')
+                }
+                jQuery(`[name="anak"]`).select2()
                 jQuery('.btn-save').click(function (e) {
                     e.preventDefault()
                     var record = {}
@@ -35,6 +45,7 @@ jQuery(function () {
                         var value = jQuery(this).val()
                         record[name] = value
                     })
+                    record.id = new Date().getTime().toString()
                     var storedPengukuran = localStorage.getItem('pengukuran')
                     if (null === storedPengukuran) storedPengukuran = [record]
                     else {
@@ -45,6 +56,58 @@ jQuery(function () {
                     window.location = `${site_url}Pengukuran`
                 })
                     ; break
+            case 'Pengukuran/show':
+                $('.card-header .btn-save').after(`
+                    <button class="btn btn-danger btn-delete"><i class="fa fa-trash"></i> &nbsp; Delete</button>
+                `)
+                var storedPengukuran = localStorage.getItem('pengukuran')
+                if (null === storedPengukuran) return true;
+                storedPengukuran = JSON.parse(storedPengukuran)
+                var id = localStorage.getItem('pengukuran_id')
+                var currentPengukuran = storedPengukuran.filter(pengukuran => {
+                    return pengukuran.id == id
+                })[0]
+                jQuery('form').find('input, select').each(function () {
+                    var name = jQuery(this).attr('name')
+                    var value = currentPengukuran[name]
+                    jQuery(this).val(value)
+                })
+                var options = JSON.parse(localStorage.getItem('anak')).map(anak => {
+                    return `<option value="${anak.uuid}">${anak.nama}</option>`
+                })
+                jQuery(`[name="anak"]`).html(options)
+                if (jQuery(`[name="anak"]`).data('select2')) {
+                    jQuery(`[name="anak"]`).select2('destroy')
+                }
+                jQuery(`[name="anak"]`).select2()
+                jQuery(`[name="anak"]`).val(currentPengukuran.anak).trigger('change')
+                jQuery('.btn-save').click(function (e) {
+                    e.preventDefault()
+                    var record = {}
+                    jQuery('form').find('input, select').each(function () {
+                        var name = jQuery(this).attr('name')
+                        var value = jQuery(this).val()
+                        record[name] = value
+                    })
+                    record.id = id
+                    storedPengukuran = storedPengukuran.map(pengukuran => {
+                        if (pengukuran.id == id) {
+                            return record
+                        }
+                        return pengukuran
+                    })
+                    localStorage.setItem('pengukuran', JSON.stringify(storedPengukuran))
+                    window.location = `${site_url}Pengukuran`
+                })
+                jQuery('.btn-delete').click(function (e) {
+                    e.preventDefault()
+                    storedPengukuran = storedPengukuran.filter(pengukuran => {
+                        return pengukuran.id != id
+                    })
+                    localStorage.setItem('pengukuran', JSON.stringify(storedPengukuran))
+                    window.location = `${site_url}Pengukuran`
+                })
+                ; break
             case 'posyandubumil':
                 jQuery(`[href="${site_url}posyandubumil/download"]`).hide()
                 localStorage.removeItem('pemeriksaan_bumil_id')
@@ -89,7 +152,7 @@ jQuery(function () {
                         var value = jQuery(this).val()
                         record[name] = value
                     })
-                    record.id = new Date().getTime()
+                    record.id = new Date().getTime().toString()
                     var storedPemeriksaanBumil = localStorage.getItem('pemeriksaan_bumil')
                     if (null === storedPemeriksaanBumil) storedPemeriksaanBumil = [record]
                     else {
@@ -165,6 +228,10 @@ jQuery(function () {
         var storedPengukuran = localStorage.getItem('pengukuran')
         if (null !== storedPengukuran) {
             storedPengukuran = JSON.parse(storedPengukuran)
+            storedPengukuran = storedPengukuran.map(pengukuran => {
+                delete pengukuran.id
+                return pengukuran
+            })
             jQuery.post(`${site_url}Pengukuran/bulkCreate`, { records: storedPengukuran }, function () {
                 localStorage.removeItem('pengukuran')
             })
@@ -189,13 +256,14 @@ jQuery(function () {
             caches.keys().then(function (names) {
                 for (let name of names) caches.delete(name)
             });
+            localStorage.clear()
         })
 
         if (null === localStorage.getItem('anak')) jQuery.get(`${site_url}Anak/all`, function (anak) {
             localStorage.setItem('anak', anak)
         })
 
-        jQuery.get(`${site_url}Ibuhamil/all`, function (res) {
+        if (null === localStorage.getItem('ibuhamil')) jQuery.get(`${site_url}Ibuhamil/all`, function (res) {
             localStorage.setItem('ibuhamil', res)
         })
 

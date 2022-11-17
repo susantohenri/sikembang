@@ -266,4 +266,21 @@ class Pengukuran extends MY_Controller
 		}
 		return true;
 	}
+
+	function show () {
+		$model= $this->model;
+		$vars = array();
+		$vars['page_name'] = 'form';
+		$vars['form']     = $this->$model->getForm();
+		$vars['subform'] = $this->$model->getFormChild();
+		$vars['uuid'] = '';
+		$vars['js'] = array(
+		  'moment.min.js',
+		  'bootstrap-datepicker.js',
+		  'daterangepicker.min.js',
+		  'select2.full.min.js',
+		  'form.js'
+		);
+		$this->loadview('index', $vars);
+	}
 }
