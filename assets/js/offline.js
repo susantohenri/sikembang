@@ -232,8 +232,10 @@ jQuery(function () {
                 delete pengukuran.id
                 return pengukuran
             })
+            $('#offline_sync_modal').removeClass('d-none')
             jQuery.post(`${site_url}Pengukuran/bulkCreate`, { records: storedPengukuran }, function () {
                 localStorage.removeItem('pengukuran')
+                $('#offline_sync_modal').addClass('d-none')
             })
         }
 
@@ -244,8 +246,10 @@ jQuery(function () {
                 delete pemeriksaan.id
                 return pemeriksaan
             })
+            $('#offline_sync_modal').removeClass('d-none')
             jQuery.post(`${site_url}posyandubumil/bulkCreate`, { records: storedPemeriksaanBumil }, function () {
                 localStorage.removeItem('pemeriksaan_bumil')
+                $('#offline_sync_modal').addClass('d-none')
             })
         }
 

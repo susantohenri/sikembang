@@ -27,6 +27,19 @@ scratch. This page gets rid of all links and provides the needed markup only.
     .form-child .form-group.row>div {
       margin: 5px 0
     }
+    #offline_sync_modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 9999;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
   </style>
   <?php if (isset($css)) : foreach ($css as $style) : ?>
       <link rel="stylesheet" href="<?= base_url("assets/css/{$style}") ?>">
@@ -35,6 +48,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
 </head>
 
 <body class="hold-transition layout-top-nav">
+  <!-- add modal to block page -->
+  <div id="offline_sync_modal" class="d-none">Loading...</div>
   <div class="wrapper">
 
     <!-- Navbar -->
