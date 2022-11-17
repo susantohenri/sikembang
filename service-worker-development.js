@@ -6,6 +6,7 @@ var filesToCache = [
 
     'https://localhost/sikembang/index.php/Pengukuran',
     'https://localhost/sikembang/index.php/Pengukuran/create',
+    'https://localhost/sikembang/index.php/Pengukuran/show',
     'https://localhost/sikembang/index.php/posyandubumil',
     'https://localhost/sikembang/index.php/posyandubumil/create',
     'https://localhost/sikembang/index.php/posyandubumil/show',
