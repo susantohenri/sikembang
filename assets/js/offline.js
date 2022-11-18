@@ -20,18 +20,29 @@ jQuery(function () {
                         </tr>
                     `
                 }).join('')
-                $('.table-model').append(`<tbody>${storedPengukuran}</tbody>`)
-                $('.table-model tbody tr').click(function () {
-                    var id = $(this).data('id')
+                jQuery('.table-model').append(`<tbody>${storedPengukuran}</tbody>`)
+                jQuery('.table-model tbody tr').click(function () {
+                    var id = jQuery(this).data('id')
                     window.location = `${site_url}Pengukuran/show`
                     localStorage.setItem('pengukuran_id', id)
                 })
                     ; break
             case 'Pengukuran/create':
-                var storedAnak = JSON.parse(localStorage.getItem('anak')).map(anak => {
-                    return `<option value="${anak.uuid}">${anak.nama}</option>`
+                jQuery('[name="createdAt"]').on('change', function () {
+                    jQuery(`[name="anak"]`).html('')
                 })
-                jQuery(`[name="anak"]`).html(storedAnak)
+                jQuery('[name="anak"]').on('select2:open', function (e) {
+                    var createdAt = jQuery('[name="createdAt"]').val()
+                    if (createdAt) {
+                        var storedAnak = JSON.parse(localStorage.getItem('anak')).filter(anak => {
+                            var month = monthDiff(new Date(anak.tgl_lahir), new Date(createdAt))
+                            return month >= 1 && month <= 60
+                        }).map(anak => {
+                            return `<option value="${anak.uuid}">${anak.nama}</option>`
+                        })
+                        jQuery(`[name="anak"]`).html(storedAnak)
+                    }
+                })
                 if (jQuery(`[name="anak"]`).data('select2')) {
                     jQuery(`[name="anak"]`).select2('destroy')
                 }
@@ -57,7 +68,7 @@ jQuery(function () {
                 })
                     ; break
             case 'Pengukuran/show':
-                $('.card-header .btn-save').after(`
+                jQuery('.card-header .btn-save').after(`
                     <button class="btn btn-danger btn-delete"><i class="fa fa-trash"></i> &nbsp; Delete</button>
                 `)
                 var storedPengukuran = localStorage.getItem('pengukuran')
@@ -72,10 +83,25 @@ jQuery(function () {
                     var value = currentPengukuran[name]
                     jQuery(this).val(value)
                 })
+                jQuery('[name="createdAt"]').on('change', function () {
+                    jQuery(`[name="anak"]`).html('')
+                })
                 var options = JSON.parse(localStorage.getItem('anak')).map(anak => {
                     return `<option value="${anak.uuid}">${anak.nama}</option>`
                 })
                 jQuery(`[name="anak"]`).html(options)
+                jQuery('[name="anak"]').on('select2:open', function (e) {
+                    var createdAt = jQuery('[name="createdAt"]').val()
+                    if (createdAt) {
+                        var storedAnak = JSON.parse(localStorage.getItem('anak')).filter(anak => {
+                            var month = monthDiff(new Date(anak.tgl_lahir), new Date(createdAt))
+                            return month >= 1 && month <= 60
+                        }).map(anak => {
+                            return `<option value="${anak.uuid}">${anak.nama}</option>`
+                        })
+                        jQuery(`[name="anak"]`).html(storedAnak)
+                    }
+                })
                 if (jQuery(`[name="anak"]`).data('select2')) {
                     jQuery(`[name="anak"]`).select2('destroy')
                 }
@@ -128,9 +154,9 @@ jQuery(function () {
                         </tr>
                     `
                 }).join('')
-                $('.table-model').append(`<tbody>${pemeriksaanList}</tbody>`)
-                $('.table-model tbody tr').click(function () {
-                    var id = $(this).data('id')
+                jQuery('.table-model').append(`<tbody>${pemeriksaanList}</tbody>`)
+                jQuery('.table-model tbody tr').click(function () {
+                    var id = jQuery(this).data('id')
                     window.location = `${site_url}posyandubumil/show`
                     localStorage.setItem('pemeriksaan_bumil_id', id)
                 })
@@ -164,7 +190,7 @@ jQuery(function () {
                 })
                     ; break
             case 'posyandubumil/show':
-                $('.card-header .btn-save').after(`
+                jQuery('.card-header .btn-save').after(`
                     <button class="btn btn-danger btn-delete"><i class="fa fa-trash"></i> &nbsp; Delete</button>
                 `)
                 var storedPemeriksaanBumil = localStorage.getItem('pemeriksaan_bumil')
@@ -232,10 +258,10 @@ jQuery(function () {
                 delete pengukuran.id
                 return pengukuran
             })
-            $('#offline_sync_modal').removeClass('d-none')
+            jQuery('#offline_sync_modal').removeClass('d-none')
             jQuery.post(`${site_url}Pengukuran/bulkCreate`, { records: storedPengukuran }, function () {
                 localStorage.removeItem('pengukuran')
-                $('#offline_sync_modal').addClass('d-none')
+                jQuery('#offline_sync_modal').addClass('d-none')
             })
         }
 
@@ -246,10 +272,10 @@ jQuery(function () {
                 delete pemeriksaan.id
                 return pemeriksaan
             })
-            $('#offline_sync_modal').removeClass('d-none')
+            jQuery('#offline_sync_modal').removeClass('d-none')
             jQuery.post(`${site_url}posyandubumil/bulkCreate`, { records: storedPemeriksaanBumil }, function () {
                 localStorage.removeItem('pemeriksaan_bumil')
-                $('#offline_sync_modal').addClass('d-none')
+                jQuery('#offline_sync_modal').addClass('d-none')
             })
         }
 
@@ -324,3 +350,11 @@ jQuery(function () {
         }
     }
 })
+
+function monthDiff(d1, d2) {
+    var months
+    months = (d2.getFullYear() - d1.getFullYear()) * 12
+    months -= d1.getMonth()
+    months += d2.getMonth()
+    return months <= 0 ? 0 : months
+}
