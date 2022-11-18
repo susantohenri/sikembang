@@ -36,7 +36,19 @@ jQuery(function () {
                     if (createdAt) {
                         var storedAnak = JSON.parse(localStorage.getItem('anak')).filter(anak => {
                             var month = monthDiff(new Date(anak.tgl_lahir), new Date(createdAt))
-                            return month >= 1 && month <= 60
+                            var anakInPengukuran = false
+                            var storedPengukuran = JSON.parse(localStorage.getItem('pengukuran'))
+                            if (storedPengukuran) {
+                                storedPengukuran.forEach(pengukuran => {
+                                    if (pengukuran.anak === anak.uuid) {
+                                        var monthPengukuran = monthDiff(new Date(anak.tgl_lahir), new Date(pengukuran.createdAt))
+                                        if (monthPengukuran === month) {
+                                            anakInPengukuran = true
+                                        }
+                                    }
+                                })
+                            }
+                            return month >= 1 && month <= 60 && !anakInPengukuran
                         }).map(anak => {
                             return `<option value="${anak.uuid}">${anak.nama}</option>`
                         })
@@ -95,7 +107,19 @@ jQuery(function () {
                     if (createdAt) {
                         var storedAnak = JSON.parse(localStorage.getItem('anak')).filter(anak => {
                             var month = monthDiff(new Date(anak.tgl_lahir), new Date(createdAt))
-                            return month >= 1 && month <= 60
+                            var anakInPengukuran = false
+                            var storedPengukuran = JSON.parse(localStorage.getItem('pengukuran'))
+                            if (storedPengukuran) {
+                                storedPengukuran.forEach(pengukuran => {
+                                    if (pengukuran.anak === anak.uuid) {
+                                        var monthPengukuran = monthDiff(new Date(anak.tgl_lahir), new Date(pengukuran.createdAt))
+                                        if (monthPengukuran === month && pengukuran.id !== currentPengukuran.id) {
+                                            anakInPengukuran = true
+                                        }
+                                    }
+                                })
+                            }
+                            return month >= 1 && month <= 60 && !anakInPengukuran
                         }).map(anak => {
                             return `<option value="${anak.uuid}">${anak.nama}</option>`
                         })
