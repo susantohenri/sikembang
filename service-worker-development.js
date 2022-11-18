@@ -21,6 +21,7 @@ var filesToCache = [
     'https://localhost/sikembang/assets/js/daterangepicker.min.js',
     'https://localhost/sikembang/assets/js/select2.full.min.js',
     'https://localhost/sikembang/assets/js/form.js',
+    'https://localhost/sikembang/assets/js/form_pengukuran.js',
 
     'https://localhost/sikembang/assets/css/all.min.css',
     'https://localhost/sikembang/assets/css/adminlte.min.css',
