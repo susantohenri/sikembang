@@ -78,6 +78,23 @@ class Pengukuran extends MY_Controller
 		$this->loadview('index', $vars);
 	}
 
+	function create () {
+		$model= $this->model;
+		$vars = array();
+		$vars['page_name'] = 'form';
+		$vars['form']     = $this->$model->getForm();
+		$vars['subform'] = $this->$model->getFormChild();
+		$vars['uuid'] = '';
+		$vars['js'] = array(
+		  'moment.min.js',
+		  'bootstrap-datepicker.js',
+		  'daterangepicker.min.js',
+		  'select2.full.min.js',
+		  'form_pengukuran.js',
+		);
+		$this->loadview('index', $vars);
+	}
+
 	function read($id)
 	{
 		$vars = array();
