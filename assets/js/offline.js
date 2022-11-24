@@ -28,8 +28,10 @@ jQuery(function () {
                 })
                     ; break
             case 'Pengukuran/create':
+                showHideImunisasi()
                 jQuery('[name="createdAt"]').on('change', function () {
                     jQuery(`[name="anak"]`).html('')
+                    showHideImunisasi()
                 })
                 jQuery('[name="anak"]').on('select2:open', function (e) {
                     var createdAt = jQuery('[name="createdAt"]').val()
@@ -59,6 +61,7 @@ jQuery(function () {
                     jQuery(`[name="anak"]`).select2('destroy')
                 }
                 jQuery(`[name="anak"]`).select2()
+                jQuery(`[name="anak"]`).change(showHideImunisasi)
                 jQuery('.btn-save').click(function (e) {
                     e.preventDefault()
                     var record = {}
@@ -80,6 +83,7 @@ jQuery(function () {
                 })
                     ; break
             case 'Pengukuran/show':
+                showHideImunisasi()
                 jQuery('.card-header .btn-save').after(`
                     <button class="btn btn-danger btn-delete"><i class="fa fa-trash"></i> &nbsp; Delete</button>
                 `)
@@ -97,6 +101,7 @@ jQuery(function () {
                 })
                 jQuery('[name="createdAt"]').on('change', function () {
                     jQuery(`[name="anak"]`).html('')
+                    showHideImunisasi()
                 })
                 var options = JSON.parse(localStorage.getItem('anak')).map(anak => {
                     return `<option value="${anak.uuid}">${anak.nama}</option>`
@@ -131,6 +136,7 @@ jQuery(function () {
                 }
                 jQuery(`[name="anak"]`).select2()
                 jQuery(`[name="anak"]`).val(currentPengukuran.anak).trigger('change')
+                jQuery(`[name="anak"]`).change(showHideImunisasi)
                 jQuery('.btn-save').click(function (e) {
                     e.preventDefault()
                     var record = {}
@@ -157,7 +163,7 @@ jQuery(function () {
                     localStorage.setItem('pengukuran', JSON.stringify(storedPengukuran))
                     window.location = `${site_url}Pengukuran`
                 })
-                ; break
+                    ; break
             case 'posyandubumil':
                 jQuery(`[href="${site_url}posyandubumil/download"]`).hide()
                 localStorage.removeItem('pemeriksaan_bumil_id')
@@ -264,7 +270,7 @@ jQuery(function () {
                     localStorage.setItem('pemeriksaan_bumil', JSON.stringify(storedPemeriksaanBumil))
                     window.location = `${site_url}posyandubumil`
                 })
-                ; break
+                    ; break
             default:
                 jQuery(`a[href^="${site_url}"]`)
                     .not(`a[href$="Pengukuran"]`)
@@ -327,6 +333,8 @@ jQuery(function () {
 
         if (['posyandubumil', 'Pengukuran'].indexOf(controller) > -1) switch (method) {
             case 'create':
+                showHideImunisasi()
+                if ('Pengukuran' === controller) jQuery('[name="createdAt"], [name="anak"]').change(showHideImunisasi)
                 jQuery('.btn-save').click(function (e) {
                     e.preventDefault()
                     var record = {}
@@ -342,6 +350,7 @@ jQuery(function () {
                 })
                     ; break
             case 'read':
+                showHideImunisasi()
                 jQuery('.btn-save').click(function (e) {
                     e.preventDefault()
                     var record = {}
@@ -381,4 +390,93 @@ function monthDiff(d1, d2) {
     months -= d1.getMonth()
     months += d2.getMonth()
     return months <= 0 ? 0 : months
+}
+
+function showHideImunisasi() {
+    jQuery('.form-group').show()
+    var inputDate = jQuery('[name="createdAt"]').val()
+    var inputAnak = jQuery('[name="anak"]').val()
+    var inputToHide = []
+
+    if (!inputDate) return false;
+    inputDate = new Date(inputDate)
+    var inputMonth = inputDate.getMonth() + 1
+    if (2 !== inputMonth) inputToHide.push('vit_a_feb')
+    if (8 !== inputMonth) inputToHide.push('vit_a_aug')
+    for (var name of inputToHide) jQuery(`[name="${name}"]`).parent().parent().hide()
+    inputToHide = []
+
+    if (!inputAnak) return false;
+    var dataAnak = localStorage.getItem('anak')
+    dataAnak = JSON.parse(dataAnak)
+    var selectedAnak = dataAnak.filter(anak => {
+        return anak.uuid === inputAnak
+    })
+    selectedAnak = selectedAnak[0]
+    var dob = new Date(selectedAnak.tgl_lahir)
+
+    var usiaBulan = monthDiff(dob, new Date(inputDate))
+    if (window.location.href.indexOf('create') > -1) {
+        if (6 < usiaBulan) inputToHide.push('asi_eksklusif')
+        if (24 >= usiaBulan) {
+            if (18 <= usiaBulan) {
+                inputToHide.push('dpt_combo_booster')
+                inputToHide.push('campak_booster')
+            }
+            if (11 >= usiaBulan) {
+                if (1 <= usiaBulan) {
+                    inputToHide.push('bcg')
+                    inputToHide.push('polio_1')
+                }
+                if (2 <= usiaBulan) {
+                    inputToHide.push('dpt_combo_1')
+                    inputToHide.push('polio_2')
+                }
+                if (3 <= usiaBulan) {
+                    inputToHide.push('dpt_combo_2')
+                    inputToHide.push('polio_3')
+                }
+                if (4 <= usiaBulan) {
+                    inputToHide.push('dpt_combo_3')
+                    inputToHide.push('polio_4')
+                    inputToHide.push('ipv')
+                }
+            }
+            if (9 <= usiaBulan) {
+                inputToHide.push('dpt_combo_booster')
+                inputToHide.push('campak_booster')
+            }
+        }
+    }
+
+    if (window.location.href.indexOf('read') > -1) {
+        switch (usiaBulan) {
+            case 1:
+                inputToHide.push('bcg')
+                inputToHide.push('polio_1')
+                    ; break
+            case 2:
+                inputToHide.push('dpt_combo_1')
+                inputToHide.push('polio_2')
+                    ; break
+            case 3:
+                inputToHide.push('dpt_combo_2')
+                inputToHide.push('polio_3')
+                    ; break
+            case 4:
+                inputToHide.push('dpt_combo_3')
+                inputToHide.push('polio_4')
+                inputToHide.push('ipv')
+                    ; break
+            case 9:
+                inputToHide.push('campak')
+                    ; break
+            case 18:
+                inputToHide.push('dpt_combo_booster')
+                inputToHide.push('campak_booster')
+                    ; break
+        }
+    }
+
+    for (var name of inputToHide) jQuery(`[name="${name}"]`).parent().parent().hide()
 }
