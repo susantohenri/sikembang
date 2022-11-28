@@ -86,42 +86,38 @@ class Frontpage extends CI_Controller
             $ideals = array(
                 "Underweight" => array(
                     "penjelasan" => "
-                        Anda mengalami kekurangan berat badan saat hamil, artinya Anda harus mengejar kenaikan berat badan dengan cepat. Hal normal bila berat badan turun selama trimester pertama karena mual muntah di pagi hari. Namun, berat badan Anda semestinya sudah kembali optimal sejak trimester kedua dan ketiga. Kekurangan berat badan saat hamil meningkatkan risiko bayi lahir prematur dan prosedur operasi caesar. Anda perlu meningkatkan berat badan secepatnya agar mencapai bobot tubuh ideal bagi ibu hamil. Caranya dengan mengonsumsi makanan dalam jumlah kalori yang direkomendasikan. Bila kenaikan berat badan Anda belum cukup cobalah makan dalam jumlah yang lebih banyak sambil tetap menghindari makanan instan. Upayakan menyantap makanan padat nutrisi dan berasal dari sumber yang bervariasi. Misalnya susu rendah lemak, gandum utuh, buah-buahan, dan sayuran. Sehingga Anda dapat menyerap berbagai nutrisi yang dibutuhkan oleh tubuh. Pastikan pula Anda memperoleh asupan kalsium yang cukup, asam folat, zat besi, vitamin A, vitamin D, DHA, dan protein. Berhentilah menenggak minuman beralkohol serta kurangi asupan kafein dan makanan asin. Bila Anda belum juga berhasil menaikkan berat badan sesuai target, berkonsultasilah ke dokter atau ahli gizi untuk membantu merencanakan pola makan yang tepat untuk Anda.
+                        BMI di bawah 18,5 Angka ini menunjukan Moms underweight atau kekurangan berat badan. Kenaikan berat badan ideal selama hamil adalah 12-18 kg. Ada banyak alasan untuk memiliki BMI rendah. Misalnya mungkin ada alasan medis, seperti tiroid yang terlalu aktif. Jika menurut Moms ini masalahnya, bicarakan dengan bidan atau dokter kandungan. Moms perlu meningkatkan berat badan secepatnya agar mencapai bobot tubuh ideal bagi ibu hamil. Caranya dengan mengonsumsi makanan dalam jumlah kalori yang direkomendasikan. Bila kenaikan berat badan Anda belum cukup cobalah makan dalam jumlah yang lebih banyak sambil tetap menghindari makanan instan. Upayakan menyantap makanan padat nutrisi dan berasal dari sumber yang bervariasi.<br>
+                        Misalnya susu rendah lemak, gandum utuh, buah-buahan, dan sayuran. Sehingga Anda dapat menyerap berbagai nutrisi yang dibutuhkan oleh tubuh. Pastikan pula Anda memperoleh asupan kalsium yang cukup, asam folat, zat besi, vitamin A, vitamin D, DHA, dan protein.<br>
+                        Berhentilah menenggak minuman beralkohol serta kurangi asupan kafein dan makanan asin. Bila Anda belum juga berhasil menaikkan berat badan sesuai target, berkonsultasilah ke dokter atau ahli gizi untuk membantu merencanakan pola makan yang tepat untuk Anda.
                     ",
                     "total_kenaikan_berat_badan" => "12,5 Kg - 18 Kg",
                     "rata2_kenaikan_berat_badan_per_minggu" => "0,44 Kg/Minggu - 0,58 Kg/Minggu"
                 ),
                 "Normal Weight" => array(
                     "penjelasan" => "
-                        Anda mengalami kenaikan berat badan yang ideal selama kehamilan. Wajar bila berat badan Anda bertambah saat hamil. Ini karena tubuh perlu menampung bayi yang sedang berkembang di dalam perut. Ibu hamil memang membutuhkan kalori yang lebih banyak untuk menjamin terpenuhinya kebutuhan nutrisi bayi agar tetap sehat dan berkembang dengan baik. Di samping menghitung jumlah kenaikan berat badan, Anda juga perlu mencatat seberapa cepat berat badan Anda naik selama masa kehamilan. Berat badan yang terlalu cepat naik bisa saja merupakan gejala pre-eklampsia, yaitu komplikasi kehamilan yang membutuhkan penanganan khusus. 
+                        BMI 18.5 sampai 24,9 BMI ini adalah ideal, kenaikan berat badan yang baik adalah 11-16 kg. Pada trimester pertama, kenaikan berat badan ibu hamil sebaiknya 0,5 hingga 2,5 kg. Setelah itu, diikuti dengan kenaikan berat 0,5 kg per minggu.<br>
                         Karena Anda sudah berada pada kenaikan berat badan yang ideal, maka pertahankanlah apa yang sudah Anda lakukan selama ini. Namun, jangan lengah. Tetap Jaga pola makan dan hindari makan berlebihan agar berat badan tetap ideal. Tetap hindari makanan instan dan cemilan yang tidak sehat. Bila ingin ngemil, carilah makanan yang mengandung nutrisi yang baik untuk kehamilan seperti:<br>
-                        - Kalsium<br>
-                        - Folat<br>
-                        - Zat besi<br>
-                        - Vitamin A<br>
-                        - Vitamin C<br>
-                        - Vitamin D<br>
-                        - Vitamin B6<br>
-                        - Vitamin B12
+                        Kalsium, Folat, Zat besi, Vitamin A, Vitamin C, Vitamin D, Vitamin B6, Vitamin B12
                     ",
                     "total_kenaikan_berat_badan" => "11,5 Kg - 16 Kg",
                     "rata2_kenaikan_berat_badan_per_minggu" => "0,35 Kg/Minggu - 0,5 Kg/Minggu"
                 ),
                 "Overweight" => array(
                     "penjelasan" => "
-                        Anda Mengalami obesitas atau overweight saat hamil atau berat badan berlebih sejak memasuki masa kehamilan. Dimana Anda akan lebih berisiko mengalami komplikasi kehamilan seperti Diabetes Gestasional. Selain itu, bayi yang lahir dari ibu yang obesitas saat hamil akan lebih berisiko mengalami masalah kesehatan seiring bertambahnya usia. Beberapa masalah yang mungkin terjadi pada anak yang dikandung antara lain di bawah ini.<br>
+                        BMI antara 25 sampai 29,9 Angka ini menunjukkan overweight. Kenaikan berat badan ibu hamil baiknya tidak terlalu banyak. Idealnya adalah 7-11 kg.<br>
+                        Dimana Anda akan lebih berisiko mengalami komplikasi kehamilan seperti Diabetes Gestasional. Selain itu, bayi yang lahir dari ibu yang obesitas saat hamil akan lebih berisiko mengalami masalah kesehatan seiring bertambahnya usia. Beberapa masalah yang mungkin terjadi pada anak yang dikandung antara lain di bawah ini.<br>
                         - Kecacatan atau penyakit pada jantung.<br>
                         - Tubuh lebih besar dan gula darah rendah (ini dapat terjadi bila Anda mengalami diabetes gestasional).<br>
                         - Mengalami obesitas, diabetes tipe 2, dan kolesterol tinggi.<br>
                         - Cacat pada tabung saraf seperti spina bifida.<br>
-                        Oleh sebab itu, Bila Anda mengalami kelebihan berat badan saat hamil, fokuslah memperoleh makanan yang sehat dan bernutrisi untuk memenuhi kebutuhan bayi dalam kandungan. Konsumsilah sayuran, roti gandum utuh, olahan susu rendah lemak, ikan merah tanpa lemak, dan ikan yang mengandung lemak baik. Jenis makanan ini kaya nutrisi tapi tetap mampu menjaga kadar gula darah serta membuat Anda kenyang lebih lama.
+                        Oleh sebab itu, fokuslah memperoleh makanan yang sehat dan bernutrisi. Konsumsilah sayuran, roti gandum utuh, olahan susu rendah lemak, ikan merah tanpa lemak, dan ikan yang mengandung lemak baik. Jenis makanan ini kaya nutrisi tapi tetap mampu menjaga kadar gula darah serta membuat Anda kenyang lebih lama.<br>
                         Berkonsultasilah dengan dokter untuk mengetahui pola diet yang tepat untuk Anda. Tanyakan pula cara yang aman untuk mengontrol kenaikan berat badan Anda serta menjaga agar tidak terkena diabetes gestasional.
                     ",
                     "total_kenaikan_berat_badan" => "7 Kg - 11,5 Kg",
                     "rata2_kenaikan_berat_badan_per_minggu" => "0,23 Kg/Minggu - 0,33 Kg/Minggu"
                 ),
                 "Obese" => array(
-                    "penjelasan" => "",
+                    "penjelasan" => "BMI di atas 30 Hal ini menunjukkan kondisi obesitas. Kenaikan berat badan ideal adalah 5-9 kg saja.",
                     "total_kenaikan_berat_badan" => "5 Kg - 9 Kg",
                     "rata2_kenaikan_berat_badan_per_minggu" => "0,17 Kg/Minggu - 0,27 Kg/Minggu"
                 ),
