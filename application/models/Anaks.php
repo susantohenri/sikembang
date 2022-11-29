@@ -188,9 +188,10 @@ class Anaks extends MY_Model
 		->generate();
 	}
 
-	function imd()
+	function imd($desa = '')
 	{
 		$result = json_decode('{"type":"pie","data":{"datasets":[{"data":[100,2],"backgroundColor":["orange","lightblue"]}],"labels":["Ya","Tidak"]},"options":{"responsive":true}}');
+		if ('' !== $desa) $this->db->where('desa', $desa);
 		$records = $this->db
 			->select('imd label', false)
 			->select('COUNT(uuid) total', false)

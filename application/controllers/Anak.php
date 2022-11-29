@@ -88,6 +88,8 @@ class Anak extends MY_Controller
 	function download($desa)
 	{
 		$rows = $this->Anaks->download($desa);
+		$this->load->model('Desas');
+		$nama_desa = $this->Desas->findOne($desa);
 		$colnames = array_keys($rows[0]);
 
 		$spreadsheet = new Spreadsheet();
@@ -118,7 +120,7 @@ class Anak extends MY_Controller
 		$spreadsheet->setActiveSheetIndex(0)->setCellValue('A1', 'DATA SASARAN BALITA');
 
 		$spreadsheet->setActiveSheetIndex(0)->setCellValue('A3', 'Kabupaten    : Boyolali');
-		$spreadsheet->setActiveSheetIndex(0)->setCellValue('A4', 'Kecamatan    : Teras');
+		$spreadsheet->setActiveSheetIndex(0)->setCellValue('A4', 'Desa                  : ' . $nama_desa['nama']);
 		$spreadsheet->setActiveSheetIndex(0)->getStyle('A3:A4')->getFont()->setSize(11);
 
 		$spreadsheet->setActiveSheetIndex(0)->getStyle('A1:A6')->getFont()->setBold(true);

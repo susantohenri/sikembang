@@ -18,6 +18,12 @@
                         </div>
                     </div>
                     <div class="form-group row">
+                        <label class="col-sm-3 control-label">Pilih Desa</label>
+                        <div class="col-sm-9">
+                            <select class="form-control" name="desa" data-autocomplete="true" data-model="Desas" data-field="nama"></select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
                         <label class="col-sm-3 control-label">Sejak Tanggal</label>
                         <div class="col-sm-9">
                             <input class="form-control" type="text" name="since" data-date="datepicker" autocomplete="off">

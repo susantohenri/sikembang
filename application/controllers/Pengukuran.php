@@ -145,12 +145,13 @@ class Pengukuran extends MY_Controller
 			$jenis = $this->input->post('jenis');
 			$since = $this->input->post('since');
 			$until = $this->input->post('until');
+			$desa = $this->input->post('desa');
 			if ('imd' === $jenis) {
 				$this->load->model('Anaks');
-				echo $this->Anaks->imd();
+				echo $this->Anaks->imd($desa);
 			} else if ('asi' === $jenis) {
-				echo $this->Pengukurans->grafik_asi();
-			} else echo $this->Pengukurans->grafik($jenis, $since, $until);
+				echo $this->Pengukurans->grafik_asi($desa);
+			} else echo $this->Pengukurans->grafik($jenis, $since, $until, $desa);
 		} else {
 			$vars = array(
 				'js' => array(
@@ -300,4 +301,11 @@ class Pengukuran extends MY_Controller
 		);
 		$this->loadview('index', $vars);
 	}
+
+    function select2 ($model, $field) {
+        $this->load->model($model);
+        $result = $this->$model->select2($field, $this->input->post('term'));
+        if ('Desas' === $model) array_unshift($result, ['id' => '', 'text' => 'Semua Desa']);
+        echo '{"results":'. json_encode($result) . '}';
+    }
 }
